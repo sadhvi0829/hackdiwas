@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+        </button>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">RhythmConnect</div>
+                <div class="nav-search">
+                    <input type="text" placeholder="Search classes, instructors, or styles..." class="search-input">
+                </div>
+                <button class="get-started-btn" onclick="window.location.href='login.html'">Start Learning</button>
+            </div>
+        </nav>
+
+        <!-- Header Section -->
+        <header class="page-header">
+            <div class="pipe-flow">
+                <div class="pipe pipe-horizontal pipe-1">
+                    <div class="flowing-circle circle-purple" style="animation-delay: 0s;"></div>
+                    <div class="flowing-circle circle-blue" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-horizontal pipe-2">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -1s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-3">
+                    <div class="flowing-circle circle-gold" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-4">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+                <div class="grid-pattern"></div>
+            </div>
+            <h1 class="page-title">Begin Your Artistic Journey</h1>
+            <p class="page-subtitle">Explore a world of dance, music, and yoga with expert instructors and a supportive community.</p>
+        </header>
+
+        <!-- Featured Courses -->
+        <section class="content-section">
+            <h2 class="section-title">Featured Courses</h2>
+            <p class="section-subtitle">Discover our most popular courses across different disciplines</p>
+            
+            <div class="courses-grid">
+                <!-- Dance Course Card -->
+                <div class="feature-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Dance Course">
+                        <span class="level-badge">Beginner</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Contemporary Dance Basics</h3>
+                        <p>Master the fundamentals of contemporary dance with expert guidance.</p>
+                        <button class="action-button">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Music Course Card -->
+                <div class="feature-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Music Course">
+                        <span class="level-badge">Intermediate</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Classical Piano</h3>
+                        <p>Learn classical piano techniques from renowned instructors.</p>
+                        <button class="action-button">Enroll Now</button>
+                    </div>
+                </div>
+
+                <!-- Yoga Course Card -->
+                <div class="feature-card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Yoga Course">
+                        <span class="level-badge">All Levels</span>
+                    </div>
+                    <div class="card-content">
+                        <h3>Hatha Yoga Journey</h3>
+                        <p>Experience the transformative power of Hatha yoga practice.</p>
+                        <button class="action-button">Enroll Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Paths -->
+        <section class="content-section" style="background: var(--bg-secondary);">
+            <h2 class="section-title">Learning Paths</h2>
+            <p class="section-subtitle">Choose your path and progress at your own pace</p>
+            
+            <div class="paths-grid">
+                <div class="path-card dance-path">
+                    <h3>Dance Excellence</h3>
+                    <ul class="path-steps">
+                        <li>Fundamentals of Movement</li>
+                        <li>Rhythm & Timing</li>
+                        <li>Style Development</li>
+                        <li>Performance Skills</li>
+                    </ul>
+                    <a href="dance-courses.html" class="path-link">Start Dance Path</a>
+                </div>
+
+                <div class="path-card music-path">
+                    <h3>Musical Mastery</h3>
+                    <ul class="path-steps">
+                        <li>Music Theory</li>
+                        <li>Instrument Basics</li>
+                        <li>Advanced Techniques</li>
+                        <li>Composition</li>
+                    </ul>
+                    <a href="music-courses.html" class="path-link">Start Music Path</a>
+                </div>
+
+                <div class="path-card yoga-path">
+                    <h3>Yoga Journey</h3>
+                    <ul class="path-steps">
+                        <li>Basic Poses</li>
+                        <li>Breathing Techniques</li>
+                        <li>Flow Sequences</li>
+                        <li>Meditation</li>
+                    </ul>
+                    <a href="yoga-courses.html" class="path-link">Start Yoga Path</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RhythmConnect</h3>
+                    <p>Your gateway to artistic excellence</p>
+                </div>
+                <div class="footer-links">
+                    <!-- Footer links remain the same -->
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('svg');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                `;
+            } else {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 
