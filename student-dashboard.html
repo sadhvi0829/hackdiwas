@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | RhythmConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #6d28d9;
+            --primary-blue: #2563eb;
+            --accent-gold: #d4a017;
+            --bg-primary: #f5f7fa;
+            --bg-gradient: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+            --sidebar-width: 250px;
+            --card-radius: 20px;
+            --shadow: 0 4px 24px rgba(109,40,217,0.10);
+            --text-primary: #222;
+            --text-secondary: #666;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #181c24;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .dashboard-app {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-gradient);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
+            border-radius: 0 32px 32px 0;
+            box-shadow: var(--shadow);
+        }
+        .sidebar .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            letter-spacing: 1px;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            flex: 1;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background: rgba(255,255,255,0.13);
+            color: #ffe082;
+        }
+        .sidebar-link.logout {
+            color: #ff6b6b;
+            margin-top: 2rem;
+        }
+        .sidebar-link.logout:hover {
+            background: rgba(255,107,107,0.13);
+            color: #fff;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: transparent;
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 2.5rem 1.2rem 2.5rem;
+            background: transparent;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 999px;
+            box-shadow: 0 2px 12px rgba(109,40,217,0.07);
+            padding: 0.5rem 1.2rem;
+            min-width: 320px;
+            gap: 0.7rem;
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-primary);
+            width: 100%;
+        }
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            margin-right: 1.2rem;
+            cursor: pointer;
+            color: var(--primary-purple);
+            transition: color 0.2s;
+        }
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .topbar-btn {
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: 0.7rem 1.7rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: background 0.2s;
+        }
+        .topbar-btn:hover {
+            background: var(--primary-blue);
+        }
+        .dashboard-section {
+            padding: 0 2.5rem 2.5rem 2.5rem;
+            flex: 1;
+            display: block;
+        }
+        .welcome {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            margin-top: 0.5rem;
+        }
+        .summary-cards {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .summary-card {
+            flex: 1;
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            color: #fff;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            min-width: 180px;
+        }
+        .summary-card .card-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.7rem;
+        }
+        .summary-card .card-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .recent-activity {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            color: #fff;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem 2rem;
+            margin-top: 1.5rem;
+        }
+        .recent-activity-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .activity-list li {
+            margin-bottom: 0.8rem;
+            font-size: 1.08rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .activity-list li:last-child { margin-bottom: 0; }
+        .activity-icon { font-size: 1.1rem; }
+        /* Profile Section */
+        .profile-section {
+            display: none;
+            padding: 2.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .profile-section.active {
+            display: block;
+        }
+        .profile-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .profile-image-upload {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e0e7ff;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 12px rgba(109,40,217,0.10);
+        }
+        .profile-form label {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .profile-form input[type="text"],
+        .profile-form input[type="email"] {
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            font-size: 1.08rem;
+            background: #fff;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .profile-form input[type="file"] {
+            font-size: 1rem;
+        }
+        .profile-form button {
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            transition: background 0.2s;
+        }
+        .profile-form button:hover {
+            background: var(--primary-blue);
+        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dashboard-app { flex-direction: column; }
+            .sidebar { flex-direction: row; width: 100vw; border-radius: 0 0 32px 32px; padding: 1.2rem; }
+            .main-content { padding-top: 0; }
+        }
+        @media (max-width: 700px) {
+            .sidebar { display: none; }
+            .main-content { padding: 0; }
+            .dashboard-section, .profile-section { padding: 1rem; }
+            .summary-cards { flex-direction: column; gap: 1rem; }
+        }
+        /* Dark mode overrides */
+        [data-theme="dark"] body {
+            background: var(--bg-primary);
+        }
+        [data-theme="dark"] .sidebar {
+            background: linear-gradient(135deg, #2563eb 0%, #6d28d9 100%);
+            color: #fff;
+        }
+        [data-theme="dark"] .main-content {
+            background: transparent;
+        }
+        [data-theme="dark"] .search-bar {
+            background: #23263a;
+            color: #fff;
+        }
+        [data-theme="dark"] .summary-card, [data-theme="dark"] .recent-activity {
+            background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
+            color: #fff;
+        }
+        [data-theme="dark"] .profile-form input[type="text"],
+        [data-theme="dark"] .profile-form input[type="email"] {
+            background: #23263a;
+            color: #fff;
+            border: 1px solid #374151;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-app">
+        <aside class="sidebar">
+            <div class="logo">RhythmConnect</div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" id="nav-dashboard"><span>🏠</span> Dashboard</a>
+                <a class="sidebar-link" id="nav-courses"><span>📚</span> My Courses</a>
+                <a class="sidebar-link" id="nav-profile"><span>👤</span> Profile</a>
+                <a class="sidebar-link" id="nav-notifications"><span>🔔</span> Notifications</a>
+                <a class="sidebar-link logout" id="nav-logout"><span>🚪</span> Logout</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="topbar">
+                <div class="search-bar">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Search courses or activities...">
+                </div>
+                <div class="topbar-actions">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+                    <button class="topbar-btn">Dashboard</button>
+                    <button class="topbar-btn">Logout</button>
+                </div>
+            </div>
+            <!-- Dashboard Section -->
+            <section class="dashboard-section" id="dashboard-section">
+                <div class="welcome">Welcome, <span id="student-name">Student</span> 👋</div>
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-label">Total Courses</div>
+                        <div class="card-value">1</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-label">Total Students</div>
+                        <div class="card-value">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-label">New Comments</div>
+                        <div class="card-value">12</div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <div class="recent-activity-title"><span>📌</span> Recent Activity</div>
+                    <ul class="activity-list">
+                        <li><span class="activity-icon">💬</span> New comment on <b>"Java Basics"</b></li>
+                        <li><span class="activity-icon">👨‍🎓</span> 4 students enrolled in <b>"React for Beginners"</b></li>
+                        <li><span class="activity-icon">🆕</span> You published a new course <b>"Python DSA"</b></li>
+                    </ul>
+                </div>
+            </section>
+            <!-- Profile Section -->
+            <section class="profile-section" id="profile-section">
+                <div class="profile-title">My Profile</div>
+                <form class="profile-form" id="profile-form">
+                    <div class="profile-image-upload">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Avatar" class="profile-avatar" id="profile-avatar">
+                        <div>
+                            <label for="profile-image">Change Profile Image</label><br>
+                            <input type="file" id="profile-image" accept="image/*">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="profile-name">Name</label><br>
+                        <input type="text" id="profile-name" value="Student">
+                    </div>
+                    <div>
+                        <label for="profile-email">Email</label><br>
+                        <input type="email" id="profile-email" value="student@email.com">
+                    </div>
+                    <button type="submit">Save Changes</button>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Sidebar navigation
+        const navDashboard = document.getElementById('nav-dashboard');
+        const navProfile = document.getElementById('nav-profile');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const profileSection = document.getElementById('profile-section');
+        navDashboard.addEventListener('click', () => {
+            navDashboard.classList.add('active');
+            navProfile.classList.remove('active');
+            dashboardSection.style.display = 'block';
+            profileSection.classList.remove('active');
+        });
+        navProfile.addEventListener('click', () => {
+            navProfile.classList.add('active');
+            navDashboard.classList.remove('active');
+            dashboardSection.style.display = 'none';
+            profileSection.classList.add('active');
+        });
+        // Profile image upload
+        const profileImageInput = document.getElementById('profile-image');
+        const profileAvatar = document.getElementById('profile-avatar');
+        profileImageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profileAvatar.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        let theme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', theme);
+        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        themeToggle.addEventListener('click', () => {
+            theme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        });
+        // Profile form save (demo only)
+        const profileForm = document.getElementById('profile-form');
+        const studentName = document.getElementById('student-name');
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            studentName.textContent = document.getElementById('profile-name').value;
+            alert('Profile updated!');
+            navDashboard.click();
+        });
+    </script>
+</body>
+</html> 

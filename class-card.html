@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Card | RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .page-header {
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: rgba(109,40,217,0.08);
+            color: var(--primary-purple);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .share-button {
+            background: rgba(109,40,217,0.08);
+            color: var(--primary-purple);
+        }
+
+        .share-button:hover {
+            background: rgba(109,40,217,0.12);
+        }
+
+        .bookmark-button {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+
+        .bookmark-button:hover {
+            background: var(--primary-blue);
+        }
+
+        .recommended-section {
+            grid-column: 1 / -1;
+            padding: 2rem;
+            border-top: 1px solid rgba(109,40,217,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .recommended-courses {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(109,40,217,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(109,40,217,0.12);
+        }
+
+        .course-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 1.2rem;
+        }
+
+        .course-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .course-price {
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+
+        .course-tag {
+            background: rgba(109,40,217,0.08);
+            color: var(--primary-purple);
+            padding: 0.3rem 0.8rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .class-card {
+            background: #fff;
+            border-radius: 32px;
+            box-shadow: 0 8px 32px rgba(109,40,217,0.12);
+            width: 100%;
+            max-width: 1200px;
+            min-height: 80vh;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 0;
+        }
+
+        .class-card:hover {
+            box-shadow: 0 12px 48px rgba(109,40,217,0.16);
+        }
+
+        .class-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            grid-column: 1 / -1;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.2) 0%,
+                rgba(0,0,0,0.6) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            color: #fff;
+        }
+
+        .thumbnail-badge {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: var(--accent-gold);
+            color: #222;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+
+        .thumbnail-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .thumbnail-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .thumbnail-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .class-main {
+            padding: 2.5rem 2.5rem 2.5rem 0;
+        }
+
+        .class-sidebar {
+            padding: 2.5rem 0 2.5rem 2.5rem;
+        }
+
+        .class-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--accent-gold);
+            color: #222;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 2;
+        }
+
+        .class-header {
+            margin-bottom: 1rem;
+        }
+
+        .class-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .teacher-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .class-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            padding: 1rem;
+            background: rgba(109,40,217,0.04);
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-2px);
+            background: rgba(109,40,217,0.08);
+        }
+
+        .detail-item i {
+            font-size: 1.4rem;
+        }
+
+        .class-description {
+            background: rgba(109,40,217,0.04);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .trial-video-section {
+            background: rgba(109,40,217,0.04);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            background: #000;
+        }
+
+        .video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .video-overlay:hover {
+            background: rgba(0,0,0,0.4);
+        }
+
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .play-icon {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent var(--primary-purple);
+            margin-left: 5px;
+        }
+
+        .video-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .video-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .video-duration {
+            background: rgba(109,40,217,0.1);
+            color: var(--primary-purple);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .video-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .video-features {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .video-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(109,40,217,0.08);
+            padding: 0.6rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .video-feature i {
+            color: var(--primary-purple);
+        }
+
+        .description-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+        }
+
+        .description-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .description-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .description-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--primary-purple);
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .class-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(109,40,217,0.1);
+        }
+
+        .enrollment-status {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .join-button {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: #fff;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(109,40,217,0.3);
+        }
+
+        .class-sidebar {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            border-radius: 24px;
+            padding: 2rem;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .sidebar-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .sidebar-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0;
+            font-size: 1rem;
+            line-height: 1.4;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .sidebar-features li:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .sidebar-features li i {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .sidebar-features li span {
+            flex: 1;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Dark mode overrides */
+        [data-theme="dark"] .class-card {
+            background: rgba(31,41,55,0.95);
+            box-shadow: 0 8px 32px rgba(59,130,246,0.12);
+        }
+
+        [data-theme="dark"] .class-title {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .class-description {
+            background: rgba(59,130,246,0.08);
+        }
+
+        [data-theme="dark"] .description-title {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .detail-item {
+            background: rgba(59,130,246,0.08);
+        }
+
+        [data-theme="dark"] .detail-item:hover {
+            background: rgba(59,130,246,0.12);
+        }
+
+        [data-theme="dark"] .join-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        }
+
+        [data-theme="dark"] .trial-video-section {
+            background: rgba(59,130,246,0.08);
+        }
+
+        [data-theme="dark"] .video-duration {
+            background: rgba(59,130,246,0.15);
+            color: var(--primary-blue);
+        }
+
+        [data-theme="dark"] .video-feature {
+            background: rgba(59,130,246,0.12);
+        }
+
+        [data-theme="dark"] .video-feature i {
+            color: var(--primary-blue);
+        }
+
+        [data-theme="dark"] .sidebar-features li {
+            background: rgba(255,255,255,0.05);
+        }
+
+        [data-theme="dark"] .sidebar-features li:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        [data-theme="dark"] .thumbnail-overlay {
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.3) 0%,
+                rgba(0,0,0,0.7) 100%);
+        }
+
+        @media (max-width: 1024px) {
+            .class-card {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+
+            .class-sidebar {
+                display: none;
+            }
+
+            .class-main, .class-sidebar {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .recommended-courses {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 1rem;
+            }
+
+            .class-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .class-title {
+                font-size: 2rem;
+            }
+
+            .class-details {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-item {
+                font-size: 1rem;
+            }
+
+            .class-thumbnail {
+                height: 250px;
+            }
+
+            .thumbnail-title {
+                font-size: 2rem;
+            }
+
+            .thumbnail-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .class-main, .class-sidebar {
+                padding: 1.5rem;
+            }
+        }
+
+        .footer {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 3rem;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(109,40,217,0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-purple);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .footer-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(109,40,217,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .social-link:hover {
+            background: var(--primary-purple);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--primary-purple);
+        }
+
+        .footer-bottom {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(109,40,217,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-legal a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-legal a:hover {
+            color: var(--primary-purple);
+        }
+
+        [data-theme="dark"] .footer {
+            border-top-color: rgba(59,130,246,0.1);
+        }
+
+        [data-theme="dark"] .social-link {
+            background: rgba(59,130,246,0.08);
+            color: var(--primary-blue);
+        }
+
+        [data-theme="dark"] .social-link:hover {
+            background: var(--primary-blue);
+            color: #fff;
+        }
+
+        [data-theme="dark"] .footer-bottom {
+            border-top-color: rgba(59,130,246,0.1);
+        }
+
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .footer-brand {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .footer-legal {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+   
+
+    <div class="class-card">
+        <div class="class-thumbnail">
+            <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                 alt="Hip-hop dance class" 
+                 class="thumbnail-image">
+            <div class="thumbnail-badge">
+                <span>🔥</span> Popular
+            </div>
+            <div class="thumbnail-overlay">
+                <h1 class="thumbnail-title">Beginner Hip-Hop Dance</h1>
+                <div class="thumbnail-subtitle">
+                    <span>👤 John Doe</span>
+                    <span>•</span>
+                    <span>🏷️ Dance</span>
+                    <span>•</span>
+                    <span>📍 Online</span>
+                </div>
+                <div class="thumbnail-stats">
+                    <div class="stat-item">
+                        <i>⏳</i>
+                        <span>6 Weeks</span>
+                    </div>
+                    <div class="stat-item">
+                        <i>👥</i>
+                        <span>15 Students</span>
+                    </div>
+                    <div class="stat-item">
+                        <i>⭐</i>
+                        <span>4.9/5 Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="class-main">
+            <div class="class-header">
+                <h1 class="class-title">Beginner Hip-Hop Dance</h1>
+                <div class="teacher-info">
+                    <div class="teacher-avatar">JD</div>
+                    <span>John Doe</span>
+                </div>
+            </div>
+
+            <div class="class-details">
+                <div class="detail-item">
+                    <i>🏷️</i>
+                    <span>Dance</span>
+                </div>
+                <div class="detail-item">
+                    <i>📍</i>
+                    <span>Online</span>
+                </div>
+                <div class="detail-item">
+                    <i>📅</i>
+                    <span>Starts: 15 Apr</span>
+                </div>
+                <div class="detail-item">
+                    <i>⏳</i>
+                    <span>6 Weeks</span>
+                </div>
+                <div class="detail-item">
+                    <i>💸</i>
+                    <span>₹1500</span>
+                </div>
+                <div class="detail-item">
+                    <i>🎟️</i>
+                    <span>Trial Available</span>
+                </div>
+                <div class="detail-item">
+                    <i>👥</i>
+                    <span>Max: 15 Students</span>
+                </div>
+            </div>
+
+            <div class="class-description">
+                <div class="description-title">What You'll Learn:</div>
+                <ul class="description-list">
+                    <li>Master basic hip-hop moves and techniques</li>
+                    <li>Learn rhythm and musicality in dance</li>
+                    <li>Build confidence through group performances</li>
+                </ul>
+            </div>
+
+            <div class="trial-video-section">
+                <div class="video-info">
+                    <h3 class="video-title">Trial Class Preview</h3>
+                    <span class="video-duration">15:30</span>
+                </div>
+                <div class="video-container">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                         alt="Hip-hop dance class preview" 
+                         class="video-player">
+                    <div class="video-overlay">
+                        <div class="play-button">
+                            <div class="play-icon"></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="video-description">
+                    Get a taste of our beginner hip-hop class! This preview shows you the teaching style, 
+                    class structure, and the kind of moves you'll learn in your first session.
+                </p>
+                <div class="video-features">
+                    <div class="video-feature">
+                        <i>🎥</i>
+                        <span>HD Quality</span>
+                    </div>
+                    <div class="video-feature">
+                        <i>🔊</i>
+                        <span>Clear Audio</span>
+                    </div>
+                    <div class="video-feature">
+                        <i>📱</i>
+                        <span>Mobile Friendly</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-footer">
+                <div class="enrollment-status">
+                    <div class="status-dot"></div>
+                    <span>Open for Enrollment</span>
+                </div>
+                <button class="join-button">Join Class</button>
+            </div>
+        </div>
+
+        <div class="class-sidebar">
+            <div class="sidebar-pattern"></div>
+            <div class="sidebar-content">
+                <h2 class="sidebar-title">Why Join This Class?</h2>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">🌟 Class Benefits</h3>
+                    <ul class="sidebar-features">
+                        <li>
+                            <i>⭐</i>
+                            <span>Expert-led sessions with personalized feedback</span>
+                        </li>
+                        <li>
+                            <i>🎯</i>
+                            <span>Structured curriculum for beginners</span>
+                        </li>
+                        <li>
+                            <i>🤝</i>
+                            <span>Join a supportive community of learners</span>
+                        </li>
+                        <li>
+                            <i>📱</i>
+                            <span>Access to recorded sessions</span>
+                        </li>
+                        <li>
+                            <i>🏆</i>
+                            <span>Certificate upon completion</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">💫 Student Perks</h3>
+                    <ul class="sidebar-features">
+                        <li>
+                            <i>📆</i>
+                            <span>Pause subscription once per month without losing access</span>
+                        </li>
+                        <li>
+                            <i>🧘‍♀️</i>
+                            <span>Free mindfulness & wellness sessions included</span>
+                        </li>
+                        <li>
+                            <i>🧾</i>
+                            <span>Detailed syllabus with topic-wise breakdown</span>
+                        </li>
+                        <li>
+                            <i>💡</i>
+                            <span>Monthly AMA sessions with top instructors</span>
+                        </li>
+                        <li>
+                            <i>📢</i>
+                            <span>Early bird discounts (10-20% off)</span>
+                        </li>
+                        <li>
+                            <i>📌</i>
+                            <span>Save & wishlist feature for future classes</span>
+                        </li>
+                        <li>
+                            <i>📱</i>
+                            <span>Mobile-optimized learning experience</span>
+                        </li>
+                        <li>
+                            <i>🕹</i>
+                            <span>Interactive practice tools & gamified drills</span>
+                        </li>
+                        <li>
+                            <i>💼</i>
+                            <span>Build your showcase portfolio</span>
+                        </li>
+                        <li>
+                            <i>🧠</i>
+                            <span>AI-powered feedback on submissions</span>
+                        </li>
+                        <li>
+                            <i>🎓</i>
+                            <span>Access to alumni network & mentorship</span>
+                        </li>
+                        <li>
+                            <i>🎨</i>
+                            <span>Weekly student showcase opportunities</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="recommended-section">
+            <h2 class="section-title">
+                <i>🎯</i>
+                Recommended for You
+            </h2>
+            <div class="recommended-courses">
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                         alt="Advanced Hip-Hop" 
+                         class="course-image">
+                    <div class="course-content">
+                        <h3 class="course-title">Advanced Hip-Hop Techniques</h3>
+                        <div class="course-info">
+                            <span>⏳ 8 Weeks</span>
+                            <span>👥 12 Students</span>
+                        </div>
+                        <div class="course-price">₹2000</div>
+                        <div class="course-tag">Advanced Level</div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                         alt="Street Dance Basics" 
+                         class="course-image">
+                    <div class="course-content">
+                        <h3 class="course-title">Street Dance Basics</h3>
+                        <div class="course-info">
+                            <span>⏳ 4 Weeks</span>
+                            <span>👥 20 Students</span>
+                        </div>
+                        <div class="course-price">₹1200</div>
+                        <div class="course-tag">Beginner Friendly</div>
+                    </div>
+                </div>
+
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" 
+                         alt="Dance Choreography" 
+                         class="course-image">
+                    <div class="course-content">
+                        <h3 class="course-title">Dance Choreography Masterclass</h3>
+                        <div class="course-info">
+                            <span>⏳ 6 Weeks</span>
+                            <span>👥 15 Students</span>
+                        </div>
+                        <div class="course-price">₹1800</div>
+                        <div class="course-tag">Intermediate</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <i>🎵</i>
+                    RhythmConnect
+                </div>
+                <p class="footer-description">
+                    Empowering artists and learners through innovative online education. 
+                    Join our community to explore, learn, and grow in your artistic journey.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📱</a>
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">📸</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Platform</h3>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">Browse Classes</a></li>
+                    <li><a href="#" class="footer-link">Find Teachers</a></li>
+                    <li><a href="#" class="footer-link">Student Success</a></li>
+                    <li><a href="#" class="footer-link">Community</a></li>
+                    <li><a href="#" class="footer-link">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">Help Center</a></li>
+                    <li><a href="#" class="footer-link">Contact Us</a></li>
+                    <li><a href="#" class="footer-link">FAQs</a></li>
+                    <li><a href="#" class="footer-link">Technical Support</a></li>
+                    <li><a href="#" class="footer-link">Feedback</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3 class="footer-title">Company</h3>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-link">About Us</a></li>
+                    <li><a href="#" class="footer-link">Careers</a></li>
+                    <li><a href="#" class="footer-link">Press</a></li>
+                    <li><a href="#" class="footer-link">Partners</a></li>
+                    <li><a href="#" class="footer-link">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="copyright">
+                © 2024 RhythmConnect. All rights reserved.
+            </div>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html> 

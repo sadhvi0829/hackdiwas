@@ -9,155 +9,298 @@
 </head>
 <body>
     <div class="app">
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" aria-label="Toggle dark mode">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-        </button>
-
         <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-content">
                 <div class="logo">RhythmConnect</div>
-                <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="student-explore.html">Student Portal</a>
-                    <a href="login.html">Login</a>
+                <div class="nav-center">
+                    <div class="nav-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search music styles or instructors..." class="search-input">
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <a href="index.html" style="margin-right: 1rem; font-size: 1.2rem;">🏠</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <a href="login.html" class="get-started-btn">Sign In</a>
                 </div>
             </div>
         </nav>
 
-        <!-- Music Hero Section -->
-        <section class="music-hero">
-            <div class="hero-content">
-                <h1>Discover the World of Music</h1>
-                <p class="subtitle">From Indian classical to contemporary, learn from master musicians</p>
+        <!-- Page Header with Animation -->
+        <header class="page-header">
+            <div class="pipe-flow">
+                <div class="pipe pipe-horizontal pipe-1">
+                    <div class="flowing-circle circle-purple" style="animation-delay: 0s;"></div>
+                    <div class="flowing-circle circle-blue" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-horizontal pipe-2">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -1s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-3">
+                    <div class="flowing-circle circle-gold" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-4">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
             </div>
-        </section>
+            <div class="header-text">
+                <h1 class="page-title">Discover the World of Music</h1>
+                <p class="page-subtitle">From Indian classical to contemporary, learn from master musicians</p>
+            </div>
+        </header>
 
-        <!-- Featured Teachers -->
-        <section class="featured-teachers">
-            <h2>Meet Our Expert Instructors</h2>
-            <div class="teacher-grid">
-                <!-- Hindustani Classical Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Ustad Rahim Khan">
-                    <div class="teacher-info">
-                        <h3>Ustad Rahim Khan</h3>
-                        <p>Hindustani Classical Expert</p>
-                        <div class="teacher-stats">
-                            <span>🎓 25+ Years Experience</span>
-                            <span>👥 1000+ Students</span>
+        <!-- Music Categories Section -->
+        <section class="dance-categories">
+            <div class="categories-container">
+                <h2>Music Categories</h2>
+                <div class="categories-grid">
+                    <!-- Hindustani Classical -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Hindustani Classical">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🎵</div>
+                            <h3>Hindustani Classical</h3>
+                            <p>North Indian classical music featuring ragas and talas</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>200+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#hindustani-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Carnatic Music -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Carnatic Music">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🎼</div>
+                            <h3>Carnatic Music</h3>
+                            <p>South Indian classical music with complex rhythmic patterns</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>180+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.7 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#carnatic-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Tabla -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Tabla">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🥁</div>
+                            <h3>Tabla</h3>
+                            <p>Indian percussion instrument with intricate rhythmic patterns</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>150+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#tabla-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Carnatic Music Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Vidwan Suresh">
-                    <div class="teacher-info">
-                        <h3>Vidwan Suresh</h3>
-                        <p>Carnatic Music Master</p>
-                        <div class="teacher-stats">
-                            <span>🎓 20+ Years Experience</span>
-                            <span>👥 800+ Students</span>
+        <!-- Featured Instructors Section -->
+        <section class="featured-instructors">
+            <div class="instructors-container">
+                <h2>Meet Our Expert Instructors</h2>
+                <div class="instructors-grid">
+                    <!-- Instructor 1 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Ustad Rahim Khan">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Ustad Rahim Khan</h3>
+                            <p class="instructor-specialty">Hindustani Classical Expert</p>
+                            <p class="instructor-bio">Award-winning vocalist with 25+ years of teaching experience</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>500+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="rahim-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 2 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Vidwan Suresh">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Vidwan Suresh</h3>
+                            <p class="instructor-specialty">Carnatic Music Master</p>
+                            <p class="instructor-bio">Professional Carnatic vocalist and composer</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>300+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="suresh-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 3 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Pandit Rajesh">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Pandit Rajesh</h3>
+                            <p class="instructor-specialty">Tabla Virtuoso</p>
+                            <p class="instructor-bio">Renowned tabla player with film industry experience</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>400+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="rajesh-courses.html" class="view-courses-btn">View Courses</a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Tabla Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Pandit Rajesh">
-                    <div class="teacher-info">
-                        <h3>Pandit Rajesh</h3>
-                        <p>Tabla Virtuoso</p>
-                        <div class="teacher-stats">
-                            <span>🎓 15+ Years Experience</span>
-                            <span>👥 600+ Students</span>
+        <!-- Course Listings Section -->
+        <section class="course-listings">
+            <div class="courses-container">
+                <h2>Popular Music Courses</h2>
+                <div class="courses-grid">
+                    <!-- Course 1 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Hindustani Vocal Basics">
+                            <div class="course-level">Beginner</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Hindustani Vocal Basics</h3>
+                            <p>Learn fundamental ragas and vocal techniques</p>
+                            <div class="course-stats">
+                                <span>👥 200+ Students</span>
+                                <span>⭐ 4.8</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Carnatic Vocal">
+                            <div class="course-level">Intermediate</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Carnatic Vocal</h3>
+                            <p>Master complex compositions and rhythmic patterns</p>
+                            <div class="course-stats">
+                                <span>👥 150+ Students</span>
+                                <span>⭐ 4.7</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Tabla Fundamentals">
+                            <div class="course-level">All Levels</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Tabla Fundamentals</h3>
+                            <p>Learn basic bols and rhythmic compositions</p>
+                            <div class="course-stats">
+                                <span>👥 180+ Students</span>
+                                <span>⭐ 4.9</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Music Forms -->
-        <section class="music-forms">
-            <h2>Explore Music Forms</h2>
-            <div class="forms-grid">
-                <!-- Hindustani Classical -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Hindustani Classical">
-                    <h3>Hindustani Classical</h3>
-                    <p>North Indian classical music featuring ragas and talas.</p>
-                    <button class="explore-btn">Explore Classes</button>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RhythmConnect</h3>
+                    <p>Your gateway to musical excellence</p>
                 </div>
-
-                <!-- Carnatic Music -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Carnatic Music">
-                    <h3>Carnatic Music</h3>
-                    <p>South Indian classical music with complex rhythmic patterns.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Tabla -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Tabla">
-                    <h3>Tabla</h3>
-                    <p>Indian percussion instrument with intricate rhythmic patterns.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Sitar -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Sitar">
-                    <h3>Sitar</h3>
-                    <p>String instrument known for its distinctive sound in Indian classical music.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Flute -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Flute">
-                    <h3>Flute</h3>
-                    <p>Wind instrument with a rich tradition in Indian classical music.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Contemporary -->
-                <div class="form-card">
-                    <img src="https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Contemporary">
-                    <h3>Contemporary</h3>
-                    <p>Modern music styles combining traditional and contemporary elements.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Student Success Stories -->
-        <section class="success-stories">
-            <h2>Student Success Stories</h2>
-            <div class="stories-grid">
-                <div class="story-card">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Student">
-                    <div class="story-content">
-                        <p>"Started with basic tabla lessons, now performing with professional musicians!"</p>
-                        <h4>Arjun Mehta</h4>
-                        <span>Tabla Student</span>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Music Styles</h4>
+                        <a href="#">Hindustani</a>
+                        <a href="#">Carnatic</a>
+                        <a href="#">Tabla</a>
                     </div>
-                </div>
-
-                <div class="story-card">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Student">
-                    <div class="story-content">
-                        <p>"The structured learning approach helped me master Carnatic vocal techniques."</p>
-                        <h4>Priya Iyer</h4>
-                        <span>Carnatic Vocal Student</span>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Class Schedule</a>
+                        <a href="#">Instructors</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Contact</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Community</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </footer>
     </div>
 
     <script>

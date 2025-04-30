@@ -6,158 +6,848 @@
     <title>Yoga Courses - RhythmConnect</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .page-header {
+            position: relative;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .header-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: rgba(109,40,217,0.08);
+            color: var(--primary-purple);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .share-button {
+            background: rgba(109,40,217,0.08);
+            color: var(--primary-purple);
+        }
+
+        .share-button:hover {
+            background: rgba(109,40,217,0.12);
+        }
+
+        .bookmark-button {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+
+        .bookmark-button:hover {
+            background: var(--primary-blue);
+        }
+
+        .class-card {
+            background: #fff;
+            border-radius: 32px;
+            box-shadow: 0 8px 32px rgba(109,40,217,0.12);
+            width: 100%;
+            max-width: 1200px;
+            min-height: 80vh;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 0;
+        }
+
+        .class-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            grid-column: 1 / -1;
+        }
+
+        .thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .thumbnail-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(0,0,0,0.2) 0%,
+                rgba(0,0,0,0.6) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            color: #fff;
+        }
+
+        .thumbnail-badge {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            background: var(--accent-gold);
+            color: #222;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 2;
+        }
+
+        .thumbnail-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .thumbnail-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .thumbnail-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .class-main {
+            padding: 2.5rem 2.5rem 2.5rem 0;
+        }
+
+        .class-sidebar {
+            padding: 2.5rem 0 2.5rem 2.5rem;
+        }
+
+        .class-header {
+            margin-bottom: 1rem;
+        }
+
+        .class-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .teacher-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .teacher-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .class-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            padding: 1rem;
+            background: rgba(109,40,217,0.04);
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+
+        .detail-item:hover {
+            transform: translateY(-2px);
+            background: rgba(109,40,217,0.08);
+        }
+
+        .class-description {
+            background: rgba(109,40,217,0.04);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .description-title {
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.3rem;
+        }
+
+        .description-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .description-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .description-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--primary-purple);
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+
+        .class-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(109,40,217,0.1);
+        }
+
+        .enrollment-status {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .join-button {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            color: #fff;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(109,40,217,0.3);
+        }
+
+        .class-sidebar {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue));
+            border-radius: 24px;
+            padding: 2rem;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .sidebar-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .sidebar-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 0;
+            font-size: 1rem;
+            line-height: 1.4;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .sidebar-features li:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .sidebar-features li i {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .sidebar-features li span {
+            flex: 1;
+        }
+
+        .sidebar-section {
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.9);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Dark mode overrides */
+        [data-theme="dark"] .class-card {
+            background: rgba(31,41,55,0.95);
+            box-shadow: 0 8px 32px rgba(59,130,246,0.12);
+        }
+
+        [data-theme="dark"] .class-title {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .class-description {
+            background: rgba(59,130,246,0.08);
+        }
+
+        [data-theme="dark"] .description-title {
+            color: #fff;
+        }
+
+        [data-theme="dark"] .detail-item {
+            background: rgba(59,130,246,0.08);
+        }
+
+        [data-theme="dark"] .detail-item:hover {
+            background: rgba(59,130,246,0.12);
+        }
+
+        [data-theme="dark"] .join-button {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+        }
+
+        @media (max-width: 1024px) {
+            .class-card {
+                grid-template-columns: 1fr;
+                padding: 2rem;
+            }
+
+            .class-sidebar {
+                display: none;
+            }
+
+            .class-main, .class-sidebar {
+                padding: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header {
+                padding: 3rem 1rem;
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.2rem;
+                padding: 0 1rem;
+            }
+
+            .class-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+
+            .class-title {
+                font-size: 2rem;
+            }
+
+            .class-details {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-item {
+                font-size: 1rem;
+            }
+
+            .class-thumbnail {
+                height: 250px;
+            }
+
+            .thumbnail-title {
+                font-size: 2rem;
+            }
+
+            .thumbnail-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .class-main, .class-sidebar {
+                padding: 1.5rem;
+            }
+        }
+
+        .header-content {
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+    </style>
 </head>
 <body>
     <div class="app">
-        <!-- Theme Toggle -->
-        <button class="theme-toggle" aria-label="Toggle dark mode">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-            </svg>
-        </button>
-
         <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-content">
                 <div class="logo">RhythmConnect</div>
-                <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="student-explore.html">Student Portal</a>
-                    <a href="login.html">Login</a>
+                <div class="nav-center">
+                    <div class="nav-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search yoga styles or instructors..." class="search-input">
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <a href="index.html" style="margin-right: 1rem; font-size: 1.2rem;">🏠</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <a href="login.html" class="get-started-btn">Sign In</a>
                 </div>
             </div>
         </nav>
 
-        <!-- Yoga Hero Section -->
-        <section class="yoga-hero">
-            <div class="hero-content">
-                <h1>Discover Inner Peace</h1>
-                <p class="subtitle">From traditional Indian yoga to modern practices, find your path to wellness</p>
+        <!-- Page Header with Animation -->
+        <header class="page-header">
+            <div class="pipe-flow">
+                <div class="pipe pipe-horizontal pipe-1">
+                    <div class="flowing-circle circle-purple" style="animation-delay: 0s;"></div>
+                    <div class="flowing-circle circle-blue" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-horizontal pipe-2">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -1s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-3">
+                    <div class="flowing-circle circle-gold" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-4">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
             </div>
-        </section>
+            <div class="header-text">
+                <h1 class="page-title">Discover Inner Peace</h1>
+                <p class="page-subtitle">Explore various yoga styles and learn from expert instructors</p>
+            </div>
+        </header>
 
-        <!-- Featured Teachers -->
-        <section class="featured-teachers">
-            <h2>Meet Our Expert Instructors</h2>
-            <div class="teacher-grid">
-                <!-- Hatha Yoga Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Swami Anand">
-                    <div class="teacher-info">
-                        <h3>Swami Anand</h3>
-                        <p>Hatha Yoga Master</p>
-                        <div class="teacher-stats">
-                            <span>🎓 30+ Years Experience</span>
-                            <span>👥 2000+ Students</span>
+        <!-- Yoga Categories Section -->
+        <section class="dance-categories">
+            <div class="categories-container">
+                <h2>Yoga Categories</h2>
+                <div class="categories-grid">
+                    <!-- Hatha Yoga -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Hatha Yoga">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🧘‍♀️</div>
+                            <h3>Hatha Yoga</h3>
+                            <p>Traditional yoga practice focusing on physical postures and breathing techniques</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>250+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#hatha-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Ashtanga Yoga -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Ashtanga Yoga">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🧘‍♂️</div>
+                            <h3>Ashtanga Yoga</h3>
+                            <p>Dynamic and physically demanding practice with synchronized breathing</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>180+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#ashtanga-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Meditation -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Meditation">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🕉️</div>
+                            <h3>Meditation</h3>
+                            <p>Ancient practice for mental clarity, focus, and inner peace</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>200+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#meditation-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Ashtanga Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Guru Raj">
-                    <div class="teacher-info">
-                        <h3>Guru Raj</h3>
-                        <p>Ashtanga Yoga Expert</p>
-                        <div class="teacher-stats">
-                            <span>🎓 25+ Years Experience</span>
-                            <span>👥 1500+ Students</span>
+        <!-- Featured Instructors Section -->
+        <section class="featured-instructors">
+            <div class="instructors-container">
+                <h2>Meet Our Expert Instructors</h2>
+                <div class="instructors-grid">
+                    <!-- Instructor 1 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Sarah Smith">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Sarah Smith</h3>
+                            <p class="instructor-specialty">Hatha Yoga Expert</p>
+                            <p class="instructor-bio">Certified yoga instructor with 15+ years of teaching experience</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>500+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="sarah-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 2 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Raj Kumar">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Raj Kumar</h3>
+                            <p class="instructor-specialty">Ashtanga Yoga</p>
+                            <p class="instructor-bio">Professional yoga practitioner and meditation expert</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>300+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="raj-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 3 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Priya Sharma">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Priya Sharma</h3>
+                            <p class="instructor-specialty">Meditation Specialist</p>
+                            <p class="instructor-bio">Mindfulness expert with background in traditional practices</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>400+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="priya-courses.html" class="view-courses-btn">View Courses</a>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Kundalini Teacher -->
-                <div class="teacher-card">
-                    <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" alt="Mataji Priya">
-                    <div class="teacher-info">
-                        <h3>Mataji Priya</h3>
-                        <p>Kundalini Yoga Specialist</p>
-                        <div class="teacher-stats">
-                            <span>🎓 20+ Years Experience</span>
-                            <span>👥 1200+ Students</span>
+        <!-- Course Listings Section -->
+        <section class="course-listings">
+            <div class="courses-container">
+                <h2>Popular Yoga Courses</h2>
+                <div class="courses-grid">
+                    <!-- Course 1 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Hatha Yoga Basics">
+                            <div class="course-level">Beginner</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Hatha Yoga Basics</h3>
+                            <p>Learn fundamental yoga postures and breathing techniques</p>
+                            <div class="course-stats">
+                                <span>👥 200+ Students</span>
+                                <span>⭐ 4.8</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Ashtanga Flow">
+                            <div class="course-level">Intermediate</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Ashtanga Flow</h3>
+                            <p>Master dynamic sequences and synchronized breathing</p>
+                            <div class="course-stats">
+                                <span>👥 150+ Students</span>
+                                <span>⭐ 4.7</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Mindful Meditation">
+                            <div class="course-level">All Levels</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Mindful Meditation</h3>
+                            <p>Develop focus and inner peace through guided meditation</p>
+                            <div class="course-stats">
+                                <span>👥 180+ Students</span>
+                                <span>⭐ 4.9</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Yoga Styles -->
-        <section class="yoga-styles">
-            <h2>Explore Yoga Styles</h2>
-            <div class="styles-grid">
-                <!-- Hatha Yoga -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Hatha Yoga">
-                    <h3>Hatha Yoga</h3>
-                    <p>Traditional yoga practice focusing on physical postures and breathing techniques.</p>
-                    <button class="explore-btn">Explore Classes</button>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RhythmConnect</h3>
+                    <p>Your gateway to wellness and mindfulness</p>
                 </div>
-
-                <!-- Ashtanga Yoga -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Ashtanga Yoga">
-                    <h3>Ashtanga Yoga</h3>
-                    <p>Dynamic and physically demanding practice with synchronized breathing.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Kundalini Yoga -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Kundalini Yoga">
-                    <h3>Kundalini Yoga</h3>
-                    <p>Spiritual practice focusing on awakening energy through meditation and movement.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Iyengar Yoga -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Iyengar Yoga">
-                    <h3>Iyengar Yoga</h3>
-                    <p>Precision-focused practice with emphasis on alignment and props.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Vinyasa Yoga -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Vinyasa Yoga">
-                    <h3>Vinyasa Yoga</h3>
-                    <p>Flowing practice linking breath with movement in a dynamic sequence.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-
-                <!-- Meditation -->
-                <div class="style-card">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80" alt="Meditation">
-                    <h3>Meditation</h3>
-                    <p>Ancient practice for mental clarity, focus, and inner peace.</p>
-                    <button class="explore-btn">Explore Classes</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Student Success Stories -->
-        <section class="success-stories">
-            <h2>Student Success Stories</h2>
-            <div class="stories-grid">
-                <div class="story-card">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Student">
-                    <div class="story-content">
-                        <p>"Started with basic Hatha yoga, now teaching advanced classes!"</p>
-                        <h4>Deepika Sharma</h4>
-                        <span>Hatha Yoga Student</span>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Yoga Styles</h4>
+                        <a href="#">Hatha</a>
+                        <a href="#">Ashtanga</a>
+                        <a href="#">Meditation</a>
                     </div>
-                </div>
-
-                <div class="story-card">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="Student">
-                    <div class="story-content">
-                        <p>"The meditation techniques helped me find balance in my busy life."</p>
-                        <h4>Rahul Verma</h4>
-                        <span>Meditation Student</span>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Class Schedule</a>
+                        <a href="#">Instructors</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Contact</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Community</a>
                     </div>
                 </div>
             </div>
-        </section>
+        </footer>
     </div>
 
     <script>
