@@ -417,6 +417,7 @@
             <nav class="sidebar-nav">
                 <a class="sidebar-link active" id="nav-dashboard"><span>🏠</span> Dashboard</a>
                 <a class="sidebar-link" id="nav-courses"><span>📚</span> My Courses</a>
+                <a class="sidebar-link" id="nav-live" href="liveclass.html"><span>🔴</span> Live Classes</a>
                 <a class="sidebar-link" id="nav-profile"><span>👤</span> Profile</a>
                 <a class="sidebar-link" id="nav-notifications"><span>🔔</span> Notifications</a>
                 <a class="sidebar-link logout" id="nav-logout"><span>🚪</span> Logout</a>
@@ -481,6 +482,13 @@
                     </div>
                 </div>
             </section>
+            <!-- Live Classes Section -->
+            <section class="live-section" id="live-section" style="display:none;">
+                <div class="profile-title">Live Classes</div>
+                <div style="padding:2rem; text-align:center; color:#6d28d9; font-size:1.2rem;">
+                    No live classes at the moment. Check back soon!
+                </div>
+            </section>
             <!-- Profile Section -->
             <section class="profile-section beautiful-profile" id="profile-section">
                 <div class="profile-card">
@@ -509,21 +517,30 @@
         const navDashboard = document.getElementById('nav-dashboard');
         const navProfile = document.getElementById('nav-profile');
         const navCourses = document.getElementById('nav-courses');
+        const navLive = document.getElementById('nav-live');
         const dashboardSection = document.getElementById('dashboard-section');
         const profileSection = document.getElementById('profile-section');
         const coursesSection = document.getElementById('courses-section');
+        const liveSection = document.getElementById('live-section');
 
         function showSection(section) {
             dashboardSection.classList.remove('active');
             profileSection.classList.remove('active');
             coursesSection.classList.remove('active');
+            liveSection.style.display = 'none';
             section.classList.add('active');
+            if(section === liveSection) {
+                liveSection.style.display = 'block';
+            } else {
+                liveSection.style.display = 'none';
+            }
         }
 
         navDashboard.addEventListener('click', () => {
             navDashboard.classList.add('active');
             navProfile.classList.remove('active');
             navCourses.classList.remove('active');
+            navLive.classList.remove('active');
             showSection(dashboardSection);
         });
 
@@ -531,6 +548,7 @@
             navProfile.classList.add('active');
             navDashboard.classList.remove('active');
             navCourses.classList.remove('active');
+            navLive.classList.remove('active');
             showSection(profileSection);
         });
 
@@ -538,7 +556,16 @@
             navCourses.classList.add('active');
             navDashboard.classList.remove('active');
             navProfile.classList.remove('active');
+            navLive.classList.remove('active');
             showSection(coursesSection);
+        });
+
+        navLive.addEventListener('click', () => {
+            navLive.classList.add('active');
+            navDashboard.classList.remove('active');
+            navProfile.classList.remove('active');
+            navCourses.classList.remove('active');
+            showSection(liveSection);
         });
 
         // Video upload preview for courses

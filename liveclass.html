@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kalapathshala Live Class</title>
+  <script src="https://cdn.agora.io/sdk/web/AgoraRTC_N.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-purple: #6d28d9;
+      --primary-blue: #2563eb;
+      --accent-gold: #d4a017;
+      --bg-primary: #f5f7fa;
+      --text-primary: #222;
+      --text-secondary: #666;
+      --shadow-sm: 0 2px 8px rgba(109,40,217,0.07);
+      --shadow-md: 0 4px 16px rgba(109,40,217,0.10);
+      /* Adding new color variables */
+      --text-light: #fff;
+      --text-dark: #1a1a1a;
+      --bg-card: #fff;
+      --bg-input: #fff;
+      --border-color: rgba(109,40,217,0.2);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-primary);
+      /* Animated gradient background */
+      background: linear-gradient(120deg, var(--primary-purple) 0%, var(--primary-blue) 100%);
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Floating bubbles for vibrancy */
+    .bubble-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      background: linear-gradient(135deg, var(--primary-purple), var(--primary-blue), var(--accent-gold));
+      filter: blur(2px);
+      animation: floatBubble 16s linear infinite;
+    }
+    .bubble.b1 { left: 10vw; top: 80vh; width: 80px; height: 80px; animation-delay: 0s; }
+    .bubble.b2 { left: 70vw; top: 60vh; width: 120px; height: 120px; animation-delay: 3s; }
+    .bubble.b3 { left: 50vw; top: 90vh; width: 60px; height: 60px; animation-delay: 6s; }
+    .bubble.b4 { left: 80vw; top: 30vh; width: 100px; height: 100px; animation-delay: 8s; }
+    @keyframes floatBubble {
+      0% { transform: translateY(0) scale(1); opacity: 0.18; }
+      50% { opacity: 0.25; }
+      100% { transform: translateY(-100vh) scale(1.2); opacity: 0.10; }
+    }
+    .app {
+      width: 100%;
+      max-width: 1200px;
+      padding: 2rem;
+      z-index: 1;
+      position: relative;
+      color: var(--text-light);
+    }
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    #status {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.15);
+      color: var(--text-light);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .controls-container {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    button {
+      background: var(--primary-purple);
+      color: var(--text-light);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    button:hover {
+      background: var(--primary-blue);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    #username {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.2s;
+      background: var(--bg-input);
+      color: var(--text-primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    #username:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px rgba(212,160,23,0.2);
+    }
+    #username::placeholder {
+      color: rgba(34,34,34,0.5);
+    }
+    .video-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      margin: 1.5rem 0;
+      align-items: start;
+    }
+    .video-area {
+      position: relative;
+      background: #000;
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent-gold);
+      color: #222;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 0 2px 8px rgba(212,160,23,0.10);
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.2s;
+    }
+    .fullscreen-btn:hover {
+      background: var(--primary-purple);
+      color: #fff;
+    }
+    #local-player, #remote-player {
+      background: #000;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      box-shadow: none;
+      overflow: hidden;
+    }
+    #chat-box {
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-top: 1.5rem;
+      box-shadow: var(--shadow-md);
+      overflow-y: auto;
+      font-size: 0.95rem;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #user-count {
+      font-size: 1rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      padding: 0.8rem 1.2rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    canvas {
+      display: none;
+    }
+    /* Dark mode styles */
+    [data-theme="dark"] {
+      --bg-primary: #181c24;
+      --text-primary: #fff;
+      --text-secondary: #b3b3b3;
+      --bg-card: #23263a;
+      --bg-input: #2a2d3d;
+      --border-color: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="dark"] body {
+      background: linear-gradient(120deg, #1a1c2a 0%, #2d3748 100%);
+    }
+
+    [data-theme="dark"] .app {
+      color: var(--text-light);
+    }
+
+    [data-theme="dark"] #username {
+      background: var(--bg-input);
+      color: var(--text-light);
+      border-color: var(--border-color);
+    }
+
+    [data-theme="dark"] #username::placeholder {
+      color: rgba(255,255,255,0.5);
+    }
+
+    [data-theme="dark"] #chat-box {
+      background: var(--bg-card);
+      color: var(--text-light);
+      border-color: var(--border-color);
+    }
+
+    [data-theme="dark"] button {
+      background: var(--primary-blue);
+    }
+
+    [data-theme="dark"] button:hover {
+      background: var(--primary-purple);
+    }
+
+    [data-theme="dark"] .fullscreen-btn {
+      background: var(--accent-gold);
+      color: var(--text-dark);
+    }
+
+    [data-theme="dark"] .fullscreen-btn:hover {
+      background: var(--primary-purple);
+      color: var(--text-light);
+    }
+
+    [data-theme="dark"] #status,
+    [data-theme="dark"] #user-count,
+    [data-theme="dark"] .controls-container {
+      background: rgba(255,255,255,0.05);
+    }
+
+    /* Add theme toggle button styles */
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-gold);
+      color: var(--text-dark);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      z-index: 100;
+      padding: 0;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+      background: var(--primary-purple);
+      color: var(--text-light);
+    }
+
+    @media (max-width: 900px) {
+      .app { padding: 1rem; }
+      .video-container { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      h2 { font-size: 1.8rem; }
+      .controls-container { 
+        flex-direction: column;
+        gap: 0.7rem;
+        padding: 0.8rem;
+      }
+      .video-area { aspect-ratio: 16/10; }
+      button { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">🌙</button>
+  <div class="bubble-bg">
+    <div class="bubble b1"></div>
+    <div class="bubble b2"></div>
+    <div class="bubble b3"></div>
+    <div class="bubble b4"></div>
+  </div>
+  <div class="app">
+    <h2>🎥 Kalapathshala Live Class</h2>
+    <p id="status" style="color: gray;">🟢 Idle</p>
+    <p id="user-count">Participants: 0</p>
+    <input type="text" id="username" placeholder="Enter your name" style="padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 10px;">
+    <div class="controls-container">
+      <button onclick="startClass()">Start Class</button>
+      <button onclick="leaveClass()">Leave Class</button>
+      <button onclick="toggleAudio()" id="audioBtn">Mute</button>
+      <button onclick="toggleVideo()" id="videoBtn">Video Off</button>
+      <button onclick="sendChat()">Send Message</button>
+      <button onclick="takeSnapshot()">📸 Take Snapshot</button>
+    </div>
+    <div class="video-container">
+      <div class="video-area" id="video-area">
+        <button class="fullscreen-btn" id="fullscreen-area-btn" title="Full Screen">⛶</button>
+        <div id="local-player"></div>
+      </div>
+      <div class="video-area">
+        <div id="remote-player"></div>
+      </div>
+    </div>
+    <div id="chat-box"></div>
+    <canvas id="snapshot-canvas" width="640" height="360"></canvas>
+  </div>
+
+  <script>
+    const APP_ID = "a0158b3e50534b34bf1d940528de3e47";
+    const CHANNEL = "kalapathshala-class";
+    let client;
+    let localTracks = [];
+    let audioMuted = false;
+    let videoMuted = false;
+    let startTime, timerInterval;
+    let userCount = 0;
+
+    function updateTimer() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+      const secs = (elapsed % 60).toString().padStart(2, '0');
+      document.getElementById("status").innerText = `🔴 Live | Duration: ${mins}:${secs}`;
+      document.getElementById("status").style.color = 'red';
+    }
+
+    function updateUserCount(change) {
+      userCount += change;
+      document.getElementById("user-count").innerText = `Participants: ${userCount}`;
+    }
+
+    async function startClass() {
+      const username = document.getElementById("username").value || "Anonymous";
+      try {
+        client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+        await client.join(APP_ID, CHANNEL, null, null);
+
+        localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+        localTracks[1].play("local-player");
+        await client.publish(localTracks);
+
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+        updateUserCount(1);
+        addChatMessage(`🔔 ${username} joined the class.`);
+
+        client.on("user-published", async (user, mediaType) => {
+          await client.subscribe(user, mediaType);
+          if (mediaType === "video") {
+            user.videoTrack.play("remote-player");
+            updateUserCount(1);
+            addChatMessage(`👤 A new participant joined.`);
+          }
+        });
+
+        client.on("user-unpublished", (user) => {
+          updateUserCount(-1);
+          addChatMessage(`👋 A participant left.`);
+        });
+
+      } catch (err) {
+        alert("Failed to start class: " + err.message);
+      }
+    }
+
+    async function leaveClass() {
+      for (let track of localTracks) {
+        track.stop();
+        track.close();
+      }
+      await client.leave();
+      document.getElementById("local-player").innerHTML = "";
+      document.getElementById("remote-player").innerHTML = "";
+      document.getElementById("status").innerText = "🟢 Idle";
+      document.getElementById("status").style.color = 'gray';
+      clearInterval(timerInterval);
+      updateUserCount(-1);
+      addChatMessage("❌ You left the class.");
+    }
+
+    function toggleAudio() {
+      if (!localTracks[0]) return;
+      audioMuted = !audioMuted;
+      localTracks[0].setEnabled(!audioMuted);
+      document.getElementById("audioBtn").innerText = audioMuted ? "Unmute" : "Mute";
+    }
+
+    function toggleVideo() {
+      if (!localTracks[1]) return;
+      videoMuted = !videoMuted;
+      localTracks[1].setEnabled(!videoMuted);
+      document.getElementById("videoBtn").innerText = videoMuted ? "Video On" : "Video Off";
+    }
+
+    function sendChat() {
+      const username = document.getElementById("username").value || "You";
+      const message = prompt("Type your message:");
+      if (message) {
+        addChatMessage(`${username}: ${message}`);
+      }
+    }
+
+    function addChatMessage(msg) {
+      const chatBox = document.getElementById("chat-box");
+      const div = document.createElement("div");
+      div.innerText = msg;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function takeSnapshot() {
+      const canvas = document.getElementById("snapshot-canvas");
+      const ctx = canvas.getContext('2d');
+      const video = document.querySelector('video');
+      if (video) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "snapshot.png";
+        link.click();
+      }
+    }
+
+    // Full screen for video area
+    document.getElementById('fullscreen-area-btn').addEventListener('click', function() {
+      const area = document.getElementById('video-area');
+      if (area.requestFullscreen) area.requestFullscreen();
+      else if (area.webkitRequestFullscreen) area.webkitRequestFullscreen();
+      else if (area.msRequestFullscreen) area.msRequestFullscreen();
+    });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    function setTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('theme', theme);
+      themeToggle.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+    }
+
+    // Initialize theme
+    setTheme(savedTheme);
+
+    // Theme toggle click handler
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      setTheme(newTheme);
+    });
+  </script>
+
+</body>
+</html>
