@@ -307,6 +307,9 @@
         const chatForm = document.getElementById('chat-form');
         const chatInput = document.getElementById('chat-input');
         const chatArea = document.getElementById('chat-area');
+        // Only allow 'You' to send messages; disable input for others (single-user demo)
+        // Optionally, you can hide the input bar for non-user roles if needed
+        // For now, always allow input (since this is a single-user demo)
         chatForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const msg = chatInput.value.trim();

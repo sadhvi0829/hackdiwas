@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate Management | RhythmConnect</title>
+  <style>
+    body {
+      background: #f5f7fa;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 2rem 0;
+    }
+    .cert-table-container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(109,40,217,0.10);
+      padding: 2rem 2rem 1.5rem 2rem;
+      max-width: 700px;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+    th, td {
+      padding: 1rem 0.7rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      font-size: 1.08rem;
+    }
+    th {
+      color: #6d28d9;
+      font-weight: 700;
+      font-size: 1.1rem;
+      background: #f5f7fa;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .action-btn {
+      background: #6d28d9;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 0.5rem;
+      transition: background 0.2s;
+    }
+    .action-btn.delete {
+      background: #ff6b6b;
+    }
+    .action-btn:hover {
+      background: #2563eb;
+    }
+    .action-btn.delete:hover {
+      background: #d32f2f;
+    }
+    .add-row-btn {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1.08rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.2s;
+      display: block;
+      margin-left: auto;
+    }
+    .add-row-btn:hover {
+      background: #6d28d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="cert-table-container">
+    <table id="cert-table">
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Course Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Certificate rows will be added here -->
+      </tbody>
+    </table>
+    <button class="add-row-btn" id="add-row-btn">Add Certificate</button>
+  </div>
+  <script>
+    const tableBody = document.querySelector('#cert-table tbody');
+    const addRowBtn = document.getElementById('add-row-btn');
+
+    function createRow(student = '', course = '') {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" value="${student}" placeholder="Student Name" style="width: 95%; padding: 0.4rem; border-radius: 6px; border: 1px solid #ddd;"></td>
+        <td><input type="text" value="${course}" placeholder="Course Name" style="width: 95%; padding: 0.4rem; border-radius: 6px; border: 1px solid #ddd;"></td>
+        <td>
+          <button class="action-btn">Add Certificate</button>
+          <button class="action-btn delete">Delete</button>
+        </td>
+      `;
+      tr.querySelector('.action-btn.delete').onclick = () => tr.remove();
+      tr.querySelector('.action-btn').onclick = () => alert('Certificate added for ' + tr.querySelector('td input').value);
+      tableBody.appendChild(tr);
+    }
+
+    addRowBtn.onclick = () => createRow();
+
+    // Add an initial empty row
+    createRow();
+  </script>
+</body>
+</html> 

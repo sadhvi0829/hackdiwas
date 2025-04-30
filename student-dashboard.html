@@ -86,64 +86,16 @@
             flex-direction: column;
             min-height: 100vh;
             background: transparent;
-        }
-        .topbar {
-            display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 2rem 2.5rem 1.2rem 2.5rem;
-            background: transparent;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background: #fff;
-            border-radius: 999px;
-            box-shadow: 0 2px 12px rgba(109,40,217,0.07);
-            padding: 0.5rem 1.2rem;
-            min-width: 320px;
-            gap: 0.7rem;
-        }
-        .search-bar input {
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            background: transparent;
-            color: var(--text-primary);
-            width: 100%;
-        }
-        .theme-toggle {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            margin-right: 1.2rem;
-            cursor: pointer;
-            color: var(--primary-purple);
-            transition: color 0.2s;
-        }
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .topbar-btn {
-            background: var(--primary-purple);
-            color: #fff;
-            border: none;
-            border-radius: 999px;
-            padding: 0.7rem 1.7rem;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-left: 0.5rem;
-            transition: background 0.2s;
-        }
-        .topbar-btn:hover {
-            background: var(--primary-blue);
+            justify-content: flex-start;
+            padding-top: 3rem;
         }
         .dashboard-section,
         .courses-section,
         .profile-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             display: none;
         }
         .dashboard-section.active,
@@ -465,24 +417,12 @@
             <nav class="sidebar-nav">
                 <a class="sidebar-link active" id="nav-dashboard"><span>🏠</span> Dashboard</a>
                 <a class="sidebar-link" id="nav-courses"><span>📚</span> My Courses</a>
-                <a class="sidebar-link" id="nav-create-class"><span>➕</span> Create Class</a>
                 <a class="sidebar-link" id="nav-profile"><span>👤</span> Profile</a>
                 <a class="sidebar-link" id="nav-notifications"><span>🔔</span> Notifications</a>
                 <a class="sidebar-link logout" id="nav-logout"><span>🚪</span> Logout</a>
             </nav>
         </aside>
         <main class="main-content">
-            <div class="topbar">
-                <div class="search-bar">
-                    <span>🔍</span>
-                    <input type="text" placeholder="Search courses or activities...">
-                </div>
-                <div class="topbar-actions">
-                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
-                    <button class="topbar-btn">Dashboard</button>
-                    <button class="topbar-btn">Logout</button>
-                </div>
-            </div>
             <!-- Dashboard Section -->
             <section class="dashboard-section active" id="dashboard-section">
                 <div class="welcome">Welcome, <span id="student-name">Student</span> 👋</div>
@@ -507,140 +447,6 @@
                         <li><span class="activity-icon">👨‍🎓</span> 4 students enrolled in <b>"React for Beginners"</b></li>
                         <li><span class="activity-icon">🆕</span> You published a new course <b>"Python DSA"</b></li>
                     </ul>
-                </div>
-            </section>
-            <!-- Create Class Section -->
-            <section id="create-class-section" class="dashboard-section">
-                <div class="registration-container">
-                    <div class="registration-card">
-                        <div class="registration-header">
-                            <h1>Create a New Class</h1>
-                            <p>Share your expertise and inspire students!</p>
-                        </div>
-                        <form class="registration-form" autocomplete="off">
-                            <!-- Class Information -->
-                            <h3>Class Information</h3>
-                            <div class="form-group">
-                                <label for="class-title">Class Title</label>
-                                <input type="text" id="class-title" name="class-title" required placeholder="e.g., Beginner Hip-Hop">
-                            </div>
-                            <div class="form-group">
-                                <label for="skill-category">Skill Category</label>
-                                <select id="skill-category" name="skill-category" required>
-                                    <option value="">Select Category</option>
-                                    <option>Dance</option>
-                                    <option>Singing</option>
-                                    <option>Music</option>
-                                    <option>Yoga</option>
-                                    <option>Art</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="skill-level">Skill Level</label>
-                                <select id="skill-level" name="skill-level" required>
-                                    <option value="">Select Level</option>
-                                    <option>Beginner</option>
-                                    <option>Intermediate</option>
-                                    <option>Advanced</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">Detailed Description</label>
-                                <textarea id="description" name="description" rows="3" required placeholder="What will students learn?"></textarea>
-                            </div>
-                            <!-- Class Scheduling -->
-                            <h3>Class Scheduling</h3>
-                            <div class="form-group">
-                                <label for="class-date">Class Date</label>
-                                <input type="date" id="class-date" name="class-date" required>
-                            </div>
-                            <div class="form-group" style="display:flex; gap:1rem;">
-                                <div style="flex:1;">
-                                    <label for="start-time">Start Time</label>
-                                    <input type="time" id="start-time" name="start-time" required>
-                                </div>
-                                <div style="flex:1;">
-                                    <label for="end-time">End Time</label>
-                                    <input type="time" id="end-time" name="end-time" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="duration">Duration (minutes)</label>
-                                <input type="number" id="duration" name="duration" min="1" placeholder="Auto or manual">
-                            </div>
-                            <div class="form-group">
-                                <label>Is this a recurring class?</label>
-                                <div style="display:flex; gap:1.2rem;">
-                                    <label><input type="radio" name="recurring" value="none" checked> No</label>
-                                    <label><input type="radio" name="recurring" value="daily"> Daily</label>
-                                    <label><input type="radio" name="recurring" value="weekly"> Weekly</label>
-                                    <label><input type="radio" name="recurring" value="custom"> Custom</label>
-                                </div>
-                            </div>
-                            <!-- Platform Settings -->
-                            <h3>Platform Settings</h3>
-                            <div class="form-group">
-                                <label><input type="checkbox" checked disabled> Live Class on Platform</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="demo-video">Upload Demo/Intro Video (optional)</label>
-                                <input type="file" id="demo-video" name="demo-video" accept="video/*">
-                            </div>
-                            <!-- Enrollment Settings -->
-                            <h3>Enrollment Settings</h3>
-                            <div class="form-group">
-                                <label for="max-students">Max No. of Students Allowed</label>
-                                <input type="number" id="max-students" name="max-students" min="1" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="enroll-deadline">Enrollment Deadline</label>
-                                <input type="date" id="enroll-deadline" name="enroll-deadline" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Trial Class Available?</label>
-                                <label><input type="radio" name="trial" value="yes"> Yes</label>
-                                <label><input type="radio" name="trial" value="no" checked> No</label>
-                            </div>
-                            <div class="form-group">
-                                <label for="fee">Fee per Student</label>
-                                <input type="text" id="fee" name="fee" placeholder="₹ or $">
-                            </div>
-                            <!-- Student Engagement -->
-                            <h3>Student Engagement</h3>
-                            <div class="form-group">
-                                <label for="materials">Materials Provided? (Upload)</label>
-                                <input type="file" id="materials" name="materials" multiple accept=".pdf,image/*,video/*">
-                            </div>
-                            <div class="form-group">
-                                <label for="bring">What should students bring?</label>
-                                <input type="text" id="bring" name="bring" placeholder="e.g., Water bottle, notebook">
-                            </div>
-                            <div class="form-group">
-                                <label>Feedback Allowed from Students?</label>
-                                <label><input type="radio" name="feedback" value="yes" checked> Yes</label>
-                                <label><input type="radio" name="feedback" value="no"> No</label>
-                            </div>
-                            <!-- Community Features -->
-                            <h3>Community Features</h3>
-                            <div class="form-group">
-                                <label>Enable Class Discussion Board / Chat?</label>
-                                <label><input type="radio" name="discussion" value="yes" checked> Yes</label>
-                                <label><input type="radio" name="discussion" value="no"> No</label>
-                            </div>
-                            <!-- After-Class Follow-up -->
-                            <h3>After-Class Follow-up</h3>
-                            <div class="form-group">
-                                <label>View Student Enrollments</label>
-                                <input type="checkbox" checked disabled>
-                            </div>
-                            <div class="form-group">
-                                <label>Give Feedback to Students</label>
-                                <input type="checkbox" checked disabled>
-                            </div>
-                            <button type="submit" class="register-btn" style="margin-top:1.5rem;">Create Class</button>
-                        </form>
-                    </div>
                 </div>
             </section>
             <!-- My Courses Section -->
@@ -685,7 +491,7 @@
                     </div>
                     <form class="profile-form" id="profile-form">
                         <div class="input-group">
-                            <label for="profile-name"><span class="input-icon">👤</span> Name</label><br>
+                            <label for="profile-name"><span class="input-icon">��</span> Name</label><br>
                             <input type="text" id="profile-name" value="Student">
                         </div>
                         <div class="input-group">
@@ -703,17 +509,14 @@
         const navDashboard = document.getElementById('nav-dashboard');
         const navProfile = document.getElementById('nav-profile');
         const navCourses = document.getElementById('nav-courses');
-        const navCreateClass = document.getElementById('nav-create-class');
         const dashboardSection = document.getElementById('dashboard-section');
         const profileSection = document.getElementById('profile-section');
         const coursesSection = document.getElementById('courses-section');
-        const createClassSection = document.getElementById('create-class-section');
 
         function showSection(section) {
             dashboardSection.classList.remove('active');
             profileSection.classList.remove('active');
             coursesSection.classList.remove('active');
-            createClassSection.classList.remove('active');
             section.classList.add('active');
         }
 
@@ -721,7 +524,6 @@
             navDashboard.classList.add('active');
             navProfile.classList.remove('active');
             navCourses.classList.remove('active');
-            navCreateClass.classList.remove('active');
             showSection(dashboardSection);
         });
 
@@ -729,7 +531,6 @@
             navProfile.classList.add('active');
             navDashboard.classList.remove('active');
             navCourses.classList.remove('active');
-            navCreateClass.classList.remove('active');
             showSection(profileSection);
         });
 
@@ -737,17 +538,9 @@
             navCourses.classList.add('active');
             navDashboard.classList.remove('active');
             navProfile.classList.remove('active');
-            navCreateClass.classList.remove('active');
             showSection(coursesSection);
         });
 
-        navCreateClass.addEventListener('click', () => {
-            navCreateClass.classList.add('active');
-            navDashboard.classList.remove('active');
-            navProfile.classList.remove('active');
-            navCourses.classList.remove('active');
-            showSection(createClassSection);
-        });
         // Video upload preview for courses
         function setupVideoUpload(inputId, previewId) {
             const input = document.getElementById(inputId);

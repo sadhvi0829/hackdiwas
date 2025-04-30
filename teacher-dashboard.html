@@ -487,6 +487,104 @@
             box-sizing: border-box;
             resize: vertical;
         }
+        .certificates-section {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .certificates-section.active {
+            display: block;
+        }
+        .cert-table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 32px rgba(109,40,217,0.10);
+            padding: 2rem;
+            width: 100%;
+        }
+        #cert-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        #cert-table th, #cert-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        #cert-table th {
+            color: #6d28d9;
+            font-weight: 700;
+            background: #f5f7fa;
+        }
+        .action-btn {
+            background: #6d28d9;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: background 0.2s;
+        }
+        .action-btn.delete {
+            background: #ff6b6b;
+        }
+        .action-btn:hover {
+            background: #2563eb;
+        }
+        .action-btn.delete:hover {
+            background: #d32f2f;
+        }
+        .add-row-btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1.5rem;
+            font-size: 1.08rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.2s;
+            display: block;
+            margin-left: auto;
+        }
+        .add-row-btn:hover {
+            background: #6d28d9;
+        }
+        [data-theme="dark"] .cert-table-container {
+            background: #23263a;
+            box-shadow: 0 4px 32px rgba(59,130,246,0.10);
+        }
+        [data-theme="dark"] #cert-table th {
+            background: #181c24;
+            color: #ffe082;
+        }
+        [data-theme="dark"] #cert-table td {
+            border-bottom-color: #2d3748;
+        }
+        [data-theme="dark"] .action-btn {
+            background: #2563eb;
+        }
+        [data-theme="dark"] .action-btn:hover {
+            background: #6d28d9;
+        }
+        [data-theme="dark"] .action-btn.delete {
+            background: #ff6b6b;
+        }
+        [data-theme="dark"] .action-btn.delete:hover {
+            background: #d32f2f;
+        }
+        [data-theme="dark"] .add-row-btn {
+            background: #6d28d9;
+        }
+        [data-theme="dark"] .add-row-btn:hover {
+            background: #2563eb;
+        }
     </style>
 </head>
 <body>
@@ -499,6 +597,7 @@
                 <a class="sidebar-link" id="nav-create-course"><span>➕</span> Create Course</a>
                 <a class="sidebar-link" id="nav-profile"><span>👤</span> Profile</a>
                 <a class="sidebar-link" id="nav-notifications"><span>🔔</span> Notifications</a>
+                <a class="sidebar-link" id="nav-certificates"><span>📄</span> Certificates</a>
                 <a class="sidebar-link logout" id="nav-logout"><span>🚪</span> Logout</a>
             </nav>
         </aside>
@@ -577,6 +676,40 @@
                         <div class="input-group">
                             <label for="profile-email"><span class="input-icon">✉️</span> Email</label><br>
                             <input type="email" id="profile-email" value="student@email.com">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-qualification"><span class="input-icon">🎓</span> Education Qualification</label><br>
+                            <input type="text" id="profile-qualification" placeholder="e.g. B.Sc, M.A, etc.">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-adhar"><span class="input-icon">#</span> Aadhaar Number</label><br>
+                            <input type="text" id="profile-adhar" maxlength="12" placeholder="Enter Aadhaar Number">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-mobile"><span class="input-icon">📱</span> Mobile Number</label><br>
+                            <input type="text" id="profile-mobile" maxlength="10" placeholder="Enter Mobile Number">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-resume"><span class="input-icon">📄</span> Upload Resume</label><br>
+                            <input type="file" id="profile-resume" accept="application/pdf,.doc,.docx">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-edu-level"><span class="input-icon">🏫</span> Education Level</label><br>
+                            <select id="profile-edu-level">
+                                <option value="">Select Level</option>
+                                <option value="10th">10th</option>
+                                <option value="12th">12th</option>
+                                <option value="graduate">Graduate</option>
+                                <option value="postgraduate">Post Graduate</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-marksheet"><span class="input-icon">📝</span> Upload Marksheet</label><br>
+                            <input type="file" id="profile-marksheet" accept="application/pdf,image/*">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-degree"><span class="input-icon">🎓</span> Upload Degree</label><br>
+                            <input type="file" id="profile-degree" accept="application/pdf,image/*">
                         </div>
                         <button type="submit" class="save-btn">💾 Save Changes</button>
                     </form>
@@ -714,6 +847,24 @@
                     </form>
                 </div>
             </section>
+            <!-- Certificates Section -->
+            <section class="certificates-section" id="certificates-section">
+                <div class="cert-table-container">
+                    <table id="cert-table">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Course Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Certificate rows will be added here -->
+                        </tbody>
+                    </table>
+                    <button class="add-row-btn" id="add-row-btn">Add Certificate</button>
+                </div>
+            </section>
         </main>
     </div>
     <script>
@@ -722,15 +873,19 @@
         const navProfile = document.getElementById('nav-profile');
         const navCourses = document.getElementById('nav-courses');
         const navCreateCourse = document.getElementById('nav-create-course');
+        const navCertificates = document.getElementById('nav-certificates');
+        const navNotifications = document.getElementById('nav-notifications');
         const dashboardSection = document.getElementById('dashboard-section');
         const profileSection = document.getElementById('profile-section');
         const coursesSection = document.getElementById('courses-section');
         const createCourseSection = document.getElementById('create-course-section');
+        const certificatesSection = document.getElementById('certificates-section');
         function showSection(section) {
             dashboardSection.classList.remove('active');
             profileSection.classList.remove('active');
             coursesSection.classList.remove('active');
             createCourseSection.classList.remove('active');
+            certificatesSection.classList.remove('active');
             section.classList.add('active');
         }
         navDashboard.addEventListener('click', () => {
@@ -738,6 +893,7 @@
             navProfile.classList.remove('active');
             navCourses.classList.remove('active');
             navCreateCourse.classList.remove('active');
+            navCertificates.classList.remove('active');
             showSection(dashboardSection);
         });
         navProfile.addEventListener('click', () => {
@@ -745,6 +901,7 @@
             navDashboard.classList.remove('active');
             navCourses.classList.remove('active');
             navCreateCourse.classList.remove('active');
+            navCertificates.classList.remove('active');
             showSection(profileSection);
         });
         navCourses.addEventListener('click', () => {
@@ -752,6 +909,7 @@
             navDashboard.classList.remove('active');
             navProfile.classList.remove('active');
             navCreateCourse.classList.remove('active');
+            navCertificates.classList.remove('active');
             showSection(coursesSection);
         });
         navCreateCourse.addEventListener('click', () => {
@@ -759,7 +917,17 @@
             navDashboard.classList.remove('active');
             navProfile.classList.remove('active');
             navCourses.classList.remove('active');
+            navCertificates.classList.remove('active');
             showSection(createCourseSection);
+        });
+        navCertificates.addEventListener('click', () => {
+            navCertificates.classList.add('active');
+            navDashboard.classList.remove('active');
+            navProfile.classList.remove('active');
+            navCourses.classList.remove('active');
+            navCreateCourse.classList.remove('active');
+            navNotifications.classList.remove('active');
+            showSection(certificatesSection);
         });
         // Video upload preview for courses
         function setupVideoUpload(inputId, previewId) {
@@ -814,6 +982,36 @@
             alert('Profile updated!');
             navDashboard.click();
         });
+        // Certificate table logic
+        const tableBody = document.querySelector('#cert-table tbody');
+        const addRowBtn = document.getElementById('add-row-btn');
+        function createRow(student = '', course = '') {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" value="${student}" placeholder="Student Name" style="width: 95%; padding: 0.4rem; border-radius: 6px; border: 1px solid #ddd;"></td>
+                <td><input type="text" value="${course}" placeholder="Course Name" style="width: 95%; padding: 0.4rem; border-radius: 6px; border: 1px solid #ddd;"></td>
+                <td>
+                    <button class="action-btn add">Add Certificate</button>
+                    <button class="action-btn create">Create Certificate</button>
+                    <button class="action-btn delete">Delete Certificate</button>
+                </td>
+            `;
+            tr.querySelector('.action-btn.add').onclick = () => {
+                const studentName = tr.querySelector('td input').value;
+                const courseName = tr.querySelectorAll('td input')[1].value;
+                alert('Certificate added for ' + studentName + ' in ' + courseName);
+            };
+            tr.querySelector('.action-btn.create').onclick = () => {
+                const studentName = tr.querySelector('td input').value;
+                const courseName = tr.querySelectorAll('td input')[1].value;
+                alert('Create certificate for ' + studentName + ' in ' + courseName);
+            };
+            tr.querySelector('.action-btn.delete').onclick = () => tr.remove();
+            tableBody.appendChild(tr);
+        }
+        addRowBtn.onclick = () => createRow();
+        // Add an initial empty row
+        createRow();
     </script>
 </body>
 </html> 
