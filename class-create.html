@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Class Creation – RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">KalaPathshala</div>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Class Creation Section -->
+        <section class="registration-section">
+            <div class="floating-shapes">
+                <div class="shape shape-1"></div>
+                <div class="shape shape-2"></div>
+                <div class="shape shape-3"></div>
+                <div class="shape shape-4"></div>
+            </div>
+            <div class="registration-container">
+                <div class="registration-card">
+                    <div class="registration-header">
+                        <h1>Create a New Class</h1>
+                        <p>Share your expertise and inspire students!</p>
+                    </div>
+                    <form class="registration-form" autocomplete="off">
+                        <!-- Class Information -->
+                        <h3>Class Information</h3>
+                        <div class="form-group">
+                            <label for="class-title">Class Title</label>
+                            <input type="text" id="class-title" name="class-title" required placeholder="e.g., Beginner Hip-Hop">
+                        </div>
+                        <div class="form-group">
+                            <label for="skill-category">Skill Category</label>
+                            <select id="skill-category" name="skill-category" required>
+                                <option value="">Select Category</option>
+                                <option>Dance</option>
+                                <option>Singing</option>
+                                <option>Music</option>
+                                <option>Yoga</option>
+                                <option>Art</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="skill-level">Skill Level</label>
+                            <select id="skill-level" name="skill-level" required>
+                                <option value="">Select Level</option>
+                                <option>Beginner</option>
+                                <option>Intermediate</option>
+                                <option>Advanced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Detailed Description</label>
+                            <textarea id="description" name="description" rows="3" required placeholder="What will students learn?"></textarea>
+                        </div>
+                        <!-- Class Scheduling -->
+                        <h3>Class Scheduling</h3>
+                        <div class="form-group">
+                            <label for="class-date">Class Date</label>
+                            <input type="date" id="class-date" name="class-date" required>
+                        </div>
+                        <div class="form-group" style="display:flex; gap:1rem;">
+                            <div style="flex:1;">
+                                <label for="start-time">Start Time</label>
+                                <input type="time" id="start-time" name="start-time" required>
+                            </div>
+                            <div style="flex:1;">
+                                <label for="end-time">End Time</label>
+                                <input type="time" id="end-time" name="end-time" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Duration (minutes)</label>
+                            <input type="number" id="duration" name="duration" min="1" placeholder="Auto or manual">
+                        </div>
+                        <div class="form-group">
+                            <label>Is this a recurring class?</label>
+                            <div style="display:flex; gap:1.2rem;">
+                                <label><input type="radio" name="recurring" value="none" checked> No</label>
+                                <label><input type="radio" name="recurring" value="daily"> Daily</label>
+                                <label><input type="radio" name="recurring" value="weekly"> Weekly</label>
+                                <label><input type="radio" name="recurring" value="custom"> Custom</label>
+                            </div>
+                        </div>
+                        <!-- Platform Settings -->
+                        <h3>Platform Settings</h3>
+                        <div class="form-group">
+                            <label><input type="checkbox" checked disabled> Live Class on Platform</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="demo-video">Upload Demo/Intro Video (optional)</label>
+                            <input type="file" id="demo-video" name="demo-video" accept="video/*">
+                        </div>
+                        <!-- Enrollment Settings -->
+                        <h3>Enrollment Settings</h3>
+                        <div class="form-group">
+                            <label for="max-students">Max No. of Students Allowed</label>
+                            <input type="number" id="max-students" name="max-students" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="enroll-deadline">Enrollment Deadline</label>
+                            <input type="date" id="enroll-deadline" name="enroll-deadline" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Trial Class Available?</label>
+                            <label><input type="radio" name="trial" value="yes"> Yes</label>
+                            <label><input type="radio" name="trial" value="no" checked> No</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="fee">Fee per Student</label>
+                            <input type="text" id="fee" name="fee" placeholder="₹ or $">
+                        </div>
+                        <!-- Student Engagement -->
+                        <h3>Student Engagement</h3>
+                        <div class="form-group">
+                            <label for="materials">Materials Provided? (Upload)</label>
+                            <input type="file" id="materials" name="materials" multiple accept=".pdf,image/*,video/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="bring">What should students bring?</label>
+                            <input type="text" id="bring" name="bring" placeholder="e.g., Water bottle, notebook">
+                        </div>
+                        <div class="form-group">
+                            <label>Feedback Allowed from Students?</label>
+                            <label><input type="radio" name="feedback" value="yes" checked> Yes</label>
+                            <label><input type="radio" name="feedback" value="no"> No</label>
+                        </div>
+                        <!-- Community Features -->
+                        <h3>Community Features</h3>
+                        <div class="form-group">
+                            <label>Enable Class Discussion Board / Chat?</label>
+                            <label><input type="radio" name="discussion" value="yes" checked> Yes</label>
+                            <label><input type="radio" name="discussion" value="no"> No</label>
+                        </div>
+                        <!-- After-Class Follow-up -->
+                        <h3>After-Class Follow-up</h3>
+                        <div class="form-group">
+                            <label>View Student Enrollments</label>
+                            <input type="checkbox" checked disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Give Feedback to Students</label>
+                            <input type="checkbox" checked disabled>
+                        </div>
+                        <button type="submit" class="register-btn" style="margin-top:1.5rem;">Create Class</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('svg');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                `;
+            } else {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

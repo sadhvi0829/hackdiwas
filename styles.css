@@ -3437,3 +3437,1025 @@ body {
         font-size: 0.875rem;
     }
 }
+
+/* Dance Courses Page Styles */
+.dance-categories {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+}
+
+.categories-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.categories-container h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.category-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 1px solid var(--glass-border);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.category-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.05);
+}
+
+.category-content {
+    padding: 1.5rem;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.category-title {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.category-description {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.category-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.stat-icon {
+    color: var(--primary-purple);
+}
+
+/* Featured Instructors Section */
+.featured-instructors {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.instructors-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.instructors-container h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+}
+
+.instructors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.instructor-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 1px solid var(--glass-border);
+}
+
+.instructor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.instructor-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.instructor-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.instructor-card:hover .instructor-image img {
+    transform: scale(1.05);
+}
+
+.instructor-content {
+    padding: 1.5rem;
+}
+
+.instructor-content h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.instructor-specialty {
+    color: var(--primary-purple);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.instructor-bio {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+.instructor-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.view-courses-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: var(--primary-purple);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.view-courses-btn:hover {
+    background: var(--primary-blue);
+    transform: translateY(-2px);
+}
+
+/* Course Listings Section */
+.course-listings {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+}
+
+.courses-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.courses-container h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.course-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    border: 1px solid var(--glass-border);
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.course-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.course-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.course-card:hover .course-image img {
+    transform: scale(1.05);
+}
+
+.course-level {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-purple);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+}
+
+.course-content {
+    padding: 1.5rem;
+}
+
+.course-content h3 {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.course-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.course-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.enroll-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--primary-purple);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.enroll-btn:hover {
+    background: var(--primary-blue);
+    transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dance-categories,
+    .featured-instructors,
+    .course-listings {
+        padding: 3rem 1rem;
+    }
+
+    .categories-container h2,
+    .instructors-container h2,
+    .courses-container h2 {
+        font-size: 2rem;
+    }
+
+    .categories-grid,
+    .instructors-grid,
+    .courses-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .category-image,
+    .instructor-image,
+    .course-image {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dance-categories,
+    .featured-instructors,
+    .course-listings {
+        padding: 2rem 1rem;
+    }
+
+    .categories-container h2,
+    .instructors-container h2,
+    .courses-container h2 {
+        font-size: 1.75rem;
+    }
+
+    .category-content,
+    .instructor-content,
+    .course-content {
+        padding: 1rem;
+    }
+}
+
+/* Instructor Profile Page Styles */
+.instructor-header {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.instructor-profile {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--primary-purple);
+    box-shadow: var(--shadow-lg);
+}
+
+.profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-content h1 {
+    font-size: 3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.specialty {
+    font-size: 1.5rem;
+    color: var(--primary-purple);
+    margin-bottom: 1.5rem;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 2rem;
+}
+
+/* About Section */
+.about-section {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+.about-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.achievements {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.achievements h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.achievements ul {
+    list-style: none;
+    padding: 0;
+}
+
+.achievements li {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.achievements li::before {
+    content: '•';
+    color: var(--primary-purple);
+    position: absolute;
+    left: 0;
+}
+
+/* Video Section */
+.video-section {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+}
+
+.video-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.video-container video {
+    width: 100%;
+    display: block;
+}
+
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.control-btn:hover {
+    transform: scale(1.1);
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background: var(--primary-purple);
+    width: 0;
+    transition: width 0.1s linear;
+}
+
+/* Course Details Section */
+.course-details {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.details-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.detail-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.detail-card h3 {
+    color: var(--primary-purple);
+    margin-bottom: 1rem;
+}
+
+.detail-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Benefits Section */
+.benefits-section {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+}
+
+.benefits-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefits-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.benefit-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.benefit-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Trial Section */
+.trial-section {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.trial-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.trial-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.trial-container > p {
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+}
+
+.trial-schedule {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.schedule-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.schedule-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.schedule-card h3 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.schedule-card p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.book-btn {
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.book-btn:hover {
+    background: var(--primary-blue);
+    transform: translateY(-2px);
+}
+
+/* Reviews Section */
+.reviews-section {
+    padding: 4rem 2rem;
+    background: var(--bg-primary);
+}
+
+.reviews-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.reviews-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.review-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.review-info h4 {
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.rating {
+    color: var(--accent-gold);
+}
+
+.review-text {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .instructor-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .instructor-header,
+    .about-section,
+    .video-section,
+    .course-details,
+    .benefits-section,
+    .trial-section,
+    .reviews-section {
+        padding: 3rem 1rem;
+    }
+
+    .profile-content h1 {
+        font-size: 2.5rem;
+    }
+
+    .specialty {
+        font-size: 1.25rem;
+    }
+
+    .about-container h2,
+    .details-container h2,
+    .benefits-container h2,
+    .trial-container h2,
+    .reviews-container h2 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .instructor-header,
+    .about-section,
+    .video-section,
+    .course-details,
+    .benefits-section,
+    .trial-section,
+    .reviews-section {
+        padding: 2rem 1rem;
+    }
+
+    .profile-content h1 {
+        font-size: 2rem;
+    }
+
+    .specialty {
+        font-size: 1.1rem;
+    }
+
+    .profile-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .about-container h2,
+    .details-container h2,
+    .benefits-container h2,
+    .trial-container h2,
+    .reviews-container h2 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Course Curriculum Section */
+.curriculum-section {
+    padding: 4rem 2rem;
+    background: var(--bg-secondary);
+}
+
+.curriculum-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.curriculum-container h2 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.module-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.module-header {
+    background: var(--primary-purple);
+    color: white;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.module-header h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.module-duration {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+}
+
+.module-content {
+    padding: 1.5rem;
+}
+
+.module-content h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.module-content ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
+}
+
+.module-content li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.module-content li::before {
+    content: '•';
+    color: var(--primary-purple);
+    position: absolute;
+    left: 0;
+}
+
+.module-resources {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.module-resources h4 {
+    color: var(--primary-purple);
+    margin-bottom: 0.75rem;
+}
+
+/* Course Requirements */
+.course-requirements {
+    margin-top: 4rem;
+}
+
+.course-requirements h3 {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.requirements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.requirement-card {
+    background: var(--card-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.3s ease;
+}
+
+.requirement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.requirement-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.requirement-card h4 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.requirement-card ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.requirement-card li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.requirement-card li::before {
+    content: '•';
+    color: var(--primary-purple);
+    position: absolute;
+    left: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .curriculum-section {
+        padding: 3rem 1rem;
+    }
+
+    .curriculum-container h2,
+    .course-requirements h3 {
+        font-size: 2rem;
+    }
+
+    .module-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .module-content h4 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .curriculum-section {
+        padding: 2rem 1rem;
+    }
+
+    .curriculum-container h2,
+    .course-requirements h3 {
+        font-size: 1.75rem;
+    }
+
+    .module-header {
+        padding: 1rem;
+    }
+
+    .module-content {
+        padding: 1rem;
+    }
+
+    .requirement-card {
+        padding: 1.5rem;
+    }
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Courses - RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">KalaPathshala</div>
+                <div class="nav-center">
+                    <div class="nav-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search dance styles or instructors..." class="search-input">
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <a href="index.html" style="margin-right: 1rem; font-size: 1.2rem;">🏠</a>
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <a href="login.html" class="get-started-btn">Sign In</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Page Header with Animation -->
+        <header class="page-header">
+            <div class="pipe-flow">
+                <div class="pipe pipe-horizontal pipe-1">
+                    <div class="flowing-circle circle-purple" style="animation-delay: 0s;"></div>
+                    <div class="flowing-circle circle-blue" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-horizontal pipe-2">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -1s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-3">
+                    <div class="flowing-circle circle-gold" style="animation-delay: -2s;"></div>
+                    <div class="flowing-circle circle-purple" style="animation-delay: -4s;"></div>
+                </div>
+                <div class="pipe pipe-vertical pipe-4">
+                    <div class="flowing-circle circle-blue" style="animation-delay: -3s;"></div>
+                    <div class="flowing-circle circle-gold" style="animation-delay: -5s;"></div>
+                </div>
+            </div>
+            <h1 class="page-title">Discover the Art of Dance</h1>
+            <p class="page-subtitle">Explore various dance forms and learn from expert instructors</p>
+        </header>
+
+        <!-- Dance Categories Section -->
+        <section class="dance-categories">
+            <div class="categories-container">
+                <h2>Dance Categories</h2>
+                <div class="categories-grid">
+                    <!-- Classical Dance -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Classical Dance">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">💃</div>
+                            <h3>Classical Dance</h3>
+                            <p>Learn traditional dance forms like Kathak, Bharatanatyam, and Odissi</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>200+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#classical-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Contemporary Dance -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80" alt="Contemporary Dance">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🕺</div>
+                            <h3>Contemporary Dance</h3>
+                            <p>Express yourself through modern dance techniques and choreography</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>150+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.7 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#contemporary-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+
+                    <!-- Bollywood Dance -->
+                    <div class="category-card">
+                        <div class="category-image">
+                            <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Bollywood Dance">
+                        </div>
+                        <div class="category-content">
+                            <div class="category-icon">🎬</div>
+                            <h3>Bollywood Dance</h3>
+                            <p>Master the vibrant and energetic dance style from Indian cinema</p>
+                            <div class="category-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>180+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="#bollywood-courses" class="explore-btn">Explore Courses <span class="arrow">→</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Instructors Section -->
+        <section class="featured-instructors">
+            <div class="instructors-container">
+                <h2>Meet Our Expert Instructors</h2>
+                <div class="instructors-grid">
+                    <!-- Instructor 1 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="radhika.jpeg" alt="Priya Sharma">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Radhika </h3>
+                            <p class="instructor-specialty">Kathak Expert</p>
+                            <p class="instructor-bio">Award-winning Kathak dancer with 15+ years of teaching experience</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>500+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="priya-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 2 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="dharmik.jpeg" alt="Rahul Verma">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Dharmic Samani</h3>
+                            <p class="instructor-specialty">Hip Hop Dance</p>
+                            <p class="instructor-bio">Professional contemporary dancer and choreographer</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>300+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.8 Rating</span>
+                                </div>
+                            </div>
+                            <a href="rahul-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+
+                    <!-- Instructor 3 -->
+                    <div class="instructor-card">
+                        <div class="instructor-image">
+                            <img src="sonali.jpeg" alt="sonali">
+                        </div>
+                        <div class="instructor-content">
+                            <h3>Sonali Bhadurai</h3>
+                            <p class="instructor-specialty">Bollywood Dance</p>
+                            <p class="instructor-bio">Bollywood choreographer with film industry experience</p>
+                            <div class="instructor-stats">
+                                <div class="stat">
+                                    <span class="stat-icon">👥</span>
+                                    <span>400+ Students</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-icon">⭐</span>
+                                    <span>4.9 Rating</span>
+                                </div>
+                            </div>
+                            <a href="ananya-courses.html" class="view-courses-btn">View Courses</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Course Listings Section -->
+        <section class="course-listings">
+            <div class="courses-container">
+                <h2>Popular Dance Courses</h2>
+                <div class="courses-grid">
+                    <!-- Course 1 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1545128485-c400e7702796?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Kathak Basics">
+                            <div class="course-level">Beginner</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Kathak Basics</h3>
+                            <p>Learn the fundamentals of Kathak dance with expert guidance</p>
+                            <div class="course-stats">
+                                <span>👥 200+ Students</span>
+                                <span>⭐ 4.8</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80" alt="Contemporary Fusion">
+                            <div class="course-level">Intermediate</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Contemporary Fusion</h3>
+                            <p>Blend traditional and modern dance techniques</p>
+                            <div class="course-stats">
+                                <span>👥 150+ Students</span>
+                                <span>⭐ 4.7</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="https://images.unsplash.com/photo-1518834107812-67b0b7c58434?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Bollywood Beats">
+                            <div class="course-level">All Levels</div>
+                        </div>
+                        <div class="course-content">
+                            <h3>Bollywood Beats</h3>
+                            <p>Master popular Bollywood dance routines</p>
+                            <div class="course-stats">
+                                <span>👥 180+ Students</span>
+                                <span>⭐ 4.9</span>
+                            </div>
+                            <a href="#" class="enroll-btn">Enroll Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>RhythmConnect</h3>
+                    <p>Your gateway to artistic excellence</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Dance Styles</h4>
+                        <a href="#">Classical</a>
+                        <a href="#">Contemporary</a>
+                        <a href="#">Bollywood</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Class Schedule</a>
+                        <a href="#">Instructors</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Contact</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Community</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('svg');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                `;
+            } else {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for sidebar and player */
+        .course-app {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-primary);
+            position: relative;
+        }
+        .sidebar {
+            width: 320px;
+            background: var(--card-bg);
+            box-shadow: var(--shadow-md);
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s, width 0.3s;
+            z-index: 1002;
+            position: relative;
+        }
+        .sidebar-closed {
+            transform: translateX(-100%);
+            box-shadow: none;
+        }
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+            z-index: 1003;
+        }
+        .sidebar-open-btn {
+            position: static;
+            margin-right: 1rem;
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-open-btn.hide { display: none !important; }
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--primary-purple);
+            letter-spacing: 0.5px;
+        }
+        .sidebar-section {
+            margin-bottom: 1.5rem;
+        }
+        .sidebar-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+        }
+        .sidebar-section-title .arrow {
+            margin-left: auto;
+            transition: transform 0.2s;
+        }
+        .sidebar-section.collapsed .sidebar-section-title .arrow {
+            transform: rotate(-90deg);
+        }
+        .sidebar-items {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            transition: max-height 0.3s;
+        }
+        .sidebar-section.collapsed .sidebar-items {
+            max-height: 0;
+            overflow: hidden;
+        }
+        .sidebar-item {
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 0.98rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-item.active, .sidebar-item:hover {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+        @media (max-width: 900px) {
+            .sidebar { width: 220px; }
+        }
+        @media (max-width: 700px) {
+            .course-app { flex-direction: column; }
+            .sidebar {
+                width: 80vw;
+                max-width: 350px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                padding: 2rem 1.2rem 1.5rem 1.2rem;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.12);
+                background: var(--card-bg);
+            }
+            .sidebar-closed {
+                transform: translateX(-110%);
+            }
+            .sidebar-open-btn {
+                top: 16px;
+                left: 16px;
+            }
+            .player-main {
+                margin-left: 0 !important;
+            }
+        }
+        .player-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            transition: margin-left 0.3s cubic-bezier(.4,0,.2,1);
+            margin-left: 320px;
+        }
+        .sidebar-closed ~ .player-main {
+            margin-left: 0;
+        }
+        @media (max-width: 900px) {
+            .player-main { margin-left: 220px; }
+            .sidebar-closed ~ .player-main { margin-left: 0; }
+        }
+        @media (max-width: 700px) {
+            .player-main { margin-left: 0 !important; }
+        }
+        .player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2rem 1rem 2rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--shadow-color);
+        }
+        .player-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+        .video-player-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .video-player {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .video-player video {
+            width: 100%;
+            height: 480px;
+            background: #000;
+        }
+        @media (max-width: 700px) {
+            .video-player video { height: 220px; }
+            .video-player-section { padding: 1rem 0.2rem; }
+            .video-player { height: auto; }
+        }
+        .session-details {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem 2rem;
+        }
+        .dark-mode .sidebar, .dark-mode .player-header, .dark-mode .session-details, .dark-mode .video-player {
+            background: var(--card-bg);
+        }
+        .custom-controls-bar {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 0 0 16px 16px;
+        }
+        .custom-btn {
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: background 0.2s, transform 0.2s;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .custom-btn:hover, .custom-btn:focus {
+            background: var(--primary-blue);
+            transform: translateY(-2px) scale(1.05);
+        }
+        .custom-btn.small {
+            padding: 0.2rem 0.7rem;
+            font-size: 1.1rem;
+            border-radius: 50%;
+            min-width: 32px;
+            min-height: 32px;
+            justify-content: center;
+        }
+        .video-selection-panel {
+            display: none;
+            position: absolute;
+            left: 50%;
+            top: 60px;
+            transform: translateX(-50%);
+            width: 350px;
+            max-width: 90vw;
+            background: var(--card-bg);
+            box-shadow: var(--shadow-lg);
+            border-radius: 12px;
+            z-index: 20;
+            animation: fadeInUp 0.3s;
+        }
+        .video-selection-panel.open {
+            display: block;
+        }
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.2rem 0.5rem 1.2rem;
+            border-bottom: 1px solid var(--shadow-color);
+            font-weight: 600;
+            color: var(--primary-purple);
+        }
+        .video-list {
+            list-style: none;
+            margin: 0;
+            padding: 0.5rem 0 1rem 0;
+        }
+        .video-list-item {
+            padding: 0.7rem 1.2rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            border-radius: 8px;
+            margin: 0.2rem 0;
+            transition: background 0.2s, color 0.2s;
+        }
+        .video-list-item.active, .video-list-item:hover {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+        @media (max-width: 500px) {
+            .video-selection-panel {
+                width: 98vw;
+                left: 1vw;
+                transform: none;
+            }
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            gap: 2rem;
+            position: relative;
+        }
+        #navbar-logo.hide { display: none !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <button class="sidebar-open-btn" id="sidebar-open" title="Open sidebar">☰</button>
+            <div class="logo" id="navbar-logo">RhythmConnect</div>
+            <div class="nav-center">
+                <div class="nav-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" placeholder="Search courses..." class="search-input">
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="index.html" style="margin-right: 1rem; font-size: 1.2rem;">🏠</a>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <a href="login.html" class="get-started-btn">Sign In</a>
+            </div>
+        </div>
+    </nav>
+    <div class="course-app">
+        <aside class="sidebar" id="sidebar">
+            <button class="sidebar-toggle" id="sidebar-toggle" title="Collapse sidebar">☰</button>
+            <div class="sidebar-title">kathak traning(tal traning)</div>
+            <div class="sidebar-section" data-section>
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    1. Welcome laners! <span class="arrow">▼</span>
+                </div>
+                <ul class="sidebar-items">
+                    <li class="sidebar-item active">Welcome Video</li>
+                </ul>
+            </div>
+            <div class="sidebar-section" data-section>
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    2. Important! (Telegram Group) <span class="arrow">▼</span>
+                </div>
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">Join Group</li>
+                </ul>
+            </div>
+            <div class="sidebar-section" data-section>
+                <div class="sidebar-section-title" onclick="toggleSection(this)">
+                    3. Live Session <span class="arrow">▼</span>
+                </div>
+                <ul class="sidebar-items">
+                    <li class="sidebar-item">Bonus Session 1 (Orientation)</li>
+                    <li class="sidebar-item">Bonus Session 1 (Slides)</li>
+                    <li class="sidebar-item">Live Mentorship Session 1 (Linkedin)</li>
+                </ul>
+            </div>
+        </aside>
+        <main class="player-main" id="player-main">
+            <div class="player-header">
+                <div class="player-title">kathak traning(tal traning)</div>
+            </div>
+            <section class="video-player-section">
+                <div class="video-player" style="position:relative; margin: 0 auto;">
+                    <video id="main-video" controls poster="https://placehold.co/900x480/1E40AF/fff?text=kathak+traning">
+                        <source src="https://player.vimeo.com/external/371433846.sd.mp4?s=c27eecc69a27dbc4ff2b87d38afc35f1a9e7c02d&profile_id=164&oauth2_token_id=57447761" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="custom-controls-bar">
+                        <button id="select-video-btn" class="custom-btn">🎬 Select Video</button>
+                        <button id="fullscreen-btn" class="custom-btn">⛶</button>
+                        <button id="speed-btn" class="custom-btn">1x</button>
+                        <button id="next-btn" class="custom-btn">Next ▶</button>
+                    </div>
+                    <div id="video-selection-panel" class="video-selection-panel">
+                        <div class="panel-header">
+                            <span>Select a Video</span>
+                            <button id="close-panel-btn" class="custom-btn small">✕</button>
+                        </div>
+                        <ul class="video-list">
+                            <li class="video-list-item active">Bonus Session 1 (Orientation)</li>
+                            <li class="video-list-item">Bonus Session 1 (Slides)</li>
+                            <li class="video-list-item">Live Mentorship Session 1 (Linkedin)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="session-details">
+                    <h2>Bonus Session 1 (Orientation)</h2>
+                    <p>Duration: 1:42:40</p>
+                    <p>Welcome to the RhythmConnect! This orientation session will help you get started and introduce you to the course structure, resources, and community guidelines.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Sidebar slide open/close
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebarOpen = document.getElementById('sidebar-open');
+        const navbarLogo = document.getElementById('navbar-logo');
+        function closeSidebar() {
+            sidebar.classList.add('sidebar-closed');
+            sidebarOpen.classList.remove('hide');
+            navbarLogo.classList.remove('hide');
+        }
+        function openSidebar() {
+            sidebar.classList.remove('sidebar-closed');
+            sidebarOpen.classList.add('hide');
+            navbarLogo.classList.add('hide');
+        }
+        sidebarToggle.addEventListener('click', closeSidebar);
+        sidebarOpen.addEventListener('click', openSidebar);
+        // On load, sidebar open by default
+        openSidebar();
+        // On mobile, sidebar closed by default
+        function checkMobileSidebar() {
+            if (window.innerWidth <= 700) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+        window.addEventListener('resize', checkMobileSidebar);
+        checkMobileSidebar();
+        // Collapsible sections
+        function toggleSection(el) {
+            const section = el.parentElement;
+            section.classList.toggle('collapsed');
+        }
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('svg');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />`;
+            } else {
+                themeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />`;
+            }
+        }
+        // Custom video controls
+        const video = document.getElementById('main-video');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const speedBtn = document.getElementById('speed-btn');
+        const nextBtn = document.getElementById('next-btn');
+        fullscreenBtn.addEventListener('click', () => {
+            if (video.requestFullscreen) video.requestFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+            else if (video.msRequestFullscreen) video.msRequestFullscreen();
+        });
+        let is2x = false;
+        speedBtn.addEventListener('click', () => {
+            is2x = !is2x;
+            video.playbackRate = is2x ? 2.0 : 1.0;
+            speedBtn.textContent = is2x ? '2x' : '1x';
+        });
+        nextBtn.addEventListener('click', () => {
+            alert('Next video feature coming soon!');
+        });
+        // Video selection panel logic
+        const selectVideoBtn = document.getElementById('select-video-btn');
+        const videoPanel = document.getElementById('video-selection-panel');
+        const closePanelBtn = document.getElementById('close-panel-btn');
+        selectVideoBtn.addEventListener('click', () => {
+            videoPanel.classList.add('open');
+        });
+        closePanelBtn.addEventListener('click', () => {
+            videoPanel.classList.remove('open');
+        });
+        // Optional: clicking outside panel closes it
+        document.addEventListener('mousedown', (e) => {
+            if (videoPanel.classList.contains('open') && !videoPanel.contains(e.target) && e.target !== selectVideoBtn) {
+                videoPanel.classList.remove('open');
+            }
+        });
+    </script>
+</body>
+</html> 
