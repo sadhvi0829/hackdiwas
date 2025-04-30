@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | RhythmConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #6d28d9;
+            --primary-blue: #2563eb;
+            --accent-gold: #d4a017;
+            --bg-primary: #f5f7fa;
+            --bg-gradient: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+            --card-radius: 32px;
+            --shadow: 0 8px 32px rgba(109,40,217,0.18);
+            --text-primary: #222;
+            --text-secondary: #666;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #181c24;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        .animated-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            background: linear-gradient(120deg, #6d28d9, #2563eb, #a78bfa, #60a5fa, #d4a017);
+            background-size: 300% 300%;
+            animation: gradientMove 10s ease-in-out infinite;
+            filter: blur(0.5px) brightness(1.08);
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .payment-app {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+        .payment-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: var(--card-radius);
+            box-shadow: 0 12px 48px 0 rgba(109,40,217,0.18), 0 1.5px 8px 0 rgba(38,99,235,0.10);
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            color: #222;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            border: 2.5px solid #a78bfa;
+            transition: box-shadow 0.4s cubic-bezier(.4,2,.6,1), border 0.3s;
+        }
+        .payment-card:hover {
+            box-shadow: 0 24px 64px 0 rgba(109,40,217,0.22), 0 2.5px 16px 0 rgba(38,99,235,0.13);
+            border: 2.5px solid #2563eb;
+        }
+        .payment-title {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 1.2rem;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #6d28d9, #2563eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .amount-label {
+            font-size: 1.1rem;
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .amount-value {
+            font-size: 2.7rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            color: #6d28d9;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 12px #a78bfa33;
+            background: linear-gradient(90deg, #6d28d9, #2563eb, #d4a017);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .amount-input {
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            padding: 0.7rem 1.2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 220px;
+            text-align: center;
+            background: #fff;
+            color: var(--primary-purple);
+            box-shadow: 0 2px 8px rgba(109,40,217,0.10);
+        }
+        .proceed-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #6d28d9 0%, #2563eb 100%);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 1.1rem 0;
+            font-size: 1.25rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            box-shadow: 0 2px 16px rgba(109,40,217,0.13);
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .proceed-btn:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #6d28d9 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 32px rgba(38,99,235,0.18);
+        }
+        @media (max-width: 600px) {
+            .payment-card { padding: 1.5rem 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="payment-app">
+        <form class="payment-card" id="payment-form" autocomplete="off">
+            <div class="payment-title">Payment</div>
+            <div class="amount-label">Amount to Pay</div>
+            <div class="amount-value" id="amount-value">₹499</div>
+            <input type="hidden" id="amount" name="amount" value="499" />
+            <button type="submit" class="proceed-btn">Proceed to Pay</button>
+        </form>
+    </div>
+    <script>
+        // Theme toggle support (optional, if you want to add a button)
+        // Payment form interaction
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = document.getElementById('amount').value;
+            if (!amount || amount <= 0) {
+                alert('Invalid amount.');
+                return;
+            }
+            alert('Proceeding to payment of ₹' + amount + '...');
+            // Here you would integrate with a payment gateway
+        });
+    </script>
+</body>
+</html> 
