@@ -30,6 +30,9 @@
             font-size: 1.2rem;
             color: #6d28d9;
             margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
         .sidebar-section {
             margin-bottom: 1.5rem;
@@ -95,6 +98,28 @@
             font-weight: 700;
             color: #6d28d9;
             margin: 0 0 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .add-btn {
+            background: #6d28d9;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(109,40,217,0.15);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .add-btn:hover {
+            background: #2563eb;
+            transform: scale(1.05);
         }
         .video-player {
             width: 100%;
@@ -294,7 +319,10 @@
 <body>
     <div class="container">
         <aside class="sidebar">
-            <div class="sidebar-title">RhythmConnect</div>
+            <div class="sidebar-title">
+                RhythmConnect
+                <button id="add-btn" class="add-btn" title="Add new content">+</button>
+            </div>
             <div class="sidebar-section">
                 <div class="sidebar-section-title" onclick="toggleSidebarSection(this)">
                     <span>1. Welcome learners!</span>
@@ -324,7 +352,6 @@
                     <li class="sidebar-item">Live Mentorship Session 1 (Linkedin)</li>
                 </ul>
             </div>
-            <button id="sidebar-add-btn" title="Add" style="position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); background: #6d28d9; color: #fff; border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 2rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(109,40,217,0.15); cursor: pointer; transition: background 0.2s;">+</button>
         </aside>
         <main class="main">
             <div class="topbar">
@@ -458,8 +485,8 @@
         });
         // Load first video by default
         loadVideo(0);
-        document.getElementById('sidebar-add-btn').addEventListener('click', function() {
-            alert('Add new sidebar item!');
+        document.getElementById('add-btn').addEventListener('click', function() {
+            alert('Add new content!');
         });
     </script>
 </body>
