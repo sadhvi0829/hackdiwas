@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | RhythmConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #6d28d9;
+            --primary-blue: #2563eb;
+            --accent-gold: #d4a017;
+            --bg-primary: #f5f7fa;
+            --bg-gradient: linear-gradient(135deg, #6d28d9 0%, #2563eb 100%);
+            --sidebar-width: 250px;
+            --card-radius: 20px;
+            --shadow: 0 4px 24px rgba(109,40,217,0.10);
+            --text-primary: #222;
+            --text-secondary: #666;
+        }
+        [data-theme="dark"] {
+            --bg-primary: #181c24;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .dashboard-app {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-gradient);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
+            border-radius: 0 32px 32px 0;
+            box-shadow: var(--shadow);
+        }
+        .sidebar .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            letter-spacing: 1px;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            flex: 1;
+        }
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: #fff;
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            transition: background 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+        .sidebar-link.active, .sidebar-link:hover {
+            background: rgba(255,255,255,0.13);
+            color: #ffe082;
+        }
+        .sidebar-link.logout {
+            color: #ff6b6b;
+            margin-top: 2rem;
+        }
+        .sidebar-link.logout:hover {
+            background: rgba(255,107,107,0.13);
+            color: #fff;
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: transparent;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 3rem;
+        }
+        .dashboard-section,
+        .courses-section,
+        .profile-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: none;
+        }
+        .dashboard-section.active,
+        .courses-section.active,
+        .profile-section.active {
+            display: block;
+        }
+        .profile-section.active.beautiful-profile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+        .welcome {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            margin-top: 0.5rem;
+        }
+        .summary-cards {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+        .summary-card {
+            flex: 1;
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            color: #fff;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            min-width: 180px;
+        }
+        .summary-card .card-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.7rem;
+        }
+        .summary-card .card-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+        .recent-activity {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            color: #fff;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem 2rem;
+            margin-top: 1.5rem;
+        }
+        .recent-activity-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .activity-list li {
+            margin-bottom: 0.8rem;
+            font-size: 1.08rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        .activity-list li:last-child { margin-bottom: 0; }
+        .activity-icon { font-size: 1.1rem; }
+        /* Profile Section */
+        .profile-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .profile-image-upload {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e0e7ff;
+            border: 4px solid #fff;
+            box-shadow: 0 2px 12px rgba(109,40,217,0.10);
+        }
+        .profile-form label {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .profile-form input[type="text"],
+        .profile-form input[type="email"] {
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            font-size: 1.08rem;
+            background: #fff;
+            color: var(--text-primary);
+            outline: none;
+        }
+        .profile-form input[type="file"] {
+            font-size: 1rem;
+        }
+        .profile-form button {
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0.9rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            transition: background 0.2s;
+        }
+        .profile-form button:hover {
+            background: var(--primary-blue);
+        }
+        /* Responsive */
+        @media (max-width: 900px) {
+            .dashboard-app { flex-direction: column; }
+            .sidebar { flex-direction: row; width: 100vw; border-radius: 0 0 32px 32px; padding: 1.2rem; }
+            .main-content { padding-top: 0; }
+        }
+        @media (max-width: 700px) {
+            .sidebar { display: none; }
+            .main-content { padding: 0; }
+            .dashboard-section, .profile-section { padding: 1rem; }
+            .summary-cards { flex-direction: column; gap: 1rem; }
+        }
+        /* Dark mode overrides */
+        [data-theme="dark"] body {
+            background: var(--bg-primary);
+        }
+        [data-theme="dark"] .sidebar {
+            background: linear-gradient(135deg, #2563eb 0%, #6d28d9 100%);
+            color: #fff;
+        }
+        [data-theme="dark"] .main-content {
+            background: transparent;
+        }
+        [data-theme="dark"] .search-bar {
+            background: #23263a;
+            color: #fff;
+        }
+        [data-theme="dark"] .summary-card, [data-theme="dark"] .recent-activity {
+            background: linear-gradient(135deg, #312e81 0%, #1e3a8a 100%);
+            color: #fff;
+        }
+        [data-theme="dark"] .profile-form input[type="text"],
+        [data-theme="dark"] .profile-form input[type="email"] {
+            background: #23263a;
+            color: #fff;
+            border: 1px solid #374151;
+        }
+        /* My Courses Section */
+        .courses-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+        .course-card {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            color: #fff;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        .course-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .course-content {
+            padding: 1.5rem;
+        }
+        .course-info h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+        .course-info p {
+            margin: 0 0 1rem 0;
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+        .course-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .course-btn {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        .course-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .course-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #fff;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        /* Beautiful Profile Section */
+        .beautiful-profile {
+            min-height: 70vh;
+        }
+        .profile-card {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            border-radius: 32px;
+            box-shadow: 0 8px 32px rgba(109,40,217,0.12);
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            color: #fff;
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .profile-avatar-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #fff;
+            box-shadow: 0 2px 12px rgba(109,40,217,0.15);
+        }
+        .camera-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            color: #6d28d9;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 2px 8px rgba(109,40,217,0.10);
+            cursor: pointer;
+            border: 2px solid #a78bfa;
+        }
+        .profile-form {
+            width: 100%;
+        }
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        .input-icon {
+            margin-right: 0.5rem;
+        }
+        .profile-form input[type="text"],
+        .profile-form input[type="email"] {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.08rem;
+            background: #fff;
+            color: #222;
+            margin-top: 0.3rem;
+            box-shadow: 0 1px 4px rgba(109,40,217,0.07);
+        }
+        .save-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #6d28d9 0%, #2563eb 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            box-shadow: 0 2px 8px rgba(109,40,217,0.10);
+            transition: background 0.2s;
+        }
+        .save-btn:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #6d28d9 100%);
+        }
+        @media (max-width: 700px) {
+            .profile-card, .courses-section { padding: 1rem; }
+            .profile-card { max-width: 100%; }
+            .courses-list { gap: 1rem; }
+            .course-card { flex-direction: column; gap: 1rem; }
+        }
+        /* Assignments Section Styles */
+        .assignments-section {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: none;
+            padding: 2rem;
+        }
+
+        .assignments-section.active {
+            display: block;
+        }
+
+        .assignments-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .assignment-card {
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            color: #fff;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .assignment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .assignment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .assignment-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .assignment-due {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .assignment-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .assignment-content p {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .assignment-details {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .start-assignment-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .start-assignment-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .assignments-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-app">
+        <aside class="sidebar">
+            <div class="logo">RhythmConnect</div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link active" id="nav-dashboard"><span>🏠</span> Dashboard</a>
+                <a class="sidebar-link" id="nav-courses"><span>📚</span> My Courses</a>
+                <a class="sidebar-link" id="nav-assignments"><span>📝</span> Assignments</a>
+                <a class="sidebar-link" id="nav-live" href="liveclass.html"><span>🔴</span> Live Classes</a>
+                <a class="sidebar-link" id="nav-profile"><span>👤</span> Profile</a>
+                <a class="sidebar-link" id="nav-notifications"><span>🔔</span> Notifications</a>
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                <a class="sidebar-link logout" id="nav-logout"><span>🚪</span> Logout</a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section class="dashboard-section active" id="dashboard-section">
+                <div class="welcome">Welcome, <span id="student-name">Student</span> 👋</div>
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="card-label">Total Courses</div>
+                        <div class="card-value">1</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-label">Total Students</div>
+                        <div class="card-value">0</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="card-label">New Comments</div>
+                        <div class="card-value">12</div>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <div class="recent-activity-title"><span>📌</span> Recent Activity</div>
+                    <ul class="activity-list">
+                        <li><span class="activity-icon">💬</span> New comment on <b>"Java Basics"</b></li>
+                        <li><span class="activity-icon">👨‍🎓</span> 4 students enrolled in <b>"React for Beginners"</b></li>
+                        <li><span class="activity-icon">🆕</span> You published a new course <b>"Python DSA"</b></li>
+                    </ul>
+                </div>
+            </section>
+            <!-- My Courses Section -->
+            <section class="courses-section" id="courses-section">
+                <div class="profile-title">My Courses</div>
+                <div class="courses-list">
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97" alt="Java Course" class="course-thumbnail">
+                        <div class="course-content">
+                            <div class="course-info">
+                                <h3>Java Basics</h3>
+                                <p>Learn the fundamentals of Java programming.</p>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="course-stats">
+                                <span>75% Complete</span>
+                                <span>12 Lessons</span>
+                            </div>
+                            <div class="course-actions">
+                                <button class="course-btn" onclick="previewVideo('java')">
+                                    <span>🎬</span> Preview
+                                </button>
+                                <button class="course-btn" onclick="continueLearning('java')">
+                                    <span>📚</span> Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee" alt="React Course" class="course-thumbnail">
+                        <div class="course-content">
+                            <div class="course-info">
+                                <h3>React for Beginners</h3>
+                                <p>Start building modern web apps with React.</p>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-bar" style="width: 45%"></div>
+                            </div>
+                            <div class="course-stats">
+                                <span>45% Complete</span>
+                                <span>8 Lessons</span>
+                            </div>
+                            <div class="course-actions">
+                                <button class="course-btn" onclick="previewVideo('react')">
+                                    <span>🎬</span> Preview
+                                </button>
+                                <button class="course-btn" onclick="continueLearning('react')">
+                                    <span>📚</span> Continue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Live Classes Section -->
+            <section class="live-section" id="live-section" style="display:none;">
+                <div class="profile-title">Live Classes</div>
+                <div style="padding:2rem; text-align:center; color:#6d28d9; font-size:1.2rem;">
+                    No live classes at the moment. Check back soon!
+                </div>
+            </section>
+            <!-- Profile Section -->
+            <section class="profile-section beautiful-profile" id="profile-section">
+                <div class="profile-card">
+                    <div class="profile-avatar-wrapper">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Avatar" class="profile-avatar" id="profile-avatar">
+                        <label for="profile-image" class="camera-overlay"><span>📷</span></label>
+                        <input type="file" id="profile-image" accept="image/*" style="display:none;">
+                    </div>
+                    <form class="profile-form" id="profile-form">
+                        <div class="input-group">
+                            <label for="profile-name"><span class="input-icon">��</span> Name</label><br>
+                            <input type="text" id="profile-name" value="Student">
+                        </div>
+                        <div class="input-group">
+                            <label for="profile-email"><span class="input-icon">✉️</span> Email</label><br>
+                            <input type="email" id="profile-email" value="student@email.com">
+                        </div>
+                        <button type="submit" class="save-btn">💾 Save Changes</button>
+                    </form>
+                </div>
+            </section>
+            <!-- Assignments Section -->
+            <section class="assignments-section" id="assignments-section">
+                <div class="profile-title">My Assignments</div>
+                <div class="assignments-container">
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <h3>Kathak Basic Steps</h3>
+                            <span class="assignment-due">Due: 3 days left</span>
+                        </div>
+                        <div class="assignment-content">
+                            <p>Practice and record the basic tatkar steps with proper rhythm and posture. Focus on maintaining the correct hand gestures (mudras).</p>
+                            <div class="assignment-details">
+                                <span class="detail"><span>💃</span> 4 Steps</span>
+                                <span class="detail"><span>⏱️</span> 1 hour</span>
+                                <span class="detail"><span>⭐</span> 100 points</span>
+                            </div>
+                        </div>
+                        <button class="start-assignment-btn">
+                            <span>🎥</span> Start Practice
+                        </button>
+                    </div>
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <h3>Hatha Yoga Sequence</h3>
+                            <span class="assignment-due">Due: 2 days left</span>
+                        </div>
+                        <div class="assignment-content">
+                            <p>Perform the complete Surya Namaskar sequence with proper breathing techniques. Submit a video showing your form and alignment.</p>
+                            <div class="assignment-details">
+                                <span class="detail"><span>🧘</span> 12 Poses</span>
+                                <span class="detail"><span>⏱️</span> 30 mins</span>
+                                <span class="detail"><span>⭐</span> 150 points</span>
+                            </div>
+                        </div>
+                        <button class="start-assignment-btn">
+                            <span>🎥</span> Start Practice
+                        </button>
+                    </div>
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <h3>Carnatic Vocal Practice</h3>
+                            <span class="assignment-due">Due: 4 days left</span>
+                        </div>
+                        <div class="assignment-content">
+                            <p>Practice and record the Sarali Varisai exercises in three different speeds. Focus on maintaining proper sruti and laya.</p>
+                            <div class="assignment-details">
+                                <span class="detail"><span>🎵</span> 3 Exercises</span>
+                                <span class="detail"><span>⏱️</span> 45 mins</span>
+                                <span class="detail"><span>⭐</span> 120 points</span>
+                            </div>
+                        </div>
+                        <button class="start-assignment-btn">
+                            <span>🎥</span> Start Practice
+                        </button>
+                    </div>
+                    <div class="assignment-card">
+                        <div class="assignment-header">
+                            <h3>Bharatanatyam Adavus</h3>
+                            <span class="assignment-due">Due: 5 days left</span>
+                        </div>
+                        <div class="assignment-content">
+                            <p>Practice and demonstrate the Tatta Adavu sequence with proper footwork and hand gestures. Focus on maintaining the correct posture.</p>
+                            <div class="assignment-details">
+                                <span class="detail"><span>💃</span> 8 Adavus</span>
+                                <span class="detail"><span>⏱️</span> 1.5 hours</span>
+                                <span class="detail"><span>⭐</span> 200 points</span>
+                            </div>
+                        </div>
+                        <button class="start-assignment-btn">
+                            <span>🎥</span> Start Practice
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script>
+        // Sidebar navigation
+        const navDashboard = document.getElementById('nav-dashboard');
+        const navProfile = document.getElementById('nav-profile');
+        const navCourses = document.getElementById('nav-courses');
+        const navLive = document.getElementById('nav-live');
+        const navAssignments = document.getElementById('nav-assignments');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const profileSection = document.getElementById('profile-section');
+        const coursesSection = document.getElementById('courses-section');
+        const liveSection = document.getElementById('live-section');
+        const assignmentsSection = document.getElementById('assignments-section');
+
+        function showSection(section) {
+            dashboardSection.classList.remove('active');
+            profileSection.classList.remove('active');
+            coursesSection.classList.remove('active');
+            assignmentsSection.classList.remove('active');
+            liveSection.style.display = 'none';
+            section.classList.add('active');
+            if(section === liveSection) {
+                liveSection.style.display = 'block';
+            } else {
+                liveSection.style.display = 'none';
+            }
+        }
+
+        navDashboard.addEventListener('click', () => {
+            navDashboard.classList.add('active');
+            navProfile.classList.remove('active');
+            navCourses.classList.remove('active');
+            navLive.classList.remove('active');
+            navAssignments.classList.remove('active');
+            showSection(dashboardSection);
+        });
+
+        navProfile.addEventListener('click', () => {
+            navProfile.classList.add('active');
+            navDashboard.classList.remove('active');
+            navCourses.classList.remove('active');
+            navLive.classList.remove('active');
+            navAssignments.classList.remove('active');
+            showSection(profileSection);
+        });
+
+        navCourses.addEventListener('click', () => {
+            navCourses.classList.add('active');
+            navDashboard.classList.remove('active');
+            navProfile.classList.remove('active');
+            navLive.classList.remove('active');
+            navAssignments.classList.remove('active');
+            showSection(coursesSection);
+        });
+
+        navLive.addEventListener('click', () => {
+            navLive.classList.add('active');
+            navDashboard.classList.remove('active');
+            navProfile.classList.remove('active');
+            navCourses.classList.remove('active');
+            navAssignments.classList.remove('active');
+            showSection(liveSection);
+        });
+
+        navAssignments.addEventListener('click', () => {
+            navAssignments.classList.add('active');
+            navDashboard.classList.remove('active');
+            navProfile.classList.remove('active');
+            navCourses.classList.remove('active');
+            navLive.classList.remove('active');
+            showSection(assignmentsSection);
+        });
+
+        // Video preview functionality
+        function previewVideo(course) {
+            const videoUrl = course === 'java' ? 'path/to/java-preview.mp4' : 'path/to/react-preview.mp4';
+            const videoPreview = document.createElement('div');
+            videoPreview.style.position = 'fixed';
+            videoPreview.style.top = '0';
+            videoPreview.style.left = '0';
+            videoPreview.style.width = '100%';
+            videoPreview.style.height = '100%';
+            videoPreview.style.backgroundColor = 'rgba(0,0,0,0.9)';
+            videoPreview.style.display = 'flex';
+            videoPreview.style.alignItems = 'center';
+            videoPreview.style.justifyContent = 'center';
+            videoPreview.style.zIndex = '1000';
+
+            const video = document.createElement('video');
+            video.src = videoUrl;
+            video.controls = true;
+            video.style.maxWidth = '80%';
+            video.style.maxHeight = '80%';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '✕';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '20px';
+            closeBtn.style.right = '20px';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.color = '#fff';
+            closeBtn.style.fontSize = '24px';
+            closeBtn.style.cursor = 'pointer';
+
+            closeBtn.onclick = () => {
+                document.body.removeChild(videoPreview);
+            };
+
+            videoPreview.appendChild(video);
+            videoPreview.appendChild(closeBtn);
+            document.body.appendChild(videoPreview);
+        }
+
+        function continueLearning(course) {
+            alert(`Continuing with ${course} course...`);
+        }
+
+        // Profile image upload (camera overlay)
+        const cameraOverlay = document.querySelector('.camera-overlay');
+        const profileImageInput = document.getElementById('profile-image');
+        profileImageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const profileAvatar = document.getElementById('profile-avatar');
+                    profileAvatar.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        cameraOverlay.addEventListener('click', () => {
+            profileImageInput.click();
+        });
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        let theme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', theme);
+        
+        if (themeToggle) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            themeToggle.addEventListener('click', () => {
+                theme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+            });
+        }
+        // Profile form save (demo only)
+        const profileForm = document.getElementById('profile-form');
+        const studentName = document.getElementById('student-name');
+        if (profileForm && studentName) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newName = document.getElementById('profile-name').value;
+                if (newName) {
+                    studentName.textContent = newName;
+                }
+                alert('Profile updated!');
+                navDashboard.click();
+            });
+        }
+        // Add click handlers for start assignment buttons
+        document.querySelectorAll('.start-assignment-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const assignmentTitle = this.closest('.assignment-card').querySelector('h3').textContent;
+                try {
+                    console.log('Attempting to navigate to pose detection...');
+                    window.location.href = 'pose-detection.html?assignment=' + encodeURIComponent(assignmentTitle);
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                    alert('Unable to open the practice session. Please try again.');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 
