@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans | RhythmConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-purple: #6d28d9;
+            --primary-blue: #2563eb;
+            --accent-gold: #d4a017;
+            --bg-primary: #f5f7fa;
+            --text-primary: #222;
+            --text-secondary: #666;
+            --card-shadow: 0 4px 24px rgba(109,40,217,0.10);
+            --card-radius: 20px;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #181c24;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .plan-card {
+            background: #fff;
+            border-radius: var(--card-radius);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            border: 2px solid transparent;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 32px rgba(109,40,217,0.15);
+        }
+
+        .plan-card.recommended {
+            border-color: var(--accent-gold);
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--accent-gold);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary-purple);
+        }
+
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .features-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-icon {
+            font-size: 1.2rem;
+        }
+
+        .feature-success {
+            color: var(--success-color);
+        }
+
+        .feature-error {
+            color: var(--error-color);
+        }
+
+        .select-plan-btn {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--primary-purple);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--primary-purple);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-plan-btn:hover {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+
+        .select-plan-btn.selected {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+
+        .proceed-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: var(--primary-purple);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .proceed-btn:hover {
+            background: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .proceed-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .header p {
+                font-size: 1.1rem;
+            }
+            .plans-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Choose the Best Plan to Teach with RhythmConnect</h1>
+            <p>Grow your reach, manage your students, and earn with ease.</p>
+        </div>
+
+        <div class="plans-grid">
+            <!-- Free Plan -->
+            <div class="plan-card">
+                <div class="plan-name">Free Plan</div>
+                <div class="plan-price">₹0<span>/month</span></div>
+                <ul class="features-list">
+                    <li><span class="feature-icon feature-success">✅</span> 1 video upload</li>
+                    <li><span class="feature-icon feature-success">✅</span> Trial classes only</li>
+                    <li><span class="feature-icon feature-error">❌</span> Live classes</li>
+                    <li><span class="feature-icon feature-error">❌</span> Analytics</li>
+                    <li><span class="feature-icon feature-error">❌</span> Priority support</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('free')">Select Plan</button>
+            </div>
+
+            <!-- Starter Plan -->
+            <div class="plan-card">
+                <div class="plan-name">Starter Plan</div>
+                <div class="plan-price">₹499<span>/month</span></div>
+                <ul class="features-list">
+                    <li><span class="feature-icon feature-success">✅</span> Up to 5 video uploads</li>
+                    <li><span class="feature-icon feature-success">✅</span> Trial + paid classes</li>
+                    <li><span class="feature-icon feature-error">❌</span> Live classes</li>
+                    <li><span class="feature-icon feature-error">❌</span> Analytics</li>
+                    <li><span class="feature-icon feature-error">❌</span> Priority support</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('starter')">Select Plan</button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="plan-card recommended">
+                <div class="recommended-badge">Recommended</div>
+                <div class="plan-name">Pro Plan</div>
+                <div class="plan-price">₹999<span>/month</span></div>
+                <ul class="features-list">
+                    <li><span class="feature-icon feature-success">✅</span> Up to 15 video uploads</li>
+                    <li><span class="feature-icon feature-success">✅</span> Trial + paid classes</li>
+                    <li><span class="feature-icon feature-success">✅</span> Live classes</li>
+                    <li><span class="feature-icon feature-success">✅</span> Basic analytics</li>
+                    <li><span class="feature-icon feature-error">❌</span> Priority support</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('pro')">Select Plan</button>
+            </div>
+
+            <!-- Premium Plan -->
+            <div class="plan-card">
+                <div class="plan-name">Premium Plan</div>
+                <div class="plan-price">₹1499<span>/month</span></div>
+                <ul class="features-list">
+                    <li><span class="feature-icon feature-success">✅</span> Unlimited video uploads</li>
+                    <li><span class="feature-icon feature-success">✅</span> All class types</li>
+                    <li><span class="feature-icon feature-success">✅</span> Live classes</li>
+                    <li><span class="feature-icon feature-success">✅</span> Advanced analytics</li>
+                    <li><span class="feature-icon feature-success">✅</span> Priority support</li>
+                </ul>
+                <button class="select-plan-btn" onclick="selectPlan('premium')">Select Plan</button>
+            </div>
+        </div>
+
+        <a href="#payment" class="proceed-btn" id="proceedBtn" disabled>Proceed to Pay</a>
+    </div>
+
+    <script>
+        let selectedPlan = null;
+
+        function selectPlan(plan) {
+            // Remove selected class from all buttons
+            document.querySelectorAll('.select-plan-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Add selected class to clicked button
+            event.target.classList.add('selected');
+            selectedPlan = plan;
+
+            // Enable proceed button
+            const proceedBtn = document.getElementById('proceedBtn');
+            proceedBtn.removeAttribute('disabled');
+        }
+
+        // Theme toggle functionality
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+    </script>
+</body>
+</html> 
