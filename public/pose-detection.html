@@ -84,6 +84,22 @@
             border-radius: var(--card-radius);
             overflow: hidden;
             aspect-ratio: 16/9;
+            width: 100%;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
         .reference-container {
@@ -190,14 +206,6 @@
         .pose-match.bad {
             background: rgba(239, 68, 68, 0.2);
             color: var(--error-color);
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
 
         .loading {
@@ -308,6 +316,25 @@
         .high-score span {
             color: var(--success-color);
             font-weight: 600;
+        }
+
+        .score-summary {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--card-radius);
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .score-summary h3 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+        
+        .score-summary p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
@@ -472,6 +499,13 @@
                 });
                 video.srcObject = stream;
                 video.play();
+                
+                // Set canvas size to match video
+                video.onloadedmetadata = () => {
+                    output.width = video.videoWidth;
+                    output.height = video.videoHeight;
+                };
+                
                 isCameraActive = true;
                 startBtn.style.display = 'none';
                 stopBtn.style.display = 'block';
@@ -481,23 +515,6 @@
                 console.error('Error accessing camera:', error);
                 alert('Could not access camera. Please ensure camera permissions are granted.');
             }
-        }
-
-        // Stop camera
-        function stopCamera() {
-            if (video.srcObject) {
-                const tracks = video.srcObject.getTracks();
-                tracks.forEach(track => track.stop());
-                video.srcObject = null;
-            }
-            isCameraActive = false;
-            startBtn.style.display = 'block';
-            stopBtn.style.display = 'none';
-            clearInterval(timerInterval);
-            
-            // Clear canvas
-            const ctx = output.getContext('2d');
-            ctx.clearRect(0, 0, output.width, output.height);
         }
 
         // Start timer
@@ -510,7 +527,12 @@
                 timer.textContent = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
-                    saveScore();
+                    stopCamera();
+                    // Ensure we save the final score
+                    if (highestScore === 0) {
+                        saveScore();
+                    }
+                    showScoreSummary();
                 }
             }, 1000);
         }
@@ -555,6 +577,8 @@
             if (newScore > highestScore) {
                 highestScore = newScore;
                 bestScore.textContent = `${highestScore}%`;
+                // Save score whenever it improves
+                saveScore();
             }
 
             if (newScore > 80) {
@@ -571,11 +595,48 @@
 
         // Save score
         function saveScore() {
-            if (currentPose && highestScore > 0) {
+            if (currentPose) {
+                // Always save the score, even if it's 0
                 localStorage.setItem(`best_score_${currentPose.id}`, highestScore);
-                // Here you would typically send the score to your backend
                 console.log(`Saving score ${highestScore} for pose ${currentPose.id}`);
             }
+        }
+
+        // Show score summary
+        function showScoreSummary() {
+            const summary = document.createElement('div');
+            summary.className = 'score-summary';
+            summary.innerHTML = `
+                <h3>Practice Complete!</h3>
+                <p>Your best score: ${highestScore}%</p>
+                <p>${highestScore === 0 ? 'Keep practicing to improve your score!' : 'Great job!'}</p>
+                <button class="btn btn-primary" id="try-again-btn">Try Again</button>
+            `;
+            
+            const referenceContainer = document.querySelector('.reference-container');
+            referenceContainer.appendChild(summary);
+            
+            document.getElementById('try-again-btn').addEventListener('click', () => {
+                summary.remove();
+                startCamera();
+            });
+        }
+
+        // Stop camera
+        function stopCamera() {
+            if (video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            isCameraActive = false;
+            startBtn.style.display = 'block';
+            stopBtn.style.display = 'none';
+            clearInterval(timerInterval);
+            
+            // Clear canvas
+            const ctx = output.getContext('2d');
+            ctx.clearRect(0, 0, output.width, output.height);
         }
 
         // Draw keypoints
