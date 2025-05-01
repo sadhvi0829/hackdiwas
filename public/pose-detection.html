@@ -393,23 +393,102 @@
         const poses = [
             {
                 id: 'tree',
-                name: 'Tree Pose',
-                description: 'Stand on one leg, place the other foot on the inner thigh, and bring hands to prayer position.',
-                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+                name: 'Tree Pose (Vrikshasana)',
+                description: 'Stand on one leg, place the other foot on the inner thigh, and bring hands to prayer position. Keep your spine straight and focus on a point in front of you.',
+                image: 'https://www.ekhartyoga.com/media/image/articles/tree-pose-vrksasana.jpg'
             },
             {
                 id: 'warrior',
-                name: 'Warrior II',
-                description: 'Stand with feet wide apart, turn right foot out, bend right knee, and extend arms parallel to floor.',
-                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+                name: 'Warrior II (Virabhadrasana II)',
+                description: 'Stand with feet wide apart, turn right foot out 90 degrees, bend right knee, and extend arms parallel to floor. Keep your torso centered and gaze over your front hand.',
+                image: 'https://www.ekhartyoga.com/media/image/articles/warrior-2-pose-virabhadrasana-2.jpg'
             },
             {
                 id: 'downward',
-                name: 'Downward Dog',
-                description: 'Form an inverted V-shape with your body, hands and feet on the ground, hips lifted high.',
-                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+                name: 'Downward Dog (Adho Mukha Svanasana)',
+                description: 'Form an inverted V-shape with your body, hands and feet on the ground, hips lifted high. Press your heels toward the floor and keep your spine long.',
+                image: 'https://www.ekhartyoga.com/media/image/articles/downward-facing-dog-adho-mukha-svanasana.jpg'
+            },
+            {
+                id: 'mountain',
+                name: 'Mountain Pose (Tadasana)',
+                description: 'Stand tall with feet together, arms at your sides. Ground through your feet, lift your chest, and keep your shoulders relaxed.',
+                image: 'https://www.ekhartyoga.com/media/image/articles/mountain-pose-tadasana.jpg'
+            },
+            {
+                id: 'triangle',
+                name: 'Triangle Pose (Trikonasana)',
+                description: 'Stand with feet wide apart, extend arms parallel to floor, reach forward with front hand, and place it on shin or floor. Extend other arm upward.',
+                image: 'https://www.ekhartyoga.com/media/image/articles/triangle-pose-utthita-trikonasana.jpg'
             }
         ];
+
+        // Reference pose keypoints for each pose
+        const referencePoses = {
+            tree: {
+                keypoints: [
+                    { x: 0.5, y: 0.1 },  // nose
+                    { x: 0.5, y: 0.2 },  // left eye
+                    { x: 0.5, y: 0.2 },  // right eye
+                    { x: 0.4, y: 0.3 },  // left ear
+                    { x: 0.6, y: 0.3 },  // right ear
+                    { x: 0.5, y: 0.4 },  // left shoulder
+                    { x: 0.5, y: 0.4 },  // right shoulder
+                    { x: 0.4, y: 0.5 },  // left elbow
+                    { x: 0.6, y: 0.5 },  // right elbow
+                    { x: 0.4, y: 0.6 },  // left wrist
+                    { x: 0.6, y: 0.6 },  // right wrist
+                    { x: 0.5, y: 0.7 },  // left hip
+                    { x: 0.5, y: 0.7 },  // right hip
+                    { x: 0.4, y: 0.9 },  // left knee
+                    { x: 0.6, y: 0.9 },  // right knee
+                    { x: 0.4, y: 1.0 },  // left ankle
+                    { x: 0.6, y: 1.0 }   // right ankle
+                ]
+            },
+            warrior: {
+                keypoints: [
+                    { x: 0.5, y: 0.1 },
+                    { x: 0.5, y: 0.2 },
+                    { x: 0.5, y: 0.2 },
+                    { x: 0.4, y: 0.3 },
+                    { x: 0.6, y: 0.3 },
+                    { x: 0.3, y: 0.4 },
+                    { x: 0.7, y: 0.4 },
+                    { x: 0.2, y: 0.5 },
+                    { x: 0.8, y: 0.5 },
+                    { x: 0.1, y: 0.6 },
+                    { x: 0.9, y: 0.6 },
+                    { x: 0.3, y: 0.7 },
+                    { x: 0.7, y: 0.7 },
+                    { x: 0.2, y: 0.9 },
+                    { x: 0.8, y: 0.9 },
+                    { x: 0.1, y: 1.0 },
+                    { x: 0.9, y: 1.0 }
+                ]
+            },
+            downward: {
+                keypoints: [
+                    { x: 0.5, y: 0.2 },
+                    { x: 0.5, y: 0.2 },
+                    { x: 0.5, y: 0.2 },
+                    { x: 0.4, y: 0.3 },
+                    { x: 0.6, y: 0.3 },
+                    { x: 0.3, y: 0.4 },
+                    { x: 0.7, y: 0.4 },
+                    { x: 0.2, y: 0.5 },
+                    { x: 0.8, y: 0.5 },
+                    { x: 0.1, y: 0.6 },
+                    { x: 0.9, y: 0.6 },
+                    { x: 0.4, y: 0.8 },
+                    { x: 0.6, y: 0.8 },
+                    { x: 0.3, y: 0.9 },
+                    { x: 0.7, y: 0.9 },
+                    { x: 0.2, y: 1.0 },
+                    { x: 0.8, y: 1.0 }
+                ]
+            }
+        };
 
         // DOM elements
         const poseCards = document.getElementById('pose-cards');
@@ -566,9 +645,46 @@
 
         // Calculate match score
         function calculateMatchScore(keypoints) {
-            // This is a simplified version - you'll need to implement actual pose matching logic
-            // For now, we'll return a random score between 0 and 100
-            return Math.floor(Math.random() * 100);
+            if (!currentPose || !referencePoses[currentPose.id]) {
+                return 0;
+            }
+
+            const reference = referencePoses[currentPose.id].keypoints;
+            let totalScore = 0;
+            let validPoints = 0;
+
+            // Normalize keypoints to 0-1 range
+            const normalizeKeypoints = (kps) => {
+                const minX = Math.min(...kps.map(kp => kp.x));
+                const maxX = Math.max(...kps.map(kp => kp.x));
+                const minY = Math.min(...kps.map(kp => kp.y));
+                const maxY = Math.max(...kps.map(kp => kp.y));
+                
+                return kps.map(kp => ({
+                    x: (kp.x - minX) / (maxX - minX),
+                    y: (kp.y - minY) / (maxY - minY)
+                }));
+            };
+
+            const normalizedKeypoints = normalizeKeypoints(keypoints);
+            const normalizedReference = normalizeKeypoints(reference);
+
+            // Compare each keypoint
+            for (let i = 0; i < normalizedKeypoints.length; i++) {
+                if (keypoints[i].score > 0.3) {
+                    const dx = normalizedKeypoints[i].x - normalizedReference[i].x;
+                    const dy = normalizedKeypoints[i].y - normalizedReference[i].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // Score based on distance (closer = higher score)
+                    const pointScore = Math.max(0, 100 - (distance * 200));
+                    totalScore += pointScore;
+                    validPoints++;
+                }
+            }
+
+            // Calculate average score
+            return validPoints > 0 ? Math.round(totalScore / validPoints) : 0;
         }
 
         // Update score
@@ -639,20 +755,26 @@
             ctx.clearRect(0, 0, output.width, output.height);
         }
 
-        // Draw keypoints
+        // Draw keypoints with color based on match
         function drawKeypoints(keypoints, ctx) {
+            const matchScore = calculateMatchScore(keypoints);
+            const color = matchScore > 80 ? '#00ff00' : matchScore > 50 ? '#ffff00' : '#ff0000';
+
             keypoints.forEach(keypoint => {
                 if (keypoint.score > 0.3) {
                     ctx.beginPath();
                     ctx.arc(keypoint.x, keypoint.y, 5, 0, 2 * Math.PI);
-                    ctx.fillStyle = '#00ff00';
+                    ctx.fillStyle = color;
                     ctx.fill();
                 }
             });
         }
 
-        // Draw skeleton
+        // Draw skeleton with color based on match
         function drawSkeleton(keypoints, ctx) {
+            const matchScore = calculateMatchScore(keypoints);
+            const color = matchScore > 80 ? '#00ff00' : matchScore > 50 ? '#ffff00' : '#ff0000';
+
             const adjacentKeyPoints = [
                 [0, 1], [0, 2], [1, 3], [2, 4], [0, 5], [0, 6], [5, 7],
                 [7, 9], [6, 8], [8, 10], [5, 6], [5, 11], [6, 12], [11, 12],
@@ -668,7 +790,7 @@
                     ctx.beginPath();
                     ctx.moveTo(kp1.x, kp1.y);
                     ctx.lineTo(kp2.x, kp2.y);
-                    ctx.strokeStyle = '#00ff00';
+                    ctx.strokeStyle = color;
                     ctx.lineWidth = 2;
                     ctx.stroke();
                 }
