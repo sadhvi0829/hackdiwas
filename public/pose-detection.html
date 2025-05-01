@@ -325,6 +325,7 @@
             border-radius: var(--card-radius);
             text-align: center;
             margin-top: 1rem;
+            position: relative;
         }
         
         .score-summary h3 {
@@ -335,6 +336,63 @@
         .score-summary p {
             font-size: 1.2rem;
             margin-bottom: 1.5rem;
+        }
+
+        .completion-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-primary);
+            padding: 2rem;
+            border-radius: var(--card-radius);
+            box-shadow: var(--card-shadow);
+            z-index: 1000;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .completion-popup h2 {
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .completion-popup p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .completion-timer {
+            font-size: 1.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 1.5rem;
+        }
+
+        .completion-link {
+            display: inline-block;
+            background: var(--primary-purple);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .completion-link:hover {
+            background: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .popup-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
         }
     </style>
 </head>
@@ -358,7 +416,7 @@
                 <img id="reference-image" class="reference-image" src="" alt="Reference Pose">
                 <h2 class="pose-name" id="pose-name"></h2>
                 <p class="pose-description" id="pose-description"></p>
-                <div class="timer" id="timer">30</div>
+                <div class="timer" id="timer">15</div>
                 <div class="score-container">
                     <div class="score" id="score">0%</div>
                     <div class="score-label">Match Score</div>
@@ -508,7 +566,7 @@
         let detector;
         let currentPose = null;
         let timerInterval;
-        let timeLeft = 30;
+        let timeLeft = 15;
         let highestScore = 0;
         let isCameraActive = false;
 
@@ -598,7 +656,7 @@
 
         // Start timer
         function startTimer() {
-            timeLeft = 30;
+            timeLeft = 15;
             timer.textContent = timeLeft;
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -676,33 +734,59 @@
                     const dy = normalizedKeypoints[i].y - normalizedReference[i].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    // Score based on distance (closer = higher score)
+                    // More strict scoring based on distance
+                    // Perfect match (distance = 0) gives 100
+                    // Distance of 0.1 gives 80
+                    // Distance of 0.2 gives 60
+                    // Distance of 0.3 gives 40
+                    // Distance of 0.4 gives 20
+                    // Distance > 0.5 gives 0
                     const pointScore = Math.max(0, 100 - (distance * 200));
-                    totalScore += pointScore;
+                    
+                    // Apply confidence weighting
+                    const confidenceWeight = keypoints[i].score;
+                    const weightedScore = pointScore * confidenceWeight;
+                    
+                    totalScore += weightedScore;
                     validPoints++;
                 }
             }
 
-            // Calculate average score
-            return validPoints > 0 ? Math.round(totalScore / validPoints) : 0;
+            // Calculate average score with more strict requirements
+            if (validPoints < 10) { // Require at least 10 valid keypoints
+                return 0;
+            }
+
+            const averageScore = totalScore / validPoints;
+            
+            // Apply additional penalties for missing keypoints
+            const missingPointsPenalty = (17 - validPoints) * 5; // 5 points penalty per missing keypoint
+            const finalScore = Math.max(0, averageScore - missingPointsPenalty);
+            
+            return Math.round(finalScore);
         }
 
-        // Update score
+        // Update score with more granular feedback
         function updateScore(newScore) {
             score.textContent = `${newScore}%`;
             if (newScore > highestScore) {
                 highestScore = newScore;
                 bestScore.textContent = `${highestScore}%`;
-                // Save score whenever it improves
                 saveScore();
             }
 
-            if (newScore > 80) {
+            if (newScore > 90) {
                 poseMatch.textContent = 'Perfect Match!';
                 poseMatch.className = 'pose-match good';
-            } else if (newScore > 50) {
+            } else if (newScore > 70) {
                 poseMatch.textContent = 'Good Match';
                 poseMatch.className = 'pose-match good';
+            } else if (newScore > 50) {
+                poseMatch.textContent = 'Fair Match';
+                poseMatch.className = 'pose-match good';
+            } else if (newScore > 30) {
+                poseMatch.textContent = 'Needs Work';
+                poseMatch.className = 'pose-match bad';
             } else {
                 poseMatch.textContent = 'Keep Practicing';
                 poseMatch.className = 'pose-match bad';
@@ -736,6 +820,50 @@
                 summary.remove();
                 startCamera();
             });
+
+            // Show completion popup
+            showCompletionPopup();
+        }
+
+        // Show completion popup
+        function showCompletionPopup() {
+            // Create backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'popup-backdrop';
+            document.body.appendChild(backdrop);
+
+            // Create popup
+            const popup = document.createElement('div');
+            popup.className = 'completion-popup';
+            popup.innerHTML = `
+                <h2>Practice Complete!</h2>
+                <p>Your best score: ${highestScore}%</p>
+                <div class="completion-timer" id="completion-timer">15</div>
+                <a href="https://www.yogajournal.com/poses/" class="completion-link" target="_blank">
+                    Explore More Yoga Poses
+                </a>
+            `;
+            document.body.appendChild(popup);
+
+            // Start countdown
+            let timeLeft = 15;
+            const timerElement = document.getElementById('completion-timer');
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    popup.remove();
+                    backdrop.remove();
+                }
+            }, 1000);
+
+            // Close popup when clicking outside
+            backdrop.addEventListener('click', () => {
+                clearInterval(timerInterval);
+                popup.remove();
+                backdrop.remove();
+            });
         }
 
         // Stop camera
@@ -755,10 +883,21 @@
             ctx.clearRect(0, 0, output.width, output.height);
         }
 
-        // Draw keypoints with color based on match
+        // Draw keypoints with more granular color feedback
         function drawKeypoints(keypoints, ctx) {
             const matchScore = calculateMatchScore(keypoints);
-            const color = matchScore > 80 ? '#00ff00' : matchScore > 50 ? '#ffff00' : '#ff0000';
+            let color;
+            if (matchScore > 90) {
+                color = '#00ff00'; // Green for perfect
+            } else if (matchScore > 70) {
+                color = '#7fff00'; // Light green for good
+            } else if (matchScore > 50) {
+                color = '#ffff00'; // Yellow for fair
+            } else if (matchScore > 30) {
+                color = '#ff7f00'; // Orange for needs work
+            } else {
+                color = '#ff0000'; // Red for poor
+            }
 
             keypoints.forEach(keypoint => {
                 if (keypoint.score > 0.3) {
@@ -770,10 +909,21 @@
             });
         }
 
-        // Draw skeleton with color based on match
+        // Draw skeleton with more granular color feedback
         function drawSkeleton(keypoints, ctx) {
             const matchScore = calculateMatchScore(keypoints);
-            const color = matchScore > 80 ? '#00ff00' : matchScore > 50 ? '#ffff00' : '#ff0000';
+            let color;
+            if (matchScore > 90) {
+                color = '#00ff00'; // Green for perfect
+            } else if (matchScore > 70) {
+                color = '#7fff00'; // Light green for good
+            } else if (matchScore > 50) {
+                color = '#ffff00'; // Yellow for fair
+            } else if (matchScore > 30) {
+                color = '#ff7f00'; // Orange for needs work
+            } else {
+                color = '#ff0000'; // Red for poor
+            }
 
             const adjacentKeyPoints = [
                 [0, 1], [0, 2], [1, 3], [2, 4], [0, 5], [0, 6], [5, 7],
