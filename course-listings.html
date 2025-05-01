@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Listings - RhythmConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="app">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-content">
+                <div class="logo">RhythmConnect</div>
+                <div class="nav-center">
+                    <div class="nav-search">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" placeholder="Search courses..." class="search-input">
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <a href="login.html" class="get-started-btn">Sign In</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Bubble Background -->
+        <div class="bubble-background">
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+            <div class="bubble"></div>
+        </div>
+
+        <!-- Flowing Background Animation -->
+        <div class="flowing-background">
+            <div class="flow-layer layer-1">
+                <div class="tiny-circle"></div>
+                <div class="tiny-circle"></div>
+                <div class="tiny-circle"></div>
+                <div class="tiny-circle"></div>
+                <div class="tiny-circle"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="cross"></div>
+                <div class="cross"></div>
+                <div class="cross"></div>
+            </div>
+            <div class="flow-layer layer-2">
+                <div class="tiny-square"></div>
+                <div class="tiny-square"></div>
+                <div class="tiny-square"></div>
+                <div class="tiny-square"></div>
+                <div class="tiny-square"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="ring"></div>
+                <div class="plus"></div>
+                <div class="plus"></div>
+                <div class="plus"></div>
+            </div>
+        </div>
+
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="page-title">
+                <h1>Explore Our Courses</h1>
+                <p class="page-subtitle">Discover a world of dance, yoga, and music education</p>
+            </div>
+        </section>
+
+        <!-- Course Listings Section -->
+        <section class="course-listings">
+            <div class="courses-container">
+                <h2>Featured Courses</h2>
+                <div class="courses-grid">
+                    <!-- Course Card 1 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Contemporary Dance Fundamentals</h3>
+                            <p class="course-date">Starts: March 15, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 2 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Advanced Yoga Flow</h3>
+                            <p class="course-date">Starts: March 20, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 3 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Classical Music Theory</h3>
+                            <p class="course-date">Starts: March 25, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 4 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Hip Hop Dance Basics</h3>
+                            <p class="course-date">Starts: April 1, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 5 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Mindfulness Meditation</h3>
+                            <p class="course-date">Starts: April 5, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+
+                    <!-- Course Card 6 -->
+                    <div class="course-card">
+                        <div class="course-content">
+                            <h3>Guitar Mastery</h3>
+                            <p class="course-date">Starts: April 10, 2024</p>
+                            <button class="view-btn">View Course</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section reveal-left">
+                    <h3>RhythmConnect</h3>
+                    <p>Your gateway to artistic excellence in dance, yoga, and music.</p>
+                    <div class="social-links">
+                        <p>Join our community:</p>
+                        <a href="#" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z">
+                                </path>
+                                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links reveal-right">
+                    <div class="footer-column">
+                        <h4>Dance</h4>
+                        <a href="#">Ballet</a>
+                        <a href="#">Contemporary</a>
+                        <a href="#">Hip-Hop</a>
+                        <a href="#">& many more</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Yoga</h4>
+                        <a href="#">Hatha</a>
+                        <a href="#">Vinyasa</a>
+                        <a href="#">Meditation</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Music</h4>
+                        <a href="#">Piano</a>
+                        <a href="#">Guitar</a>
+                        <a href="#">Vocals</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Class Schedule</a>
+                        <a href="#">Instructors</a>
+                        <a href="#">Blog</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#">Contact</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Community</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.querySelector('.theme-toggle');
+        const html = document.documentElement;
+        const themeIcon = themeToggle.querySelector('svg');
+
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                `;
+            } else {
+                themeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                `;
+            }
+        }
+
+        // Reveal elements on scroll
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Add scroll event listener
+        window.addEventListener('scroll', reveal);
+
+        // Trigger reveal on initial load
+        reveal();
+    </script>
+</body>
+
+</html> 
