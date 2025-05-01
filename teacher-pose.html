@@ -243,6 +243,7 @@
         let teacherCanvas;
         let teacherCtx;
         let isRunning = false;
+        let currentPose = null;
 
         // Initialize the pose detection
         async function initPoseDetection() {
@@ -349,6 +350,28 @@
             ctx.stroke();
         }
 
+        // Function to broadcast pose to server
+        async function broadcastPose(pose) {
+            try {
+                const response = await fetch('/api/broadcast-pose', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        pose: pose,
+                        timestamp: Date.now()
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to broadcast pose');
+                }
+            } catch (error) {
+                console.error('Error broadcasting pose:', error);
+            }
+        }
+
         // Main detection loop
         async function detectPoses() {
             if (!isRunning) return;
@@ -356,7 +379,11 @@
             try {
                 const poses = await detector.estimatePoses(teacherVideo);
                 if (poses.length > 0) {
-                    drawPose(poses[0], teacherCtx);
+                    currentPose = poses[0];
+                    drawPose(currentPose, teacherCtx);
+                    
+                    // Broadcast pose to server
+                    await broadcastPose(currentPose);
                 }
                 requestAnimationFrame(detectPoses);
             } catch (error) {

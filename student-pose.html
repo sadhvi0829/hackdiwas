@@ -190,6 +190,33 @@
             color: var(--text-secondary);
             font-size: 1.2rem;
         }
+
+        .match-message {
+            text-align: center;
+            color: var(--success-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .download-btn {
+            background: var(--success-color);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 1rem auto;
+            display: none;
+        }
+
+        .download-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -219,6 +246,8 @@
                 <div class="score-value" id="matchScore">0%</div>
                 <div class="score-label">Pose Match Score</div>
             </div>
+            <div class="match-message" id="matchMessage">Perfect Match! 🎉</div>
+            <button class="download-btn" id="downloadBtn">📥 Download Certificate</button>
         </div>
     </div>
 
@@ -233,6 +262,7 @@
         let studentCanvas;
         let studentCtx;
         let isRunning = false;
+        let perfectMatchAchieved = false;
 
         // Initialize the pose detection
         async function initPoseDetection() {
@@ -339,6 +369,63 @@
             ctx.stroke();
         }
 
+        // Function to calculate pose similarity
+        function calculatePoseSimilarity(pose1, pose2) {
+            if (!pose1 || !pose2) return 0;
+            
+            let totalScore = 0;
+            let validPoints = 0;
+            
+            pose1.keypoints.forEach((kp1, index) => {
+                const kp2 = pose2.keypoints[index];
+                if (kp1.score > 0.3 && kp2.score > 0.3) {
+                    const dx = kp1.x - kp2.x;
+                    const dy = kp1.y - kp2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const similarity = Math.max(0, 1 - distance / 100);
+                    totalScore += similarity;
+                    validPoints++;
+                }
+            });
+            
+            return validPoints > 0 ? (totalScore / validPoints) * 100 : 0;
+        }
+
+        // Function to generate and download certificate
+        function generateCertificate() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 600;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = '#23263a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Title
+            ctx.fillStyle = '#d4a017';
+            ctx.font = 'bold 48px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Certificate of Achievement', canvas.width/2, 100);
+            
+            // Content
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Inter';
+            ctx.fillText('This is to certify that', canvas.width/2, 200);
+            ctx.fillText('the student has successfully', canvas.width/2, 250);
+            ctx.fillText('performed the pose with 100% accuracy', canvas.width/2, 300);
+            
+            // Date
+            ctx.font = '20px Inter';
+            ctx.fillText(`Date: ${new Date().toLocaleDateString()}`, canvas.width/2, 400);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = 'pose-certificate.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
         // Main detection loop
         async function detectPoses() {
             if (!isRunning) return;
@@ -347,6 +434,20 @@
                 const poses = await detector.estimatePoses(studentVideo);
                 if (poses.length > 0) {
                     drawPose(poses[0], studentCtx);
+                    
+                    // Simulate teacher's pose (in real implementation, this would come from the server)
+                    const teacherPose = poses[0]; // For demo, using student's pose as teacher's pose
+                    const similarity = calculatePoseSimilarity(poses[0], teacherPose);
+                    
+                    // Update score display
+                    document.getElementById('matchScore').textContent = `${Math.round(similarity)}%`;
+                    
+                    // Check for perfect match
+                    if (similarity >= 95 && !perfectMatchAchieved) {
+                        perfectMatchAchieved = true;
+                        document.getElementById('matchMessage').style.display = 'block';
+                        document.getElementById('downloadBtn').style.display = 'block';
+                    }
                 }
                 requestAnimationFrame(detectPoses);
             } catch (error) {
@@ -379,6 +480,8 @@
                 studentCtx.clearRect(0, 0, studentCanvas.width, studentCanvas.height);
                 window.location.href = 'student-dashboard.html';
             });
+
+            document.getElementById('downloadBtn').addEventListener('click', generateCertificate);
         });
 
         function updateLoadingStatus(message) {
