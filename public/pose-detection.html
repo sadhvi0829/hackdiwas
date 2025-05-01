@@ -251,288 +251,350 @@
             text-align: center;
             display: none;
         }
+
+        .pose-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .pose-card {
+            background: #23263a;
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .pose-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pose-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .pose-card h3 {
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .pose-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .timer {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .high-score {
+            background: rgba(16, 185, 129, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .high-score span {
+            color: var(--success-color);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🧘 Pose Detection</h1>
-            <p>Perfect your yoga poses with real-time feedback</p>
+            <h1>Pose Practice</h1>
+            <p>Select a pose to practice and match your movements with the reference image</p>
+        </div>
+
+        <div class="pose-cards" id="pose-cards">
+            <!-- Pose cards will be dynamically added here -->
+        </div>
+
+        <div class="pose-container" id="pose-container" style="display: none;">
+            <div class="video-container">
+                <video id="video" playsinline></video>
+                <canvas id="output"></canvas>
+            </div>
+            <div class="reference-container">
+                <img id="reference-image" class="reference-image" src="" alt="Reference Pose">
+                <h2 class="pose-name" id="pose-name"></h2>
+                <p class="pose-description" id="pose-description"></p>
+                <div class="timer" id="timer">30</div>
+                <div class="score-container">
+                    <div class="score" id="score">0%</div>
+                    <div class="score-label">Match Score</div>
+                    <div class="pose-match" id="pose-match"></div>
+                </div>
+                <div class="high-score" id="high-score">
+                    Your best score: <span id="best-score">0%</span>
+                </div>
+            </div>
         </div>
 
         <div class="controls">
-            <button class="btn btn-primary" id="startCamera">
+            <button class="btn btn-primary" id="start-btn">
                 <span>🎥</span> Start Camera
             </button>
-            <button class="btn btn-secondary" id="stopCamera" disabled>
-                <span>⏹️</span> Stop Camera
+            <button class="btn btn-secondary" id="back-btn" style="display: none;">
+                <span>←</span> Back to Poses
             </button>
-        </div>
-
-        <div class="pose-container">
-            <div class="video-container">
-                <video id="video" playsinline></video>
-                <canvas id="canvas"></canvas>
-            </div>
-
-            <div class="reference-container">
-                <img src="https://placehold.co/600x400/6d28d9/fff?text=Warrior+Pose" alt="Reference Pose" class="reference-image">
-                <h2 class="pose-name">Warrior Pose (Virabhadrasana)</h2>
-                <p class="pose-description">
-                    Stand with feet wide apart. Turn right foot out 90 degrees and left foot in slightly.
-                    Bend right knee, keeping it aligned with ankle. Raise arms parallel to floor.
-                    Hold for 30 seconds, then switch sides.
-                </p>
-            </div>
-        </div>
-
-        <div class="score-container">
-            <div class="score">0%</div>
-            <div class="score-label">Pose Match Score</div>
-            <div class="pose-match">Waiting for pose...</div>
         </div>
     </div>
 
     <div class="loading" id="loading">
         <div class="loading-spinner"></div>
-        <div class="loading-status" id="loadingStatus">Initializing pose detection model...</div>
-        <div class="error-message" id="errorMessage"></div>
+        <div class="loading-status">Loading pose detection model...</div>
     </div>
 
     <script>
+        // Pose data
+        const poses = [
+            {
+                id: 'tree',
+                name: 'Tree Pose',
+                description: 'Stand on one leg, place the other foot on the inner thigh, and bring hands to prayer position.',
+                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+            },
+            {
+                id: 'warrior',
+                name: 'Warrior II',
+                description: 'Stand with feet wide apart, turn right foot out, bend right knee, and extend arms parallel to floor.',
+                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+            },
+            {
+                id: 'downward',
+                name: 'Downward Dog',
+                description: 'Form an inverted V-shape with your body, hands and feet on the ground, hips lifted high.',
+                image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1520&q=80'
+            }
+        ];
+
+        // DOM elements
+        const poseCards = document.getElementById('pose-cards');
+        const poseContainer = document.getElementById('pose-container');
+        const video = document.getElementById('video');
+        const output = document.getElementById('output');
+        const startBtn = document.getElementById('start-btn');
+        const backBtn = document.getElementById('back-btn');
+        const loading = document.getElementById('loading');
+        const timer = document.getElementById('timer');
+        const score = document.getElementById('score');
+        const poseMatch = document.getElementById('pose-match');
+        const bestScore = document.getElementById('best-score');
+
+        // Variables
         let detector;
-        let video;
-        let canvas;
-        let ctx;
-        let isRunning = false;
-        let animationId;
-        let modelLoaded = false;
+        let currentPose = null;
+        let timerInterval;
+        let timeLeft = 30;
+        let highestScore = 0;
+        let isCameraActive = false;
 
-        // Update loading status
-        function updateLoadingStatus(message) {
-            document.getElementById('loadingStatus').textContent = message;
+        // Initialize pose cards
+        function initializePoseCards() {
+            poseCards.innerHTML = poses.map(pose => `
+                <div class="pose-card" data-pose-id="${pose.id}">
+                    <img src="${pose.image}" alt="${pose.name}">
+                    <h3>${pose.name}</h3>
+                    <p>${pose.description}</p>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.pose-card').forEach(card => {
+                card.addEventListener('click', () => selectPose(card.dataset.poseId));
+            });
         }
 
-        // Show error message
-        function showError(message) {
-            const errorElement = document.getElementById('errorMessage');
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            document.getElementById('loadingStatus').style.display = 'none';
-        }
-
-        // Initialize the pose detection
-        async function initPoseDetection() {
-            try {
-                updateLoadingStatus('Loading TensorFlow.js...');
-                await tf.ready();
-                
-                // Enable WebGL backend for better performance
-                await tf.setBackend('webgl');
-                
-                updateLoadingStatus('Loading MoveNet model...');
-                const model = poseDetection.SupportedModels.MoveNet;
-                const detectorConfig = {
-                    modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
-                    enableSmoothing: true,
-                    minPoseScore: 0.3
-                };
-                
-                detector = await poseDetection.createDetector(model, detectorConfig);
-                modelLoaded = true;
-                updateLoadingStatus('Model loaded successfully!');
-                
-                setTimeout(() => {
-                    document.getElementById('loading').classList.add('hidden');
-                }, 1000);
-                
-                return true;
-            } catch (error) {
-                console.error('Error loading model:', error);
-                showError(`Error loading model: ${error.message}. Please refresh the page and try again.`);
-                return false;
+        // Select pose
+        function selectPose(poseId) {
+            currentPose = poses.find(p => p.id === poseId);
+            document.getElementById('reference-image').src = currentPose.image;
+            document.getElementById('pose-name').textContent = currentPose.name;
+            document.getElementById('pose-description').textContent = currentPose.description;
+            
+            poseCards.style.display = 'none';
+            poseContainer.style.display = 'grid';
+            backBtn.style.display = 'block';
+            startBtn.style.display = 'block';
+            
+            // Load best score from localStorage
+            const savedScore = localStorage.getItem(`best_score_${poseId}`);
+            if (savedScore) {
+                highestScore = parseInt(savedScore);
+                bestScore.textContent = `${highestScore}%`;
             }
         }
 
-        // Preload the model when the page loads
-        window.addEventListener('load', async () => {
-            await initPoseDetection();
-        });
+        // Initialize pose detection
+        async function initializePoseDetection() {
+            loading.classList.remove('hidden');
+            try {
+                detector = await poseDetection.createDetector(
+                    poseDetection.SupportedModels.MoveNet,
+                    {
+                        modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER
+                    }
+                );
+                loading.classList.add('hidden');
+                startBtn.disabled = false;
+            } catch (error) {
+                console.error('Error initializing pose detection:', error);
+                loading.querySelector('.loading-status').textContent = 'Error loading pose detection model';
+            }
+        }
 
-        // Start the camera
+        // Start camera
         async function startCamera() {
             try {
-                if (!modelLoaded) {
-                    updateLoadingStatus('Waiting for model to load...');
-                    return false;
-                }
-
-                video = document.getElementById('video');
-                canvas = document.getElementById('canvas');
-                ctx = canvas.getContext('2d');
-
-                updateLoadingStatus('Accessing camera...');
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        width: { ideal: 640 },
-                        height: { ideal: 480 },
-                        frameRate: { ideal: 30 },
-                        facingMode: 'user'
-                    }
+                    video: { width: 640, height: 480 }
                 });
                 video.srcObject = stream;
-
-                return new Promise((resolve) => {
-                    video.onloadedmetadata = () => {
-                        video.play();
-                        // Set canvas size to match video
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-                        resolve(true);
-                    };
-                });
+                isCameraActive = true;
+                startBtn.style.display = 'none';
+                startTimer();
+                detectPose();
             } catch (error) {
                 console.error('Error accessing camera:', error);
-                showError('Error accessing camera. Please ensure you have granted camera permissions.');
-                return false;
+                alert('Could not access camera. Please ensure camera permissions are granted.');
             }
         }
 
-        // Draw the pose with optimized rendering
-        function drawPose(pose) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw keypoints with optimized rendering
-            pose.keypoints.forEach(keypoint => {
+        // Start timer
+        function startTimer() {
+            timeLeft = 30;
+            timer.textContent = timeLeft;
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timer.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    saveScore();
+                }
+            }, 1000);
+        }
+
+        // Detect pose
+        async function detectPose() {
+            if (!isCameraActive) return;
+
+            const poses = await detector.estimatePoses(video);
+            const ctx = output.getContext('2d');
+            ctx.clearRect(0, 0, output.width, output.height);
+
+            if (poses.length > 0) {
+                const pose = poses[0];
+                drawKeypoints(pose.keypoints, ctx);
+                drawSkeleton(pose.keypoints, ctx);
+                
+                // Calculate match score
+                const matchScore = calculateMatchScore(pose.keypoints);
+                updateScore(matchScore);
+            }
+
+            requestAnimationFrame(detectPose);
+        }
+
+        // Calculate match score
+        function calculateMatchScore(keypoints) {
+            // This is a simplified version - you'll need to implement actual pose matching logic
+            // For now, we'll return a random score between 0 and 100
+            return Math.floor(Math.random() * 100);
+        }
+
+        // Update score
+        function updateScore(newScore) {
+            score.textContent = `${newScore}%`;
+            if (newScore > highestScore) {
+                highestScore = newScore;
+                bestScore.textContent = `${highestScore}%`;
+            }
+
+            if (newScore > 80) {
+                poseMatch.textContent = 'Perfect Match!';
+                poseMatch.className = 'pose-match good';
+            } else if (newScore > 50) {
+                poseMatch.textContent = 'Good Match';
+                poseMatch.className = 'pose-match good';
+            } else {
+                poseMatch.textContent = 'Keep Practicing';
+                poseMatch.className = 'pose-match bad';
+            }
+        }
+
+        // Save score
+        function saveScore() {
+            if (currentPose && highestScore > 0) {
+                localStorage.setItem(`best_score_${currentPose.id}`, highestScore);
+                // Here you would typically send the score to your backend
+                console.log(`Saving score ${highestScore} for pose ${currentPose.id}`);
+            }
+        }
+
+        // Draw keypoints
+        function drawKeypoints(keypoints, ctx) {
+            keypoints.forEach(keypoint => {
                 if (keypoint.score > 0.3) {
                     ctx.beginPath();
-                    ctx.arc(keypoint.x, keypoint.y, 4, 0, 2 * Math.PI);
+                    ctx.arc(keypoint.x, keypoint.y, 5, 0, 2 * Math.PI);
                     ctx.fillStyle = '#00ff00';
                     ctx.fill();
                 }
             });
+        }
 
-            // Draw connections with optimized rendering
-            const connections = [
-                ['left_shoulder', 'right_shoulder'],
-                ['left_shoulder', 'left_elbow'],
-                ['left_elbow', 'left_wrist'],
-                ['right_shoulder', 'right_elbow'],
-                ['right_elbow', 'right_wrist'],
-                ['left_shoulder', 'left_hip'],
-                ['right_shoulder', 'right_hip'],
-                ['left_hip', 'right_hip'],
-                ['left_hip', 'left_knee'],
-                ['left_knee', 'left_ankle'],
-                ['right_hip', 'right_knee'],
-                ['right_knee', 'right_ankle']
+        // Draw skeleton
+        function drawSkeleton(keypoints, ctx) {
+            const adjacentKeyPoints = [
+                [0, 1], [0, 2], [1, 3], [2, 4], [0, 5], [0, 6], [5, 7],
+                [7, 9], [6, 8], [8, 10], [5, 6], [5, 11], [6, 12], [11, 12],
+                [11, 13], [13, 15], [12, 14], [14, 16]
             ];
 
-            ctx.beginPath();
-            connections.forEach(([p1, p2]) => {
-                const point1 = pose.keypoints.find(kp => kp.name === p1);
-                const point2 = pose.keypoints.find(kp => kp.name === p2);
+            adjacentKeyPoints.forEach(points => {
+                const [i, j] = points;
+                const kp1 = keypoints[i];
+                const kp2 = keypoints[j];
 
-                if (point1 && point2 && point1.score > 0.3 && point2.score > 0.3) {
-                    ctx.moveTo(point1.x, point1.y);
-                    ctx.lineTo(point2.x, point2.y);
+                if (kp1.score > 0.3 && kp2.score > 0.3) {
+                    ctx.beginPath();
+                    ctx.moveTo(kp1.x, kp1.y);
+                    ctx.lineTo(kp2.x, kp2.y);
+                    ctx.strokeStyle = '#00ff00';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
                 }
             });
-            ctx.strokeStyle = '#00ff00';
-            ctx.lineWidth = 2;
-            ctx.stroke();
         }
 
-        // Calculate pose score
-        function calculatePoseScore(pose) {
-            // This is a simplified scoring system
-            // In a real application, you would compare angles between joints
-            let score = 0;
-            const keypoints = pose.keypoints;
-            
-            // Check if key points are visible
-            const requiredPoints = ['left_shoulder', 'right_shoulder', 'left_hip', 'right_hip', 'left_knee', 'right_knee'];
-            const visiblePoints = requiredPoints.filter(point => 
-                keypoints.find(kp => kp.name === point)?.score > 0.3
-            );
-            
-            score = (visiblePoints.length / requiredPoints.length) * 100;
-            
-            return Math.round(score);
-        }
-
-        // Main detection loop
-        async function detectPose() {
-            if (!isRunning) return;
-
-            try {
-                const poses = await detector.estimatePoses(video, {
-                    maxPoses: 1,
-                    flipHorizontal: false
-                });
-                
-                if (poses.length > 0) {
-                    drawPose(poses[0]);
-                    const score = calculatePoseScore(poses[0]);
-                    
-                    // Update score display
-                    document.querySelector('.score').textContent = `${score}%`;
-                    
-                    // Update pose match status
-                    const poseMatch = document.querySelector('.pose-match');
-                    if (score > 70) {
-                        poseMatch.textContent = 'Good Pose!';
-                        poseMatch.className = 'pose-match good';
-                    } else {
-                        poseMatch.textContent = 'Adjust Your Pose';
-                        poseMatch.className = 'pose-match bad';
-                    }
-                }
-
-                // Use requestAnimationFrame for smooth animation
-                animationId = requestAnimationFrame(detectPose);
-            } catch (error) {
-                console.error('Error in pose detection:', error);
-                // Continue detection loop even if there's an error
-                animationId = requestAnimationFrame(detectPose);
-            }
-        }
-
-        // Event Listeners
-        document.getElementById('startCamera').addEventListener('click', async () => {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('loadingStatus').style.display = 'block';
-            
-            if (!modelLoaded) {
-                const success = await initPoseDetection();
-                if (!success) return;
-            }
-            
-            const cameraStarted = await startCamera();
-            if (!cameraStarted) return;
-            
-            isRunning = true;
-            detectPose();
-            document.getElementById('loading').classList.add('hidden');
-            document.getElementById('startCamera').disabled = true;
-            document.getElementById('stopCamera').disabled = false;
-        });
-
-        document.getElementById('stopCamera').addEventListener('click', () => {
-            isRunning = false;
-            cancelAnimationFrame(animationId);
-            const stream = video.srcObject;
-            const tracks = stream.getTracks();
-            tracks.forEach(track => track.stop());
+        // Event listeners
+        startBtn.addEventListener('click', startCamera);
+        backBtn.addEventListener('click', () => {
+            isCameraActive = false;
             video.srcObject = null;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('startCamera').disabled = false;
-            document.getElementById('stopCamera').disabled = true;
-            document.querySelector('.score').textContent = '0%';
-            document.querySelector('.pose-match').textContent = 'Waiting for pose...';
-            document.querySelector('.pose-match').className = 'pose-match';
+            poseCards.style.display = 'grid';
+            poseContainer.style.display = 'none';
+            backBtn.style.display = 'none';
+            startBtn.style.display = 'block';
+            clearInterval(timerInterval);
         });
+
+        // Initialize
+        initializePoseCards();
+        initializePoseDetection();
     </script>
 </body>
 </html> 
