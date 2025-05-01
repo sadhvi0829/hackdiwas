@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         :root {
             --primary-purple: #6d28d9;
@@ -244,6 +245,29 @@
         let teacherCtx;
         let isRunning = false;
         let currentPose = null;
+        let socket;
+        let sessionId;
+
+        // Initialize Socket.IO connection
+        function initializeSocket() {
+            socket = io();
+            
+            // Generate a unique session ID
+            sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+            
+            // Join as teacher
+            socket.emit('teacher-join', sessionId);
+            
+            // Handle student connections
+            socket.on('student-joined', (studentId) => {
+                console.log('Student joined:', studentId);
+            });
+            
+            // Handle disconnection
+            socket.on('disconnect', () => {
+                console.log('Disconnected from server');
+            });
+        }
 
         // Initialize the pose detection
         async function initPoseDetection() {
@@ -352,23 +376,11 @@
 
         // Function to broadcast pose to server
         async function broadcastPose(pose) {
-            try {
-                const response = await fetch('/api/broadcast-pose', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        pose: pose,
-                        timestamp: Date.now()
-                    })
+            if (socket && socket.connected) {
+                socket.emit('broadcast-pose', {
+                    sessionId,
+                    pose
                 });
-                
-                if (!response.ok) {
-                    throw new Error('Failed to broadcast pose');
-                }
-            } catch (error) {
-                console.error('Error broadcasting pose:', error);
             }
         }
 
@@ -398,6 +410,9 @@
             teacherCanvas = document.getElementById('teacherCanvas');
             teacherCtx = teacherCanvas.getContext('2d');
 
+            // Initialize Socket.IO
+            initializeSocket();
+
             await initPoseDetection();
 
             // Event listeners for buttons
@@ -414,6 +429,9 @@
                     teacherVideo.srcObject = null;
                 }
                 teacherCtx.clearRect(0, 0, teacherCanvas.width, teacherCanvas.height);
+                if (socket) {
+                    socket.disconnect();
+                }
                 window.location.href = 'teacher-dashboard.html';
             });
         });
