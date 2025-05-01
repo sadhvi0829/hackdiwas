@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pose Comparison | Kalpathsala</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    <style>
+        :root {
+            --primary-purple: #6d28d9;
+            --primary-blue: #2563eb;
+            --accent-gold: #d4a017;
+            --bg-primary: #181c24;
+            --text-primary: #fff;
+            --text-secondary: #b3b3b3;
+            --card-shadow: 0 4px 24px rgba(109,40,217,0.10);
+            --card-radius: 20px;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --teacher-color: #3b82f6;
+            --student-color: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .video-container {
+            position: relative;
+            background: #000;
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+
+        .video-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(0,0,0,0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .teacher-label {
+            color: var(--teacher-color);
+        }
+
+        .student-label {
+            color: var(--student-color);
+        }
+
+        .feedback-container {
+            background: #23263a;
+            border-radius: var(--card-radius);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .feedback-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .feedback-item {
+            background: rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .feedback-item.good {
+            border-left: 4px solid var(--success-color);
+        }
+
+        .feedback-item.needs-improvement {
+            border-left: 4px solid var(--error-color);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary-purple);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #374151;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-size: 1.5rem;
+            color: #fff;
+            gap: 1rem;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-status {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 300px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading.hidden {
+            display: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pose-hold-timer {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.7);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            z-index: 2;
+            display: none;
+        }
+
+        .pose-hold-timer.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧘 Real-time Pose Comparison</h1>
+            <p>Compare your pose with the teacher's in real-time</p>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-primary" id="startTeacher">
+                <span>🎥</span> Start Teacher Camera
+            </button>
+            <button class="btn btn-primary" id="startStudent">
+                <span>🎥</span> Start Student Camera
+            </button>
+            <button class="btn btn-secondary" id="stopCameras" disabled>
+                <span>⏹️</span> Stop Cameras
+            </button>
+        </div>
+
+        <div class="comparison-container">
+            <div class="video-container">
+                <div class="video-label teacher-label">Teacher</div>
+                <video id="teacherVideo" playsinline></video>
+                <canvas id="teacherCanvas"></canvas>
+                <div class="pose-hold-timer" id="teacherTimer">Hold pose: 0s</div>
+            </div>
+
+            <div class="video-container">
+                <div class="video-label student-label">Student</div>
+                <video id="studentVideo" playsinline></video>
+                <canvas id="studentCanvas"></canvas>
+                <div class="pose-hold-timer" id="studentTimer">Hold pose: 0s</div>
+            </div>
+        </div>
+
+        <div class="feedback-container">
+            <div class="score-display">
+                <div class="score-value" id="matchScore">0%</div>
+                <div class="score-label">Pose Match Score</div>
+            </div>
+            <div class="feedback-messages" id="feedbackMessages">
+                <!-- Feedback messages will be added here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+        <div class="loading-status" id="loadingStatus">Initializing pose detection model...</div>
+    </div>
+
+    <script>
+        let detector;
+        let teacherVideo, studentVideo;
+        let teacherCanvas, studentCanvas;
+        let teacherCtx, studentCtx;
+        let isRunning = false;
+        let teacherPose = null;
+        let studentPose = null;
+        let poseHoldTimer = 0;
+        let poseHoldInterval;
+        let lastComparisonTime = 0;
+        const COMPARISON_INTERVAL = 100; // ms
+        const POSE_HOLD_DURATION = 2000; // ms
+
+        // Initialize the pose detection
+        async function initPoseDetection() {
+            try {
+                updateLoadingStatus('Loading TensorFlow.js...');
+                await tf.ready();
+                await tf.setBackend('webgl');
+                
+                updateLoadingStatus('Loading MoveNet model...');
+                const model = poseDetection.SupportedModels.MoveNet;
+                const detectorConfig = {
+                    modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING,
+                    enableSmoothing: true,
+                    minPoseScore: 0.3
+                };
+                
+                detector = await poseDetection.createDetector(model, detectorConfig);
+                updateLoadingStatus('Model loaded successfully!');
+                
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                }, 1000);
+                
+                return true;
+            } catch (error) {
+                console.error('Error loading model:', error);
+                showError(`Error loading model: ${error.message}`);
+                return false;
+            }
+        }
+
+        // Start camera for teacher or student
+        async function startCamera(isTeacher) {
+            try {
+                const video = isTeacher ? teacherVideo : studentVideo;
+                const canvas = isTeacher ? teacherCanvas : studentCanvas;
+                const ctx = isTeacher ? teacherCtx : studentCtx;
+
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        frameRate: { ideal: 30 },
+                        facingMode: 'user'
+                    }
+                });
+                video.srcObject = stream;
+
+                return new Promise((resolve) => {
+                    video.onloadedmetadata = () => {
+                        video.play();
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        resolve(true);
+                    };
+                });
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                showError('Error accessing camera. Please ensure you have granted camera permissions.');
+                return false;
+            }
+        }
+
+        // Calculate angle between three points
+        function calculateAngle(a, b, c) {
+            const radians = Math.atan2(c.y - b.y, c.x - b.x) - Math.atan2(a.y - b.y, a.x - b.x);
+            let angle = Math.abs(radians * 180.0 / Math.PI);
+            if (angle > 180.0) {
+                angle = 360 - angle;
+            }
+            return angle;
+        }
+
+        // Compare poses and calculate match score
+        function comparePoses(teacherPose, studentPose) {
+            if (!teacherPose || !studentPose) return 0;
+
+            const keypoints = [
+                ['left_shoulder', 'left_elbow', 'left_wrist'],
+                ['right_shoulder', 'right_elbow', 'right_wrist'],
+                ['left_hip', 'left_knee', 'left_ankle'],
+                ['right_hip', 'right_knee', 'right_ankle']
+            ];
+
+            let totalScore = 0;
+            let validAngles = 0;
+            const feedback = [];
+
+            keypoints.forEach(([a, b, c]) => {
+                const teacherA = teacherPose.keypoints.find(kp => kp.name === a);
+                const teacherB = teacherPose.keypoints.find(kp => kp.name === b);
+                const teacherC = teacherPose.keypoints.find(kp => kp.name === c);
+                
+                const studentA = studentPose.keypoints.find(kp => kp.name === a);
+                const studentB = studentPose.keypoints.find(kp => kp.name === b);
+                const studentC = studentPose.keypoints.find(kp => kp.name === c);
+
+                if (teacherA && teacherB && teacherC && studentA && studentB && studentC) {
+                    const teacherAngle = calculateAngle(teacherA, teacherB, teacherC);
+                    const studentAngle = calculateAngle(studentA, studentB, studentC);
+                    
+                    const angleDiff = Math.abs(teacherAngle - studentAngle);
+                    const score = Math.max(0, 100 - (angleDiff * 2));
+                    
+                    totalScore += score;
+                    validAngles++;
+
+                    // Generate feedback
+                    if (angleDiff > 30) {
+                        const bodyPart = a.split('_')[1];
+                        const direction = a.split('_')[0];
+                        feedback.push({
+                            type: 'needs-improvement',
+                            message: `Adjust your ${direction} ${bodyPart} position`
+                        });
+                    }
+                }
+            });
+
+            const finalScore = validAngles > 0 ? Math.round(totalScore / validAngles) : 0;
+            
+            // Add positive feedback if score is good
+            if (finalScore > 80) {
+                feedback.push({
+                    type: 'good',
+                    message: 'Great job! Keep it up!'
+                });
+            }
+
+            return { score: finalScore, feedback };
+        }
+
+        // Draw pose on canvas
+        function drawPose(pose, ctx, color) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            
+            if (!pose) return;
+
+            // Draw keypoints
+            pose.keypoints.forEach(keypoint => {
+                if (keypoint.score > 0.3) {
+                    ctx.beginPath();
+                    ctx.arc(keypoint.x, keypoint.y, 4, 0, 2 * Math.PI);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+            });
+
+            // Draw connections
+            const connections = [
+                ['left_shoulder', 'right_shoulder'],
+                ['left_shoulder', 'left_elbow'],
+                ['left_elbow', 'left_wrist'],
+                ['right_shoulder', 'right_elbow'],
+                ['right_elbow', 'right_wrist'],
+                ['left_shoulder', 'left_hip'],
+                ['right_shoulder', 'right_hip'],
+                ['left_hip', 'right_hip'],
+                ['left_hip', 'left_knee'],
+                ['left_knee', 'left_ankle'],
+                ['right_hip', 'right_knee'],
+                ['right_knee', 'right_ankle']
+            ];
+
+            ctx.beginPath();
+            connections.forEach(([p1, p2]) => {
+                const point1 = pose.keypoints.find(kp => kp.name === p1);
+                const point2 = pose.keypoints.find(kp => kp.name === p2);
+
+                if (point1 && point2 && point1.score > 0.3 && point2.score > 0.3) {
+                    ctx.moveTo(point1.x, point1.y);
+                    ctx.lineTo(point2.x, point2.y);
+                }
+            });
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // Main detection loop
+        async function detectPoses() {
+            if (!isRunning) return;
+
+            try {
+                const [teacherPoses, studentPoses] = await Promise.all([
+                    detector.estimatePoses(teacherVideo),
+                    detector.estimatePoses(studentVideo)
+                ]);
+
+                if (teacherPoses.length > 0) {
+                    teacherPose = teacherPoses[0];
+                    drawPose(teacherPose, teacherCtx, '#3b82f6');
+                }
+
+                if (studentPoses.length > 0) {
+                    studentPose = studentPoses[0];
+                    drawPose(studentPose, studentCtx, '#10b981');
+                }
+
+                // Compare poses at regular intervals
+                const now = Date.now();
+                if (now - lastComparisonTime >= COMPARISON_INTERVAL) {
+                    const comparison = comparePoses(teacherPose, studentPose);
+                    updateFeedback(comparison.score, comparison.feedback);
+                    lastComparisonTime = now;
+                }
+
+                requestAnimationFrame(detectPoses);
+            } catch (error) {
+                console.error('Error in pose detection:', error);
+                requestAnimationFrame(detectPoses);
+            }
+        }
+
+        // Update feedback display
+        function updateFeedback(score, feedback) {
+            document.getElementById('matchScore').textContent = `${score}%`;
+            
+            const feedbackContainer = document.getElementById('feedbackMessages');
+            feedbackContainer.innerHTML = '';
+            
+            feedback.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `feedback-item ${item.type}`;
+                div.textContent = item.message;
+                feedbackContainer.appendChild(div);
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', async () => {
+            teacherVideo = document.getElementById('teacherVideo');
+            studentVideo = document.getElementById('studentVideo');
+            teacherCanvas = document.getElementById('teacherCanvas');
+            studentCanvas = document.getElementById('studentCanvas');
+            teacherCtx = teacherCanvas.getContext('2d');
+            studentCtx = studentCanvas.getContext('2d');
+
+            await initPoseDetection();
+
+            // Event listeners for buttons
+            document.getElementById('startTeacher').addEventListener('click', async () => {
+                await startCamera(true);
+            });
+
+            document.getElementById('startStudent').addEventListener('click', async () => {
+                await startCamera(false);
+            });
+
+            document.getElementById('stopCameras').addEventListener('click', () => {
+                isRunning = false;
+                [teacherVideo, studentVideo].forEach(video => {
+                    if (video.srcObject) {
+                        video.srcObject.getTracks().forEach(track => track.stop());
+                        video.srcObject = null;
+                    }
+                });
+                [teacherCtx, studentCtx].forEach(ctx => {
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                });
+                document.getElementById('startTeacher').disabled = false;
+                document.getElementById('startStudent').disabled = false;
+                document.getElementById('stopCameras').disabled = true;
+                document.getElementById('matchScore').textContent = '0%';
+                document.getElementById('feedbackMessages').innerHTML = '';
+            });
+
+            // Start detection when both cameras are ready
+            const checkCameras = setInterval(() => {
+                if (teacherVideo.srcObject && studentVideo.srcObject) {
+                    isRunning = true;
+                    detectPoses();
+                    document.getElementById('stopCameras').disabled = false;
+                    clearInterval(checkCameras);
+                }
+            }, 100);
+        });
+
+        function updateLoadingStatus(message) {
+            document.getElementById('loadingStatus').textContent = message;
+        }
+
+        function showError(message) {
+            console.error(message);
+            alert(message);
+        }
+    </script>
+</body>
+</html> 
