@@ -347,6 +347,9 @@
             <button class="btn btn-primary" id="start-btn">
                 <span>🎥</span> Start Camera
             </button>
+            <button class="btn btn-secondary" id="stop-btn" style="display: none;">
+                <span>⏹️</span> Stop Camera
+            </button>
             <button class="btn btn-secondary" id="back-btn" style="display: none;">
                 <span>←</span> Back to Poses
             </button>
@@ -387,6 +390,7 @@
         const video = document.getElementById('video');
         const output = document.getElementById('output');
         const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
         const backBtn = document.getElementById('back-btn');
         const loading = document.getElementById('loading');
         const timer = document.getElementById('timer');
@@ -441,6 +445,7 @@
         async function initializePoseDetection() {
             loading.classList.remove('hidden');
             try {
+                await tf.ready();
                 detector = await poseDetection.createDetector(
                     poseDetection.SupportedModels.MoveNet,
                     {
@@ -459,17 +464,40 @@
         async function startCamera() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: 640, height: 480 }
+                    video: { 
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        facingMode: 'user'
+                    }
                 });
                 video.srcObject = stream;
+                video.play();
                 isCameraActive = true;
                 startBtn.style.display = 'none';
+                stopBtn.style.display = 'block';
                 startTimer();
                 detectPose();
             } catch (error) {
                 console.error('Error accessing camera:', error);
                 alert('Could not access camera. Please ensure camera permissions are granted.');
             }
+        }
+
+        // Stop camera
+        function stopCamera() {
+            if (video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+            }
+            isCameraActive = false;
+            startBtn.style.display = 'block';
+            stopBtn.style.display = 'none';
+            clearInterval(timerInterval);
+            
+            // Clear canvas
+            const ctx = output.getContext('2d');
+            ctx.clearRect(0, 0, output.width, output.height);
         }
 
         // Start timer
@@ -491,21 +519,27 @@
         async function detectPose() {
             if (!isCameraActive) return;
 
-            const poses = await detector.estimatePoses(video);
-            const ctx = output.getContext('2d');
-            ctx.clearRect(0, 0, output.width, output.height);
+            try {
+                const poses = await detector.estimatePoses(video);
+                const ctx = output.getContext('2d');
+                ctx.clearRect(0, 0, output.width, output.height);
 
-            if (poses.length > 0) {
-                const pose = poses[0];
-                drawKeypoints(pose.keypoints, ctx);
-                drawSkeleton(pose.keypoints, ctx);
-                
-                // Calculate match score
-                const matchScore = calculateMatchScore(pose.keypoints);
-                updateScore(matchScore);
+                if (poses.length > 0) {
+                    const pose = poses[0];
+                    drawKeypoints(pose.keypoints, ctx);
+                    drawSkeleton(pose.keypoints, ctx);
+                    
+                    // Calculate match score
+                    const matchScore = calculateMatchScore(pose.keypoints);
+                    updateScore(matchScore);
+                }
+            } catch (error) {
+                console.error('Error detecting pose:', error);
             }
 
-            requestAnimationFrame(detectPose);
+            if (isCameraActive) {
+                requestAnimationFrame(detectPose);
+            }
         }
 
         // Calculate match score
@@ -582,14 +616,12 @@
 
         // Event listeners
         startBtn.addEventListener('click', startCamera);
+        stopBtn.addEventListener('click', stopCamera);
         backBtn.addEventListener('click', () => {
-            isCameraActive = false;
-            video.srcObject = null;
+            stopCamera();
             poseCards.style.display = 'grid';
             poseContainer.style.display = 'none';
             backBtn.style.display = 'none';
-            startBtn.style.display = 'block';
-            clearInterval(timerInterval);
         });
 
         // Initialize
