@@ -269,54 +269,82 @@
         }
         /* My Courses Section */
         .courses-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
+            padding: 1rem;
         }
-        .course-card-upload {
+        .course-card {
             background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
             border-radius: 20px;
             box-shadow: var(--shadow);
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
+            overflow: hidden;
+            transition: transform 0.3s ease;
             color: #fff;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        .course-thumbnail {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .course-content {
+            padding: 1.5rem;
         }
         .course-info h3 {
             margin: 0 0 0.5rem 0;
             font-size: 1.3rem;
+            color: #fff;
         }
         .course-info p {
-            margin: 0;
+            margin: 0 0 1rem 0;
             font-size: 1.05rem;
             opacity: 0.9;
         }
-        .video-upload-area {
+        .course-actions {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            gap: 1rem;
+            margin-top: 1rem;
         }
-        .video-upload-label {
-            background: #fff;
-            color: #6d28d9;
-            border-radius: 12px;
-            padding: 0.7rem 1.5rem;
+        .course-btn {
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 2px 8px rgba(109,40,217,0.10);
             display: flex;
             align-items: center;
-            gap: 0.7rem;
-            transition: background 0.2s, color 0.2s;
+            gap: 0.5rem;
+            transition: background 0.2s;
         }
-        .video-upload-label:hover {
-            background: #ede9fe;
-            color: #2563eb;
+        .course-btn:hover {
+            background: rgba(255,255,255,0.25);
         }
-        .video-icon {
-            font-size: 1.2rem;
+        .course-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: #fff;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .course-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
         /* Beautiful Profile Section */
         .beautiful-profile {
@@ -406,7 +434,7 @@
             .profile-card, .courses-section { padding: 1rem; }
             .profile-card { max-width: 100%; }
             .courses-list { gap: 1rem; }
-            .course-card-upload { flex-direction: column; gap: 1rem; }
+            .course-card { flex-direction: column; gap: 1rem; }
         }
     </style>
 </head>
@@ -454,30 +482,52 @@
             <section class="courses-section" id="courses-section">
                 <div class="profile-title">My Courses</div>
                 <div class="courses-list">
-                    <div class="course-card-upload">
-                        <div class="course-info">
-                            <h3>Java Basics</h3>
-                            <p>Learn the fundamentals of Java programming.</p>
-                        </div>
-                        <div class="video-upload-area">
-                            <label for="video-upload-java" class="video-upload-label">
-                                <span class="video-icon">🎬</span> Upload/Preview Video
-                            </label>
-                            <input type="file" id="video-upload-java" accept="video/*" style="display:none;">
-                            <video id="video-preview-java" controls style="display:none; width:100%; max-width:320px; margin-top:1rem; border-radius:12px;"></video>
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97" alt="Java Course" class="course-thumbnail">
+                        <div class="course-content">
+                            <div class="course-info">
+                                <h3>Java Basics</h3>
+                                <p>Learn the fundamentals of Java programming.</p>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-bar" style="width: 75%"></div>
+                            </div>
+                            <div class="course-stats">
+                                <span>75% Complete</span>
+                                <span>12 Lessons</span>
+                            </div>
+                            <div class="course-actions">
+                                <button class="course-btn" onclick="previewVideo('java')">
+                                    <span>🎬</span> Preview
+                                </button>
+                                <button class="course-btn" onclick="continueLearning('java')">
+                                    <span>📚</span> Continue
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="course-card-upload">
-                        <div class="course-info">
-                            <h3>React for Beginners</h3>
-                            <p>Start building modern web apps with React.</p>
-                        </div>
-                        <div class="video-upload-area">
-                            <label for="video-upload-react" class="video-upload-label">
-                                <span class="video-icon">🎬</span> Upload/Preview Video
-                            </label>
-                            <input type="file" id="video-upload-react" accept="video/*" style="display:none;">
-                            <video id="video-preview-react" controls style="display:none; width:100%; max-width:320px; margin-top:1rem; border-radius:12px;"></video>
+                    <div class="course-card">
+                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee" alt="React Course" class="course-thumbnail">
+                        <div class="course-content">
+                            <div class="course-info">
+                                <h3>React for Beginners</h3>
+                                <p>Start building modern web apps with React.</p>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-bar" style="width: 45%"></div>
+                            </div>
+                            <div class="course-stats">
+                                <span>45% Complete</span>
+                                <span>8 Lessons</span>
+                            </div>
+                            <div class="course-actions">
+                                <button class="course-btn" onclick="previewVideo('react')">
+                                    <span>🎬</span> Preview
+                                </button>
+                                <button class="course-btn" onclick="continueLearning('react')">
+                                    <span>📚</span> Continue
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -568,21 +618,51 @@
             showSection(liveSection);
         });
 
-        // Video upload preview for courses
-        function setupVideoUpload(inputId, previewId) {
-            const input = document.getElementById(inputId);
-            const preview = document.getElementById(previewId);
-            input.addEventListener('change', function() {
-                const file = this.files[0];
-                if (file) {
-                    const url = URL.createObjectURL(file);
-                    preview.src = url;
-                    preview.style.display = 'block';
-                }
-            });
+        // Video preview functionality
+        function previewVideo(course) {
+            const videoUrl = course === 'java' ? 'path/to/java-preview.mp4' : 'path/to/react-preview.mp4';
+            const videoPreview = document.createElement('div');
+            videoPreview.style.position = 'fixed';
+            videoPreview.style.top = '0';
+            videoPreview.style.left = '0';
+            videoPreview.style.width = '100%';
+            videoPreview.style.height = '100%';
+            videoPreview.style.backgroundColor = 'rgba(0,0,0,0.9)';
+            videoPreview.style.display = 'flex';
+            videoPreview.style.alignItems = 'center';
+            videoPreview.style.justifyContent = 'center';
+            videoPreview.style.zIndex = '1000';
+
+            const video = document.createElement('video');
+            video.src = videoUrl;
+            video.controls = true;
+            video.style.maxWidth = '80%';
+            video.style.maxHeight = '80%';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '✕';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '20px';
+            closeBtn.style.right = '20px';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.color = '#fff';
+            closeBtn.style.fontSize = '24px';
+            closeBtn.style.cursor = 'pointer';
+
+            closeBtn.onclick = () => {
+                document.body.removeChild(videoPreview);
+            };
+
+            videoPreview.appendChild(video);
+            videoPreview.appendChild(closeBtn);
+            document.body.appendChild(videoPreview);
         }
-        setupVideoUpload('video-upload-java', 'video-preview-java');
-        setupVideoUpload('video-upload-react', 'video-preview-react');
+
+        function continueLearning(course) {
+            alert(`Continuing with ${course} course...`);
+        }
+
         // Profile image upload (camera overlay)
         const cameraOverlay = document.querySelector('.camera-overlay');
         const profileImageInput = document.getElementById('profile-image');
