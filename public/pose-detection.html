@@ -453,31 +453,31 @@
                 id: 'tree',
                 name: 'Tree Pose (Vrikshasana)',
                 description: 'Stand on one leg, place the other foot on the inner thigh, and bring hands to prayer position. Keep your spine straight and focus on a point in front of you.',
-                image: 'https://www.ekhartyoga.com/media/image/articles/tree-pose-vrksasana.jpg'
+                image: 'download.webp'
             },
             {
                 id: 'warrior',
                 name: 'Warrior II (Virabhadrasana II)',
                 description: 'Stand with feet wide apart, turn right foot out 90 degrees, bend right knee, and extend arms parallel to floor. Keep your torso centered and gaze over your front hand.',
-                image: 'https://www.ekhartyoga.com/media/image/articles/warrior-2-pose-virabhadrasana-2.jpg'
+                image: 'download (1).webp'
             },
             {
                 id: 'downward',
                 name: 'Downward Dog (Adho Mukha Svanasana)',
                 description: 'Form an inverted V-shape with your body, hands and feet on the ground, hips lifted high. Press your heels toward the floor and keep your spine long.',
-                image: 'https://www.ekhartyoga.com/media/image/articles/downward-facing-dog-adho-mukha-svanasana.jpg'
+                image: 'download (2).webp'
             },
             {
                 id: 'mountain',
                 name: 'Mountain Pose (Tadasana)',
                 description: 'Stand tall with feet together, arms at your sides. Ground through your feet, lift your chest, and keep your shoulders relaxed.',
-                image: 'https://www.ekhartyoga.com/media/image/articles/mountain-pose-tadasana.jpg'
+                image: 'download.webp'
             },
             {
                 id: 'triangle',
                 name: 'Triangle Pose (Trikonasana)',
                 description: 'Stand with feet wide apart, extend arms parallel to floor, reach forward with front hand, and place it on shin or floor. Extend other arm upward.',
-                image: 'https://www.ekhartyoga.com/media/image/articles/triangle-pose-utthita-trikonasana.jpg'
+                image: 'download (1).webp'
             }
         ];
 
@@ -711,56 +711,20 @@
             let totalScore = 0;
             let validPoints = 0;
 
-            // Normalize keypoints to 0-1 range
-            const normalizeKeypoints = (kps) => {
-                const minX = Math.min(...kps.map(kp => kp.x));
-                const maxX = Math.max(...kps.map(kp => kp.x));
-                const minY = Math.min(...kps.map(kp => kp.y));
-                const maxY = Math.max(...kps.map(kp => kp.y));
-                
-                return kps.map(kp => ({
-                    x: (kp.x - minX) / (maxX - minX),
-                    y: (kp.y - minY) / (maxY - minY)
-                }));
-            };
-
-            const normalizedKeypoints = normalizeKeypoints(keypoints);
-            const normalizedReference = normalizeKeypoints(reference);
-
-            // Compare each keypoint
-            for (let i = 0; i < normalizedKeypoints.length; i++) {
+            // Get the actual confidence scores from the keypoints
+            for (let i = 0; i < keypoints.length; i++) {
                 if (keypoints[i].score > 0.3) {
-                    const dx = normalizedKeypoints[i].x - normalizedReference[i].x;
-                    const dy = normalizedKeypoints[i].y - normalizedReference[i].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    // More strict scoring based on distance
-                    // Perfect match (distance = 0) gives 100
-                    // Distance of 0.1 gives 80
-                    // Distance of 0.2 gives 60
-                    // Distance of 0.3 gives 40
-                    // Distance of 0.4 gives 20
-                    // Distance > 0.5 gives 0
-                    const pointScore = Math.max(0, 100 - (distance * 200));
-                    
-                    // Apply confidence weighting
-                    const confidenceWeight = keypoints[i].score;
-                    const weightedScore = pointScore * confidenceWeight;
-                    
-                    totalScore += weightedScore;
+                    // Use the actual confidence score from the pose detection model
+                    totalScore += keypoints[i].score * 100;
                     validPoints++;
                 }
             }
 
-            // Calculate average score with more strict requirements
-            if (validPoints < 10) { // Require at least 10 valid keypoints
-                return 0;
-            }
-
-            const averageScore = totalScore / validPoints;
+            // Calculate average score
+            const averageScore = validPoints > 0 ? totalScore / validPoints : 0;
             
-            // Apply additional penalties for missing keypoints
-            const missingPointsPenalty = (17 - validPoints) * 5; // 5 points penalty per missing keypoint
+            // Apply penalties for missing keypoints
+            const missingPointsPenalty = (17 - validPoints) * 2; // 2 points penalty per missing keypoint
             const finalScore = Math.max(0, averageScore - missingPointsPenalty);
             
             return Math.round(finalScore);
@@ -768,28 +732,31 @@
 
         // Update score with more granular feedback
         function updateScore(newScore) {
-            score.textContent = `${newScore}%`;
-            if (newScore > highestScore) {
-                highestScore = newScore;
-                bestScore.textContent = `${highestScore}%`;
-                saveScore();
-            }
+            // Only update if we have a valid score
+            if (newScore > 0) {
+                score.textContent = `${newScore}%`;
+                if (newScore > highestScore) {
+                    highestScore = newScore;
+                    bestScore.textContent = `${highestScore}%`;
+                    saveScore();
+                }
 
-            if (newScore > 90) {
-                poseMatch.textContent = 'Perfect Match!';
-                poseMatch.className = 'pose-match good';
-            } else if (newScore > 70) {
-                poseMatch.textContent = 'Good Match';
-                poseMatch.className = 'pose-match good';
-            } else if (newScore > 50) {
-                poseMatch.textContent = 'Fair Match';
-                poseMatch.className = 'pose-match good';
-            } else if (newScore > 30) {
-                poseMatch.textContent = 'Needs Work';
-                poseMatch.className = 'pose-match bad';
-            } else {
-                poseMatch.textContent = 'Keep Practicing';
-                poseMatch.className = 'pose-match bad';
+                if (newScore > 80) {
+                    poseMatch.textContent = 'Perfect Match!';
+                    poseMatch.className = 'pose-match good';
+                } else if (newScore > 60) {
+                    poseMatch.textContent = 'Good Match';
+                    poseMatch.className = 'pose-match good';
+                } else if (newScore > 40) {
+                    poseMatch.textContent = 'Fair Match';
+                    poseMatch.className = 'pose-match good';
+                } else if (newScore > 20) {
+                    poseMatch.textContent = 'Needs Work';
+                    poseMatch.className = 'pose-match bad';
+                } else {
+                    poseMatch.textContent = 'Keep Practicing';
+                    poseMatch.className = 'pose-match bad';
+                }
             }
         }
 
@@ -887,13 +854,13 @@
         function drawKeypoints(keypoints, ctx) {
             const matchScore = calculateMatchScore(keypoints);
             let color;
-            if (matchScore > 90) {
+            if (matchScore > 80) {
                 color = '#00ff00'; // Green for perfect
-            } else if (matchScore > 70) {
+            } else if (matchScore > 60) {
                 color = '#7fff00'; // Light green for good
-            } else if (matchScore > 50) {
+            } else if (matchScore > 40) {
                 color = '#ffff00'; // Yellow for fair
-            } else if (matchScore > 30) {
+            } else if (matchScore > 20) {
                 color = '#ff7f00'; // Orange for needs work
             } else {
                 color = '#ff0000'; // Red for poor
@@ -913,13 +880,13 @@
         function drawSkeleton(keypoints, ctx) {
             const matchScore = calculateMatchScore(keypoints);
             let color;
-            if (matchScore > 90) {
+            if (matchScore > 80) {
                 color = '#00ff00'; // Green for perfect
-            } else if (matchScore > 70) {
+            } else if (matchScore > 60) {
                 color = '#7fff00'; // Light green for good
-            } else if (matchScore > 50) {
+            } else if (matchScore > 40) {
                 color = '#ffff00'; // Yellow for fair
-            } else if (matchScore > 30) {
+            } else if (matchScore > 20) {
                 color = '#ff7f00'; // Orange for needs work
             } else {
                 color = '#ff0000'; // Red for poor
